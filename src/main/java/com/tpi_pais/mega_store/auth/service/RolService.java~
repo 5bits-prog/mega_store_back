@@ -104,9 +104,4 @@ public class RolService implements IRolService {
         rolDTO.capitalizarNombre();
         return rolDTO;
     }
-
-    @Override
-    public boolean rolExistente(String nombre) {
-        return modelRepository.findByNombre(nombre).isPresent();
-    }
 }

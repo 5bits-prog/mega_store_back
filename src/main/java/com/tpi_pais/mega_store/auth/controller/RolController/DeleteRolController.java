@@ -3,6 +3,7 @@ package com.tpi_pais.mega_store.auth.controller.RolController;
 
 import com.tpi_pais.mega_store.auth.model.Rol;
 import com.tpi_pais.mega_store.auth.service.IRolService;
+import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.utils.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,9 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 public class DeleteRolController {
     @Autowired
     private IRolService modelService;
+
+    @Autowired
+    private ResponseService responseService;
 
     @DeleteMapping("/rol/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Integer id) {
@@ -35,63 +39,9 @@ public class DeleteRolController {
          * 3) Ademas si la exp falla debe poder resolverlo, por ejemplo si hay espacios
          * demas los debe quitar.
          * */
-        try {
-            Rol model = modelService.buscarPorId(id);
-            if (model == null) {
-                ApiResponse<Object> response = new ApiResponse<>(
-                        404,
-                        "Error: Not Found.",
-                        null,
-                        "El id no corresponde a ninguna rol, se debe enviar el id de una rol existente."
-                );
-                return ResponseEntity.badRequest().body(response);
-            }
-            if (model.getFechaEliminacion() != null) {
-                ApiResponse<Object> response = new ApiResponse<>(
-                        400,
-                        "Error: Bad Request.",
-                        null,
-                        "La rol ya se encuentra eliminada, se debe enviar el id de una rol no eliminada."
-                );
-                return ResponseEntity.badRequest().body(response);
-            }
-            //Queda pendiente la validacion de si esta asociada algun producto no se puede eliminar
-
-            model.eliminar();
-            modelService.eliminar(model);
-            ApiResponse<Object> response = new ApiResponse<>(
-                    200,
-                    "OK.",
-                    model,
-                    null
-            );
-            return ResponseEntity.ok().body(response);
-        } catch (Exception e){
-            ApiResponse<Object> response = new ApiResponse<>(
-                    400,
-                    "Error: Error inesperado.",
-                    null,
-                    ""+e
-            );
-            return ResponseEntity.badRequest().body(response);
-        }
-
-    }
-
-
-    // Manejador de excepciones para cuando el parámetro no es del tipo esperado (ej. no es un entero)
-    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<?> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
-        // Creamos una respuesta en formato JSON con el error
-        String error = String.format("El parámetro '%s' debe ser un número entero válido.", ex.getName());
-        ApiResponse<Object> response = new ApiResponse<>(
-                400,
-                "Error de tipo de argumento",
-                null,
-                error
-        );
-
-        return ResponseEntity.badRequest().body(response);
+        Rol model = modelService.buscarPorId(id);
+        modelService.eliminar(model);
+        return responseService.successResponse(model, "Objeto eliminado");
     }
 }
 

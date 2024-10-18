@@ -51,7 +51,7 @@ public class PutRolController {
             throw new BadRequestException("Ya existe un rol con ese nombre");
         } else {
             RolDTO modelGuardado = modelService.guardar(model);
-            return responseService.successResponse(modelGuardado, "Rol actualiazado");
+            return responseService.successResponse(modelGuardado, "Rol guardado");
         }
     }
     @PutMapping("/rol/recuperar/{id}")
@@ -68,8 +68,34 @@ public class PutRolController {
          *   Si se encuentra la rol, y la misma no esta elimianda se retorna un badrequest.
          * En caso de que pase todas las verificacioens se cambia el la fechaEliminacion por el valor null.
          * */
-        Rol model = modelService.buscarEliminadoPorId(id);
-        modelService.recuperar(model);
-        return responseService.successResponse(model, "Rol recuperado");
+        Rol model = modelService.buscarPorId(id);
+            if (model == null) {
+                ApiResponse<Object> response = new ApiResponse<>(
+                        404,
+                        "Error: Not Found.",
+                        null,
+                        "El id no corresponde a ninguna rol, se debe enviar el id de una rol existente.."
+                );
+                return ResponseEntity.badRequest().body(response);
+            }
+            if (model.getFechaEliminacion() == null) {
+                ApiResponse<Object> response = new ApiResponse<>(
+                        400,
+                        "Error: Bad Request.",
+                        null,
+                        "La rol ya no se encuentra eliminada, se debe enviar el id de una rol eliminada."
+                );
+                return ResponseEntity.badRequest().body(response);
+            }
+            model.recuperar();
+            modelService.recuperar(model);
+            ApiResponse<Object> response = new ApiResponse<>(
+                    200,
+                    "OK.",
+                    model,
+                    null
+            );
+            return ResponseEntity.ok().body(response);
+
     }
 }
