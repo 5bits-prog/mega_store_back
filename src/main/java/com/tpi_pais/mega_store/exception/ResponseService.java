@@ -11,9 +11,9 @@ public class ResponseService {
     public ResponseEntity<ApiResponse<Object>> successResponse(Object data, String message) {
         ApiResponse<Object> response = new ApiResponse<>(
                 200,
-                "Success",
+                message,
                 data,
-                message
+                null
         );
         return ResponseEntity.ok(response);
     }
@@ -22,9 +22,9 @@ public class ResponseService {
     public ResponseEntity<ApiResponse<Object>> successResponse(String message) {
         ApiResponse<Object> response = new ApiResponse<>(
                 200,
-                "Success",
+                message,
                 null,
-                message
+                null
         );
         return ResponseEntity.ok(response);
     }

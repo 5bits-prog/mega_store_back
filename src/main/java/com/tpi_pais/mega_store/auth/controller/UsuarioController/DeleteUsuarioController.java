@@ -3,7 +3,6 @@ package com.tpi_pais.mega_store.auth.controller.UsuarioController;
 import com.tpi_pais.mega_store.auth.model.Usuario;
 import com.tpi_pais.mega_store.auth.service.IUsuarioService;
 import com.tpi_pais.mega_store.exception.ResponseService;
-import com.tpi_pais.mega_store.utils.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

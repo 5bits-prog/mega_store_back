@@ -9,10 +9,8 @@ import com.tpi_pais.mega_store.exception.ResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/auth")
 public class GetRolController {
@@ -31,13 +29,13 @@ public class GetRolController {
         return responseService.successResponse(roles, "OK");
     }
 
-    @GetMapping("/rol/{id}")
+    @GetMapping("/rol/id/{id}")
     public ResponseEntity<?> getPorId(@PathVariable Integer id){
         Rol model = modelService.buscarPorId(id);
         RolDTO modelDTO = RolMapper.toDTO(model);
         return responseService.successResponse(modelDTO, "OK");
     }
-    @GetMapping("/rol/{nombre}")
+    @GetMapping("/rol/nombre/{nombre}")
     public ResponseEntity<?> getPorNombre(@PathVariable String nombre){
         Rol model = modelService.buscarPorNombre(nombre);
         RolDTO modelDTO = RolMapper.toDTO(model);

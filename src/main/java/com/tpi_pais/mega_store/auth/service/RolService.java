@@ -76,7 +76,6 @@ public class RolService implements IRolService {
 
     @Override
     public void eliminar(Rol model) {
-
         model.eliminar();
         modelRepository.save(model);
     }
