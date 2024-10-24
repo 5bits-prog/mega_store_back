@@ -38,12 +38,11 @@ public class Producto {
     @Column(name = "foto")
     private String foto; // La ruta o nombre del archivo de la foto se almacenará aquí
 
-    @NotNull(message = "El stock mínimo es obligatorio")
+
     @Min(value = 0, message = "El stock mínimo debe ser mayor o igual a 0")
     @Column(name = "stock_minimo")
     private Integer stockMinimo;
 
-    @NotNull(message = "El stock medio es obligatorio")
     @Min(value = 1, message = "El stock medio debe ser mayor que 0 y mayor que el stock mínimo")
     @Column(name = "stock_medio")
     private Integer stockMedio;
