@@ -93,16 +93,5 @@ public class Producto {
         return this.fechaEliminacion != null;
     }
 
-    public void actualizarStock(int cantidad, boolean esEntrada) {
-        if (esEntrada) {
-            this.stockActual += cantidad;
-        } else {
-            this.stockActual -= cantidad;
-        }
-    }
-
-    public boolean validarFoto(String nombreFoto) {
-        return nombreFoto.endsWith(".jpg") || nombreFoto.endsWith(".png");
-    }
 
 }
