@@ -50,4 +50,6 @@ public interface IUsuarioService {
     public Usuario crearUsuario (UsuarioDTO modelDTO);
 
     public void enviarCodigoVerificacion (String email, String codigoVerificacion);
+
+    public void verificarCodigoVerificacion (String email, String codigoVerificacion);
 }

@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -313,5 +315,29 @@ public class UsuarioService implements IUsuarioService{
                 .bodyToMono(String.class)
                 .block();
 
+    }
+
+    @Override
+    public void verificarCodigoVerificacion (String email, String codigoVerificacion){
+        Optional<Usuario> model = modelRepository.findByEmail(email);
+        if (model.isEmpty()) {
+            throw new NotFoundException("El usuario con email " + email + " no existe.");
+        }
+
+        if (model.get().getVerificado()) {
+            throw new BadRequestException("El usuario con email " + email + " ya se encuentra verificado.");
+        }
+        if (Duration.between(model.get().getFechaCreacion(), LocalDateTime.now()).toMinutes() > 15) {
+            throw new BadRequestException("El código de verificación ha expirado.");
+
+        }
+        if (model.get().getCodigoVerificacion().equals(codigoVerificacion)) {
+            model.get().setVerificado(true);
+            model.get().setCodigoVerificacion(null);
+            modelRepository.save(model.get());
+        }
+        else {
+            throw new BadRequestException("El codigo de verificacion es incorrecto.");
+        }
     }
 }
