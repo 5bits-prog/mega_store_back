@@ -3,12 +3,12 @@ package com.tpi_pais.mega_store.auth.service;
 import com.tpi_pais.mega_store.auth.dto.UsuarioDTO;
 import com.tpi_pais.mega_store.auth.mapper.UsuarioMapper;
 import com.tpi_pais.mega_store.auth.model.Rol;
+import com.tpi_pais.mega_store.auth.model.Sesion;
 import com.tpi_pais.mega_store.auth.model.Usuario;
 import com.tpi_pais.mega_store.auth.repository.UsuarioRepository;
 import com.tpi_pais.mega_store.exception.BadRequestException;
 import com.tpi_pais.mega_store.exception.NotFoundException;
 import com.tpi_pais.mega_store.utils.ExpresionesRegulares;
-import org.apache.catalina.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -29,6 +29,9 @@ public class UsuarioService implements IUsuarioService{
 
     @Autowired
     private RolService rolService;
+
+    @Autowired
+    private SesionService sesionService;
 
     @Autowired
     private WebClient webClient;
@@ -318,7 +321,7 @@ public class UsuarioService implements IUsuarioService{
     }
 
     @Override
-    public void verificarCodigoVerificacion (String email, String codigoVerificacion){
+    public void verificarCodigoVerificacion(String email, String codigoVerificacion){
         Optional<Usuario> model = modelRepository.findByEmail(email);
         if (model.isEmpty()) {
             throw new NotFoundException("El usuario con email " + email + " no existe.");
@@ -340,4 +343,17 @@ public class UsuarioService implements IUsuarioService{
             throw new BadRequestException("El codigo de verificacion es incorrecto.");
         }
     }
+
+    public Sesion login (UsuarioDTO usuarioDto) {
+        Optional<Usuario> usuario = Optional.ofNullable(this.buscarPorEmail(usuarioDto.getEmail()));
+        if (!usuario.isPresent()) {
+            throw new NotFoundException("El usuario con email " + usuarioDto.getEmail() + " no existe.");
+        }
+        if (!this.checkPassword(usuario.get(), usuarioDto.getPassword())) {
+            throw new BadRequestException("La contrase;a es incorrecta.");
+        }
+        Sesion sesion = this.sesionService.obtenerSesionActual(usuario.get());
+        return sesion;
+    }
+
 }
