@@ -8,9 +8,10 @@ import com.tpi_pais.mega_store.products.model.MovimientoStock;
 import com.tpi_pais.mega_store.products.model.Producto;
 import com.tpi_pais.mega_store.products.repository.MovimientoStockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class MovimientoStockService implements IMovimientoStockService {
     @Autowired
     private MovimientoStockRepository repository;
@@ -50,7 +51,7 @@ public class MovimientoStockService implements IMovimientoStockService {
     @Override
     public List<MovimientoStockDTO> listarPorProducto(Integer productoId){
         Producto producto = productoService.buscarPorId(productoId);
-        List<MovimientoStock> models = repository.findByProductoIdInOrderByFechaCreacionDesc(producto.getId());
+        List<MovimientoStock> models = repository.findByProductoIdOrderByFechaCreacionDesc(producto.getId());
         if (models.isEmpty()){
             throw new NotFoundException("El producto con id " + productoId + " no tiene movimientos de stock.");
         }
@@ -62,7 +63,7 @@ public class MovimientoStockService implements IMovimientoStockService {
     public Integer obtenerStockActual(Integer productoId){
         Producto producto = productoService.buscarPorId(productoId);
 
-        List<MovimientoStock> models = repository.findByProductoIdInOrderByFechaCreacionDesc(producto.getId());
+        List<MovimientoStock> models = repository.findByProductoIdOrderByFechaCreacionDesc(producto.getId());
         Integer stockActual = 0;
         for (MovimientoStock model : models){
             if (!model.getEsEgreso()){
@@ -76,7 +77,7 @@ public class MovimientoStockService implements IMovimientoStockService {
 
     @Override
     public Integer obtenerStockActual(Producto producto){
-        List<MovimientoStock> models = repository.findByProductoIdInOrderByFechaCreacionDesc(producto.getId());
+        List<MovimientoStock> models = repository.findByProductoIdOrderByFechaCreacionDesc(producto.getId());
         Integer stockActual = 0;
         for (MovimientoStock model : models){
             if (!model.getEsEgreso()){

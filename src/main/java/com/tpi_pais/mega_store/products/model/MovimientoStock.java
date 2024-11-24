@@ -19,7 +19,6 @@ public class MovimientoStock {
     @Column(name = "es_egreso")
     private Boolean esEgreso;
 
-    @Column(name = "producto_id")
     @ManyToOne
     @JoinColumn(name = "producto_id", nullable = false)
     private Producto producto;
