@@ -1,5 +1,6 @@
 package com.tpi_pais.mega_store.products.service;
 
+import com.tpi_pais.mega_store.exception.MessagesException;
 import com.tpi_pais.mega_store.products.dto.MovimientoStockDTO;
 import com.tpi_pais.mega_store.products.mapper.MarcaMapper;
 import com.tpi_pais.mega_store.products.model.Marca;
@@ -61,7 +62,7 @@ public class ProductoService implements IProductoService {
     @Override
     public Producto buscarPorId(Integer id) {
         return productoRepository.findByIdAndFechaEliminacionIsNull(id)
-                .orElseThrow(() -> new NotFoundException("El producto con id " + id + " no existe o está eliminado."));
+                .orElseThrow(() -> new NotFoundException(MessagesException.OBJECTO_NO_ENCONTRADO));
     }
 
     @Override
@@ -72,7 +73,7 @@ public class ProductoService implements IProductoService {
     @Override
     public Producto buscarEliminadoPorId(Integer id) {
         return productoRepository.findByIdAndFechaEliminacionIsNotNull(id)
-                .orElseThrow(() -> new NotFoundException("El producto con id " + id + " no existe o no está eliminado."));
+                .orElseThrow(() -> new NotFoundException(MessagesException.OBJECTO_NO_ENCONTRADO));
     }
 
     @Override
