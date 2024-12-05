@@ -21,10 +21,12 @@ import java.util.Optional;
 public class HistorialPrecioService implements IHistorialPrecioService{
     private final HistorialPrecioRespository repository;
     private final ProductoService productoService;
+    private final SesionService sesionService;
 
-    public HistorialPrecioService(HistorialPrecioRespository repository, ProductoService productoService){
+    public HistorialPrecioService(HistorialPrecioRespository repository, ProductoService productoService, SesionService sesionService) {
         this.repository = repository;
         this.productoService = productoService;
+        this.sesionService = sesionService;
     }
 
     @Override
@@ -65,7 +67,6 @@ public class HistorialPrecioService implements IHistorialPrecioService{
 
     @Override
     public Usuario obtenerUsuario(String token){
-        SesionService sesionService = new SesionService();
         Sesion sesion = sesionService.obtenerSesionPorToken(token);
         return sesion.getUsuario();
     }

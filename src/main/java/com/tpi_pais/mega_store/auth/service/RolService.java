@@ -20,8 +20,11 @@ import java.util.Optional;
 @Service
 public class RolService implements IRolService {
 
-    @Autowired
-    private RolRepository modelRepository;
+    private final RolRepository modelRepository;
+
+    public RolService(RolRepository modelRepository) {
+        this.modelRepository = modelRepository;
+    }
 
     @Override
     public List<RolDTO> listar() {

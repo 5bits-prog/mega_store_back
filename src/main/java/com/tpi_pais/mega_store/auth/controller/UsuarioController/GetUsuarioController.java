@@ -19,11 +19,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/auth")
 public class GetUsuarioController {
-    @Autowired
-    private IUsuarioService modelService;
 
-    @Autowired
-    private ResponseService responseService;
+    private final IUsuarioService modelService;
+
+    private final ResponseService responseService;
+
+    public GetUsuarioController(IUsuarioService modelService, ResponseService responseService) {
+        this.modelService = modelService;
+        this.responseService = responseService;
+    }
 
     @GetMapping({"/usuarios"})
     public ResponseEntity<ApiResponse<Object>>  getAll() {

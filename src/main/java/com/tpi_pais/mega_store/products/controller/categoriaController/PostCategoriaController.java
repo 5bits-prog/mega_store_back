@@ -13,10 +13,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/products")
 public class PostCategoriaController {
-    @Autowired
-    private ICategoriaService modelService;
-    @Autowired
-    private ResponseService responseService;
+
+    private final ICategoriaService modelService;
+
+    private final ResponseService responseService;
+
+    public PostCategoriaController(ICategoriaService modelService, ResponseService responseService) {
+        this.modelService = modelService;
+        this.responseService = responseService;
+    }
 
     @PostMapping("/categoria")
     public ResponseEntity<ApiResponse<Object>>  guardar(@RequestBody CategoriaDTO model){

@@ -14,11 +14,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 public class PostUsuarioController {
-    @Autowired
-    private IUsuarioService modelService;
 
-    @Autowired
-    private ResponseService responseService;
+    private final IUsuarioService modelService;
+
+    private final ResponseService responseService;
+
+    public PostUsuarioController(IUsuarioService modelService, ResponseService responseService) {
+        this.modelService = modelService;
+        this.responseService = responseService;
+    }
 
     @PostMapping("/usuario")
     public ResponseEntity<ApiResponse<Object>>  guardar(@RequestBody UsuarioDTO modelDTO){

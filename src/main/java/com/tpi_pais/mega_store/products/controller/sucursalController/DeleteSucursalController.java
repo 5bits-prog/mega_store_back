@@ -11,10 +11,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/products")
 public class DeleteSucursalController {
-    @Autowired
-    private ISucursalService modelService;
-    @Autowired
-    private ResponseService responseService;
+
+    private final ISucursalService modelService;
+
+    private final ResponseService responseService;
+
+    public DeleteSucursalController(ISucursalService modelService, ResponseService responseService) {
+        this.modelService = modelService;
+        this.responseService = responseService;
+    }
 
     @DeleteMapping("/sucursal/{id}")
     public ResponseEntity<ApiResponse<Object>>  eliminar(@PathVariable Integer id) {

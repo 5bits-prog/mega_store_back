@@ -13,10 +13,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/products")
 public class PutColorController {
-    @Autowired
-    private IColorService modelService;
-    @Autowired
-    private ResponseService responseService;
+
+    private final IColorService modelService;
+
+    private final ResponseService responseService;
+
+    public PutColorController(IColorService modelService, ResponseService responseService) {
+        this.modelService = modelService;
+        this.responseService = responseService;
+    }
 
     @PutMapping("/color")
     public ResponseEntity<ApiResponse<Object>>  actualizar(@RequestBody ColorDTO model){

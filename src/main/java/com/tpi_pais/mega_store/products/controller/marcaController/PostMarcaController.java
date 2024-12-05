@@ -13,10 +13,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/products")
 public class PostMarcaController {
-    @Autowired
-    private IMarcaService modelService;
-    @Autowired
-    private ResponseService responseService;
+
+    private final IMarcaService modelService;
+
+    private final ResponseService responseService;
+
+    public PostMarcaController(IMarcaService modelService, ResponseService responseService) {
+        this.modelService = modelService;
+        this.responseService = responseService;
+    }
 
     @PostMapping("/marca")
     public ResponseEntity<ApiResponse<Object>>  guardar(@RequestBody MarcaDTO model){

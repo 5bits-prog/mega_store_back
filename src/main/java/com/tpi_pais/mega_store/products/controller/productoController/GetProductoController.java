@@ -17,11 +17,14 @@ import java.util.List;
 @RequestMapping("/products")
 public class GetProductoController {
 
-    @Autowired
-    private IProductoService productoService; // Servicio para manejar productos
+    private final IProductoService productoService; // Servicio para manejar productos
 
-    @Autowired
-    private ResponseService responseService; // Servicio para respuestas
+    private final ResponseService responseService; // Servicio para respuestas
+
+    public GetProductoController(IProductoService productoService, ResponseService responseService) {
+        this.productoService = productoService;
+        this.responseService = responseService;
+    }
 
     @GetMapping("/productos") // Endpoint para obtener todos los productos
     public ResponseEntity<ApiResponse<Object>>  getAll() {

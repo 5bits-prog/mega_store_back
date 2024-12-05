@@ -13,11 +13,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 public class DeleteUsuarioController {
-    @Autowired
-    private IUsuarioService modelService;
 
-    @Autowired
-    private ResponseService responseService;
+    private final IUsuarioService modelService;
+
+    private final ResponseService responseService;
+
+    public DeleteUsuarioController(IUsuarioService modelService, ResponseService responseService) {
+        this.modelService = modelService;
+        this.responseService = responseService;
+    }
 
     @DeleteMapping("/usuario/{id}")
     public ResponseEntity<ApiResponse<Object>>  eliminar(@PathVariable Integer id) {

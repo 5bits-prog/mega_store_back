@@ -16,10 +16,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/products")
 public class GetSucursalController {
-    @Autowired
-    private ISucursalService modelService;
-    @Autowired
-    private ResponseService responseService;
+
+    private final ISucursalService modelService;
+
+    private final ResponseService responseService;
+
+    public GetSucursalController(ISucursalService modelService, ResponseService responseService) {
+        this.modelService = modelService;
+        this.responseService = responseService;
+    }
+
     @GetMapping({"/sucursales"})
     public ResponseEntity<ApiResponse<Object>>  getAll() {
         List<SucursalDTO> sucursals = modelService.listar();

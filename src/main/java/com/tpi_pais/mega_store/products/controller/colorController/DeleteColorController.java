@@ -11,10 +11,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/products")
 public class DeleteColorController {
-    @Autowired
-    private IColorService modelService;
-    @Autowired
-    private ResponseService responseService;
+
+    private final IColorService modelService;
+
+    private final ResponseService responseService;
+
+    public DeleteColorController(IColorService modelService, ResponseService responseService) {
+        this.modelService = modelService;
+        this.responseService = responseService;
+    }
 
     @DeleteMapping("/color/{id}")
     public ResponseEntity<ApiResponse<Object>>  eliminar(@PathVariable Integer id) {

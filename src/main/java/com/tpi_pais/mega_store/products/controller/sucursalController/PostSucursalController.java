@@ -13,10 +13,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/products")
 public class PostSucursalController {
-    @Autowired
-    private ISucursalService modelService;
-    @Autowired
-    private ResponseService responseService;
+
+    private final ISucursalService modelService;
+
+    private final ResponseService responseService;
+
+    public PostSucursalController(ISucursalService modelService, ResponseService responseService) {
+        this.modelService = modelService;
+        this.responseService = responseService;
+    }
 
     @PostMapping("/sucursal")
     public ResponseEntity<ApiResponse<Object>>  guardar(@RequestBody SucursalDTO model){

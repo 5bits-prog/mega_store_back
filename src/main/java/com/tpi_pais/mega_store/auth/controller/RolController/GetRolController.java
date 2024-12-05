@@ -16,12 +16,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/auth")
 public class GetRolController {
-    @Autowired
-    private IRolService modelService;
+    private final IRolService modelService;
 
-    @Autowired
-    private ResponseService responseService;
+    private final ResponseService responseService;
 
+    public GetRolController(IRolService modelService, ResponseService responseService) {
+        this.modelService = modelService;
+        this.responseService = responseService;
+    }
 
     @SessionRequired
     @GetMapping({"/roles"})

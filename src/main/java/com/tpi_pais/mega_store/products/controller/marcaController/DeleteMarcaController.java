@@ -11,10 +11,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/products")
 public class DeleteMarcaController {
-    @Autowired
-    private IMarcaService modelService;
-    @Autowired
-    private ResponseService responseService;
+
+    private final IMarcaService modelService;
+
+    private final ResponseService responseService;
+
+    public DeleteMarcaController(IMarcaService modelService, ResponseService responseService) {
+        this.modelService = modelService;
+        this.responseService = responseService;
+    }
 
     @DeleteMapping("/marca/{id}")
     public ResponseEntity<ApiResponse<Object>>  eliminar(@PathVariable Integer id) {

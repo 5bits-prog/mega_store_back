@@ -11,10 +11,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/products")
 public class DeleteCategoriaController {
-    @Autowired
-    private ICategoriaService modelService;
-    @Autowired
-    private ResponseService responseService;
+
+    private final ICategoriaService modelService;
+
+    private final ResponseService responseService;
+
+    public DeleteCategoriaController(ICategoriaService modelService, ResponseService responseService) {
+        this.modelService = modelService;
+        this.responseService = responseService;
+    }
 
     @DeleteMapping("/categoria/{id}")
     public ResponseEntity<ApiResponse<Object>>  eliminar(@PathVariable Integer id) {

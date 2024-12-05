@@ -13,10 +13,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/products")
 public class PutMarcaController {
-    @Autowired
-    private IMarcaService modelService;
-    @Autowired
-    private ResponseService responseService;
+
+    private final IMarcaService modelService;
+
+    private final ResponseService responseService;
+
+    public PutMarcaController(IMarcaService modelService, ResponseService responseService) {
+        this.modelService = modelService;
+        this.responseService = responseService;
+    }
 
     @PutMapping("/marca")
     public ResponseEntity<ApiResponse<Object>>  actualizar(@RequestBody MarcaDTO model){

@@ -19,9 +19,12 @@ import java.util.Optional;
 
 @Service
 public class CategoriaService implements ICategoriaService {
-    
-    @Autowired
-    private CategoriaRepository modelRepository;
+
+    private final CategoriaRepository modelRepository;
+
+    public CategoriaService(CategoriaRepository modelRepository) {
+        this.modelRepository = modelRepository;
+    }
 
     @Override
     public List<CategoriaDTO> listar() {

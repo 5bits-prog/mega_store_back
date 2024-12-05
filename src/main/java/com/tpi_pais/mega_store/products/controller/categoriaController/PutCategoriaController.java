@@ -13,11 +13,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/products")
 public class PutCategoriaController {
-    @Autowired
-    private ICategoriaService modelService;
-    @Autowired
-    private ResponseService responseService;
 
+    private final ICategoriaService modelService;
+
+    private final ResponseService responseService;
+
+    public PutCategoriaController(ICategoriaService modelService, ResponseService responseService) {
+        this.modelService = modelService;
+        this.responseService = responseService;
+    }
     @PutMapping("/categoria")
     public ResponseEntity<ApiResponse<Object>>  actualizar(@RequestBody CategoriaDTO model){
         Categoria categoriaModificar = modelService.buscarPorId(model.getId());

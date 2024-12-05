@@ -14,11 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/products")
 public class GetMovimientoStockController {
 
-    @Autowired
-    private IMovimientoStockService movimientoStockService;
+    private final IMovimientoStockService movimientoStockService;
 
-    @Autowired
-    private ResponseService responseService;
+    private final ResponseService responseService;
+
+    public GetMovimientoStockController(IMovimientoStockService movimientoStockService, ResponseService responseService) {
+        this.movimientoStockService = movimientoStockService;
+        this.responseService = responseService;
+    }
 
     @GetMapping({"/movimientos-stock/{id}"})
     public ResponseEntity<ApiResponse<Object>>  getPorId(@PathVariable Integer id) {

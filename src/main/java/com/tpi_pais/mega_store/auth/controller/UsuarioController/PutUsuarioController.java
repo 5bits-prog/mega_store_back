@@ -8,7 +8,6 @@ import com.tpi_pais.mega_store.exception.BadRequestException;
 import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.utils.ApiResponse;
 import com.tpi_pais.mega_store.utils.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,14 +20,15 @@ import java.util.Objects;
 @RequestMapping ("/auth")
 
 public class PutUsuarioController {
-    @Autowired
-    private IUsuarioService modelService;
 
-    @Autowired
-    private ResponseService responseService;
+    private final IUsuarioService modelService;
 
-    @Autowired
-    private StringUtils stringUtils;
+    private final ResponseService responseService;
+
+    public PutUsuarioController(IUsuarioService modelService, ResponseService responseService, StringUtils stringUtils) {
+        this.modelService = modelService;
+        this.responseService = responseService;
+    }
 
     @PutMapping("/usuario")
     public ResponseEntity<ApiResponse<Object>>  actualizar(@RequestBody UsuarioDTO modelDTO) {

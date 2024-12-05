@@ -21,10 +21,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/products")
 public class GetHistorialPrecioController {
-    @Autowired
-    private IHistorialPrecioService modelService;
-    @Autowired
-    private ResponseService responseService;
+
+    private final IHistorialPrecioService modelService;
+
+    private final ResponseService responseService;
+
+    public GetHistorialPrecioController(IHistorialPrecioService modelService, ResponseService responseService) {
+        this.modelService = modelService;
+        this.responseService = responseService;
+    }
 
     @SessionRequired
     @GetMapping({"/historial-precio/{id}"})

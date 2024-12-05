@@ -15,10 +15,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/products")
 public class GetMarcaController {
-    @Autowired
-    private IMarcaService modelService;
-    @Autowired
-    private ResponseService responseService;
+
+    private final IMarcaService modelService;
+
+    private final ResponseService responseService;
+
+    public GetMarcaController(IMarcaService modelService, ResponseService responseService) {
+        this.modelService = modelService;
+        this.responseService = responseService;
+    }
+
     @GetMapping({"/marcas"})
     public ResponseEntity<ApiResponse<Object>>  getAll() {
         List<MarcaDTO> marcas = modelService.listar();

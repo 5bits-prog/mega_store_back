@@ -15,11 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/products")
 public class PostMovimientoStockController {
 
-    @Autowired
-    private IMovimientoStockService movimientoStockService;
+    private final IMovimientoStockService movimientoStockService;
 
-    @Autowired
-    private ResponseService responseService;
+    private final ResponseService responseService;
+
+    public PostMovimientoStockController(IMovimientoStockService movimientoStockService, ResponseService responseService) {
+        this.movimientoStockService = movimientoStockService;
+        this.responseService = responseService;
+    }
 
     @PostMapping("/movimiento-stock")
     public ResponseEntity<ApiResponse<Object>>  guardar(@RequestBody MovimientoStockDTO model) {

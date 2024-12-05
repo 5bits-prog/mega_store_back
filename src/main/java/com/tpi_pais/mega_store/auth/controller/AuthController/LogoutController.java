@@ -15,12 +15,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 public class LogoutController {
+    private final ISesionService modelService;
 
-    @Autowired
-    private ISesionService modelService;
+    private final ResponseService responseService;
 
-    @Autowired
-    private ResponseService responseService;
+    public LogoutController(ISesionService modelService, ResponseService responseService) {
+        this.modelService = modelService;
+        this.responseService = responseService;
+    }
+
 
     @PostMapping("/logout")
     public ResponseEntity<ApiResponse<Object>>  login(@RequestBody SesionDTO sesionDTO) {

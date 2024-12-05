@@ -20,8 +20,11 @@ import java.util.Optional;
 @Service
 public class TalleService implements ITalleService {
 
-    @Autowired
-    private TalleRepository modelRepository;
+    private final TalleRepository modelRepository;
+
+    public TalleService(TalleRepository modelRepository) {
+        this.modelRepository = modelRepository;
+    }
 
     @Override
     public List<TalleDTO> listar() {

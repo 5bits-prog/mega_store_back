@@ -16,11 +16,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 public class LoginController {
-    @Autowired
-    private IUsuarioService modelService;
 
-    @Autowired
-    private ResponseService responseService;
+    private final IUsuarioService modelService;
+
+    private final ResponseService responseService;
+
+    public LoginController(IUsuarioService modelService, ResponseService responseService) {
+        this.modelService = modelService;
+        this.responseService = responseService;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<Object>> login(@RequestBody UsuarioDTO usuarioDTO) {

@@ -14,10 +14,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 public class PostRolController {
-    @Autowired
-    private IRolService modelService;
-    @Autowired
-    private ResponseService responseService;
+    private final IRolService modelService;
+
+    private final ResponseService responseService;
+
+    public PostRolController(IRolService modelService, ResponseService responseService) {
+        this.modelService = modelService;
+        this.responseService = responseService;
+    }
 
     @PostMapping("/rol")
     public ResponseEntity<ApiResponse<Object>>  guardar(@RequestBody RolDTO model){

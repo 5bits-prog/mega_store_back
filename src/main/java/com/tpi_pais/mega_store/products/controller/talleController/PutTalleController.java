@@ -13,10 +13,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/products")
 public class PutTalleController {
-    @Autowired
-    private ITalleService modelService;
-    @Autowired
-    private ResponseService responseService;
+
+    private final ITalleService modelService;
+
+    private final ResponseService responseService;
+
+    public PutTalleController(ITalleService modelService, ResponseService responseService) {
+        this.modelService = modelService;
+        this.responseService = responseService;
+    }
 
     @PutMapping("/talle")
     public ResponseEntity<ApiResponse<Object>>  actualizar(@RequestBody TalleDTO model){

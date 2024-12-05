@@ -18,8 +18,12 @@ import java.util.Optional;
 
 @Service
 public class ColorService implements IColorService{
-    @Autowired
-    private ColorRepository modelRepository;
+
+    private final ColorRepository modelRepository;
+
+    public ColorService(ColorRepository modelRepository) {
+        this.modelRepository = modelRepository;
+    }
 
     @Override
     public List<ColorDTO> listar() {

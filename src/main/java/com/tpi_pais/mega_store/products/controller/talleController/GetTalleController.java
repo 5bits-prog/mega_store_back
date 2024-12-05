@@ -16,10 +16,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/products")
 public class GetTalleController {
-    @Autowired
-    private ITalleService modelService;
-    @Autowired
-    private ResponseService responseService;
+
+    private final ITalleService modelService;
+
+    private final ResponseService responseService;
+
+    public GetTalleController(ITalleService modelService, ResponseService responseService) {
+        this.modelService = modelService;
+        this.responseService = responseService;
+    }
+
     @GetMapping({"/talles"})
     public ResponseEntity<ApiResponse<Object>>  getAll() {
         List<TalleDTO> talles = modelService.listar();

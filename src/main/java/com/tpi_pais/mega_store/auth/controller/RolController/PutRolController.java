@@ -13,11 +13,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 public class PutRolController {
-    @Autowired
-    private IRolService modelService;
+    private final IRolService modelService;
 
-    @Autowired
-    private ResponseService responseService;
+    private final ResponseService responseService;
+
+    public PutRolController(IRolService modelService, ResponseService responseService) {
+        this.modelService = modelService;
+        this.responseService = responseService;
+    }
 
     @PutMapping("/rol")
     public ResponseEntity<ApiResponse<Object>>  actualizar(@RequestBody RolDTO model){

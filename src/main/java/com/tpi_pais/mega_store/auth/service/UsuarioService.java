@@ -22,23 +22,27 @@ import java.util.Objects;
 import java.util.Optional;
 @Service
 public class UsuarioService implements IUsuarioService{
-    @Autowired
-    private UsuarioRepository modelRepository;
 
-    @Autowired
-    private ExpresionesRegulares expReg;
+    private final UsuarioRepository modelRepository;
 
-    @Autowired
-    private StringUtils StringUtils;
+    private final ExpresionesRegulares expReg;
 
-    @Autowired
-    private RolService rolService;
+    private final StringUtils StringUtils;
 
-    @Autowired
-    private SesionService sesionService;
+    private final RolService rolService;
 
-    @Autowired
-    private WebClient webClient;
+    private final SesionService sesionService;
+
+    private final WebClient webClient;
+
+    public UsuarioService(UsuarioRepository modelRepository, ExpresionesRegulares expReg, StringUtils stringUtils, RolService rolService, SesionService sesionService, WebClient webClient) {
+        this.modelRepository = modelRepository;
+        this.expReg = expReg;
+        this.StringUtils = stringUtils;
+        this.rolService = rolService;
+        this.sesionService = sesionService;
+        this.webClient = webClient;
+    }
 
     @Override
     public List<UsuarioDTO> listar() {

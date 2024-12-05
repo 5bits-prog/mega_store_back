@@ -11,10 +11,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/products")
 public class DeleteTalleController {
-    @Autowired
-    private ITalleService modelService;
-    @Autowired
-    private ResponseService responseService;
+
+    private final ITalleService modelService;
+
+    private final ResponseService responseService;
+
+    public DeleteTalleController(ITalleService modelService, ResponseService responseService) {
+        this.modelService = modelService;
+        this.responseService = responseService;
+    }
 
     @DeleteMapping("/talle/{id}")
     public ResponseEntity<ApiResponse<Object>>  eliminar(@PathVariable Integer id) {

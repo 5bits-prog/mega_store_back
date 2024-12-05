@@ -121,7 +121,7 @@ public class PutProductoController {
         }
 
         if (productoDTO.getFoto() != null) {
-            productoService.verificarFoto(productoDTO.getFoto());
+            //productoService.verificarFoto(productoDTO.getFoto());
             productoModificar.setFoto(productoDTO.getFoto());
         }
 

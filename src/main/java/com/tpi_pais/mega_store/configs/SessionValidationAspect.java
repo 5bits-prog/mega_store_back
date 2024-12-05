@@ -16,13 +16,14 @@ import java.util.Optional;
 @Component
 public class SessionValidationAspect {
 
-    @Autowired
-    private HttpServletRequest request;
+    private final HttpServletRequest request;
 
+    private final SesionService sesionService;
 
-
-    @Autowired
-    private SesionService sesionService;
+    public SessionValidationAspect(HttpServletRequest request, SesionService sesionService) {
+        this.request = request;
+        this.sesionService = sesionService;
+    }
 
     @Before("@annotation(SessionRequired)")
     public void validateSession(JoinPoint joinPoint) throws Exception {

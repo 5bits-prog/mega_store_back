@@ -12,11 +12,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 public class DeleteRolController {
-    @Autowired
-    private IRolService modelService;
 
-    @Autowired
-    private ResponseService responseService;
+    private final IRolService modelService;
+
+    private final ResponseService responseService;
+
+    public DeleteRolController(IRolService modelService, ResponseService responseService) {
+        this.modelService = modelService;
+        this.responseService = responseService;
+    }
 
     @DeleteMapping("/rol/{id}")
     public ResponseEntity<ApiResponse<Object>>  eliminar(@PathVariable Integer id) {

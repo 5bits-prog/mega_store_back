@@ -15,10 +15,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/products")
 public class GetCategoriaController {
-    @Autowired
-    private ICategoriaService modelService;
-    @Autowired
-    private ResponseService responseService;
+
+    private final ICategoriaService modelService;
+
+    private final ResponseService responseService;
+
+    public GetCategoriaController(ICategoriaService modelService, ResponseService responseService) {
+        this.modelService = modelService;
+        this.responseService = responseService;
+    }
 
     @GetMapping({"/categorias"})
     public ResponseEntity<ApiResponse<Object>>  getAll() {

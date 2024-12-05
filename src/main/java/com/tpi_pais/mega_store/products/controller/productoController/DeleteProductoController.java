@@ -17,11 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/products")
 public class DeleteProductoController {
 
-    @Autowired
-    private IProductoService modelService; // No debe ser estático
+    private final IProductoService modelService; // No debe ser estático
 
-    @Autowired
-    private ResponseService responseService;
+    private final ResponseService responseService;
+
+    public DeleteProductoController(IProductoService modelService, ResponseService responseService) {
+        this.modelService = modelService;
+        this.responseService = responseService;
+    }
 
     @DeleteMapping("/producto/{id}")
     public ResponseEntity<ApiResponse<Object>>  eliminar(@PathVariable Integer id) {
