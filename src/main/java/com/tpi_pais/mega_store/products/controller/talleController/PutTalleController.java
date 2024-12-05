@@ -5,6 +5,7 @@ import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.products.dto.TalleDTO;
 import com.tpi_pais.mega_store.products.model.Talle;
 import com.tpi_pais.mega_store.products.service.ITalleService;
+import com.tpi_pais.mega_store.utils.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class PutTalleController {
     private ResponseService responseService;
 
     @PutMapping("/talle")
-    public ResponseEntity<?> actualizar(@RequestBody TalleDTO model){
+    public ResponseEntity<ApiResponse<Object>>  actualizar(@RequestBody TalleDTO model){
         Talle talleModificar = modelService.buscarPorId(model.getId());
         TalleDTO modelDTO = modelService.verificarAtributos(model);
         if (modelService.talleExistente(modelDTO.getNombre())){
@@ -29,7 +30,7 @@ public class PutTalleController {
         }
     }
     @PutMapping("/talle/recuperar/{id}")
-    public ResponseEntity<?> recuperar(@PathVariable Integer id) {
+    public ResponseEntity<ApiResponse<Object>>  recuperar(@PathVariable Integer id) {
         Talle model = modelService.buscarEliminadoPorId(id);
         modelService.recuperar(model);
         return responseService.successResponse(model, "Talle recuperado");

@@ -7,6 +7,7 @@ import com.tpi_pais.mega_store.products.model.*;
 import com.tpi_pais.mega_store.products.repository.*;
 import com.tpi_pais.mega_store.products.service.HistorialPrecioService;
 import com.tpi_pais.mega_store.products.service.IProductoService;
+import com.tpi_pais.mega_store.utils.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,7 +45,7 @@ public class PutProductoController {
 
 
     @PutMapping("/producto")
-    public ResponseEntity<?> actualizar(@RequestBody ProductoDTO productoDTO, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<ApiResponse<Object>>  actualizar(@RequestBody ProductoDTO productoDTO, @RequestHeader("Authorization") String token) {
         // Buscar el producto que se quiere modificar por su ID
         Producto productoModificar = productoService.buscarPorId(productoDTO.getId());
 
@@ -131,7 +132,7 @@ public class PutProductoController {
     }
 
     @PutMapping("/producto/recuperar/{id}")
-    public ResponseEntity<?> recuperar(@PathVariable Integer id) {
+    public ResponseEntity<ApiResponse<Object>>  recuperar(@PathVariable Integer id) {
         // Buscar el producto eliminado por ID
         Producto producto = productoService.buscarEliminadoPorId(id);
 

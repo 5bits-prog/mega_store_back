@@ -5,6 +5,7 @@ import com.tpi_pais.mega_store.auth.model.Rol;
 import com.tpi_pais.mega_store.auth.service.IRolService;
 import com.tpi_pais.mega_store.exception.BadRequestException;
 import com.tpi_pais.mega_store.exception.ResponseService;
+import com.tpi_pais.mega_store.utils.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class PostRolController {
     private ResponseService responseService;
 
     @PostMapping("/rol")
-    public ResponseEntity<?> guardar(@RequestBody RolDTO model){
+    public ResponseEntity<ApiResponse<Object>>  guardar(@RequestBody RolDTO model){
         model = modelService.verificarAtributos(model);
         if (modelService.rolExistente(model.getNombre())){
             Rol aux = modelService.buscarPorNombre(model.getNombre());

@@ -4,6 +4,7 @@ import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.products.model.Producto;
 import com.tpi_pais.mega_store.products.service.IProductoService;
 import com.tpi_pais.mega_store.products.service.ProductoService;
+import com.tpi_pais.mega_store.utils.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class DeleteProductoController {
     private ResponseService responseService;
 
     @DeleteMapping("/producto/{id}")
-    public ResponseEntity<?> eliminar(@PathVariable Integer id) {
+    public ResponseEntity<ApiResponse<Object>>  eliminar(@PathVariable Integer id) {
         Producto model = modelService.buscarPorId(id);
 
         modelService.eliminar(model,"Usuario que lo realizo");

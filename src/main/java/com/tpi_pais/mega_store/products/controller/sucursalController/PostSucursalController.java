@@ -2,6 +2,7 @@ package com.tpi_pais.mega_store.products.controller.sucursalController;
 
 import com.tpi_pais.mega_store.exception.BadRequestException;
 import com.tpi_pais.mega_store.exception.ResponseService;
+import com.tpi_pais.mega_store.utils.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import com.tpi_pais.mega_store.products.dto.SucursalDTO;
 import com.tpi_pais.mega_store.products.model.Sucursal;
@@ -18,7 +19,7 @@ public class PostSucursalController {
     private ResponseService responseService;
 
     @PostMapping("/sucursal")
-    public ResponseEntity<?> guardar(@RequestBody SucursalDTO model){
+    public ResponseEntity<ApiResponse<Object>>  guardar(@RequestBody SucursalDTO model){
         model = modelService.verificarAtributos(model);
         if (modelService.sucursalExistente(model.getNombre())){
             Sucursal aux = modelService.buscarPorNombre(model.getNombre());

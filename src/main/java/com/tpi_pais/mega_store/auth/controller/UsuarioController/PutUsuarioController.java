@@ -6,6 +6,7 @@ import com.tpi_pais.mega_store.auth.model.Usuario;
 import com.tpi_pais.mega_store.auth.service.IUsuarioService;
 import com.tpi_pais.mega_store.exception.BadRequestException;
 import com.tpi_pais.mega_store.exception.ResponseService;
+import com.tpi_pais.mega_store.utils.ApiResponse;
 import com.tpi_pais.mega_store.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class PutUsuarioController {
     private StringUtils stringUtils;
 
     @PutMapping("/usuario")
-    public ResponseEntity<?> actualizar(@RequestBody UsuarioDTO modelDTO) {
+    public ResponseEntity<ApiResponse<Object>>  actualizar(@RequestBody UsuarioDTO modelDTO) {
         Boolean huboCambios = false;
         Usuario model = modelService.buscarPorId(modelDTO.getId());
         if (!Objects.equals(modelDTO.getNombre(), "") && modelDTO.getNombre() != null) {
@@ -50,8 +51,7 @@ public class PutUsuarioController {
         }
         if (huboCambios) {
             modelService.guardar(model);
-            modelDTO = UsuarioMapper.toDTO(model);
-            return responseService.successResponse(modelDTO, "Usuario actualizado");
+            return responseService.successResponse(UsuarioMapper.toDTO(model), "Usuario actualizado");
         }else {
             throw new BadRequestException("No hubieron cambios");
         }

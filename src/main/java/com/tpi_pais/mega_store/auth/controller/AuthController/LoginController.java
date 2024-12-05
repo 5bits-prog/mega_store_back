@@ -7,6 +7,7 @@ import com.tpi_pais.mega_store.auth.model.Sesion;
 import com.tpi_pais.mega_store.auth.service.IUsuarioService;
 import com.tpi_pais.mega_store.auth.service.SesionService;
 import com.tpi_pais.mega_store.exception.ResponseService;
+import com.tpi_pais.mega_store.utils.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class LoginController {
     private ResponseService responseService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UsuarioDTO usuarioDTO) {
+    public ResponseEntity<ApiResponse<Object>> login(@RequestBody UsuarioDTO usuarioDTO) {
         /*
         * El login debe recibir:
         * Un UsuarioDTO con lo siguiente:
@@ -39,7 +40,6 @@ public class LoginController {
         * y retornar el token correspondiente.
         * */
         Sesion sesion = modelService.login(usuarioDTO);
-        SesionMapper mapper = new SesionMapper();
-        return responseService.successResponse(mapper.toDTO(sesion,1), "Sesion creada");
+        return responseService.successResponse(SesionMapper.toDTO(sesion,1), "Sesion creada");
     }
 }

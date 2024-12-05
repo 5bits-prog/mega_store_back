@@ -5,6 +5,7 @@ import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.products.dto.SucursalDTO;
 import com.tpi_pais.mega_store.products.model.Sucursal;
 import com.tpi_pais.mega_store.products.service.ISucursalService;
+import com.tpi_pais.mega_store.utils.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class PutSucursalController {
     private ResponseService responseService;
 
     @PutMapping("/sucursal")
-    public ResponseEntity<?> actualizar(@RequestBody SucursalDTO model){
+    public ResponseEntity<ApiResponse<Object>>  actualizar(@RequestBody SucursalDTO model){
         Sucursal sucursalModificar = modelService.buscarPorId(model.getId());
         SucursalDTO modelDTO = modelService.verificarAtributos(model);
         if (modelService.sucursalExistente(modelDTO.getNombre())){
@@ -29,7 +30,7 @@ public class PutSucursalController {
         }
     }
     @PutMapping("/sucursal/recuperar/{id}")
-    public ResponseEntity<?> recuperar(@PathVariable Integer id) {
+    public ResponseEntity<ApiResponse<Object>>  recuperar(@PathVariable Integer id) {
         Sucursal model = modelService.buscarEliminadoPorId(id);
         modelService.recuperar(model);
         return responseService.successResponse(model, "Sucursal recuperado");

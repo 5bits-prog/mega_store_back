@@ -19,7 +19,7 @@ public class GetColorController {
     @Autowired
     private ResponseService responseService;
     @GetMapping({"/colores"})
-    public ResponseEntity<?> getAll() {
+    public ResponseEntity<ApiResponse<Object>>  getAll() {
         List<ColorDTO> colors = modelService.listar();
         if (colors.isEmpty()) {
             throw new BadRequestException("No hay colores creados");
@@ -28,9 +28,8 @@ public class GetColorController {
     }
 
     @GetMapping("/color/{id}")
-    public ResponseEntity<?> getPorId(@PathVariable Integer id){
+    public ResponseEntity<ApiResponse<Object>>  getPorId(@PathVariable Integer id){
         Color model = modelService.buscarPorId(id);
-        ColorDTO modelDTO = ColorMapper.toDTO(model);
-        return responseService.successResponse(modelDTO, "OK");
+        return responseService.successResponse(ColorMapper.toDTO(model), "OK");
     }
 }

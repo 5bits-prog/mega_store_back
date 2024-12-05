@@ -6,6 +6,7 @@ import com.tpi_pais.mega_store.products.dto.ProductoDTO; // Asegúrate de tener 
 import com.tpi_pais.mega_store.products.mapper.ProductoMapper; // Mapper para convertir a DTO
 import com.tpi_pais.mega_store.products.model.Producto; // Modelo Producto
 import com.tpi_pais.mega_store.products.service.IProductoService; // Servicio de Producto
+import com.tpi_pais.mega_store.utils.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class GetProductoController {
     private ResponseService responseService; // Servicio para respuestas
 
     @GetMapping("/productos") // Endpoint para obtener todos los productos
-    public ResponseEntity<?> getAll() {
+    public ResponseEntity<ApiResponse<Object>>  getAll() {
         List<ProductoDTO> productos = productoService.listar(); // Llama al servicio para listar productos
         if (productos.isEmpty()) {
             throw new BadRequestException("No hay productos creados");
@@ -32,7 +33,7 @@ public class GetProductoController {
     }
 
     @GetMapping("/producto/{id}") // Endpoint para obtener un producto por ID
-    public ResponseEntity<?> getPorId(@PathVariable Integer id) {
+    public ResponseEntity<ApiResponse<Object>>  getPorId(@PathVariable Integer id) {
         Producto producto = productoService.buscarPorId(id); // Busca el producto por ID
         if (producto == null) {
             throw new BadRequestException("Producto no encontrado"); // Manejo de error si no se encuentra el producto

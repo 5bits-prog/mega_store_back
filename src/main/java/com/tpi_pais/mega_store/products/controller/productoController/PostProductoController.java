@@ -6,6 +6,7 @@ import com.tpi_pais.mega_store.exception.BadRequestException;
 import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.products.dto.ProductoDTO; // Asegúrate de tener este DTO
 import com.tpi_pais.mega_store.products.service.IProductoService; // Servicio de Producto
+import com.tpi_pais.mega_store.utils.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class PostProductoController {
 
 
     @PostMapping("/producto")
-    public ResponseEntity<?> guardar(
+    public ResponseEntity<ApiResponse<Object>>  guardar(
             @RequestParam("nombre") String nombre,
             @RequestParam("descripcion") String descripcion,
             @RequestParam("precio") String precio,
@@ -81,7 +82,7 @@ public class PostProductoController {
         );
     }
     @PostMapping("/imagen")
-    public ResponseEntity<?> guardarImagen(@RequestPart("foto") MultipartFile foto) throws Exception {
+    public ResponseEntity<ApiResponse<Object>>  guardarImagen(@RequestPart("foto") MultipartFile foto) throws Exception {
         try {
             String imageUrl = imgBBService.subirImagen(foto);
             return responseService.successResponse(imageUrl,"Imagen subida exitosamente");

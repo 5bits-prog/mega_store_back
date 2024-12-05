@@ -34,7 +34,6 @@ public class SesionMapper {
 
         Sesion model = new Sesion();
         model.setId(dto.getId());
-        //model.setUsuario(dto.getUsuarioId());
         model.setToken(dto.getToken());
         model.setFechaCreacion(dto.getFechaCreacion());
         model.setFechaEliminacion(dto.getFechaEliminacion());

@@ -5,7 +5,6 @@ import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.products.dto.ColorDTO;
 import com.tpi_pais.mega_store.products.model.Color;
 import com.tpi_pais.mega_store.products.service.IColorService;
-import com.tpi_pais.mega_store.utils.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +18,7 @@ public class PutColorController {
     private ResponseService responseService;
 
     @PutMapping("/color")
-    public ResponseEntity<ApiResponse<Object>>  actualizar(@RequestBody ColorDTO model){
+    public ResponseEntity<?> actualizar(@RequestBody ColorDTO model){
         Color colorModificar = modelService.buscarPorId(model.getId());
         ColorDTO modelDTO = modelService.verificarAtributos(model);
         if (modelService.colorExistente(modelDTO.getNombre())){
@@ -29,7 +28,7 @@ public class PutColorController {
         }
     }
     @PutMapping("/color/recuperar/{id}")
-    public ResponseEntity<ApiResponse<Object>>  recuperar(@PathVariable Integer id) {
+    public ResponseEntity<?> recuperar(@PathVariable Integer id) {
         Color model = modelService.buscarEliminadoPorId(id);
         modelService.recuperar(model);
         return responseService.successResponse(model, "Color recuperado");

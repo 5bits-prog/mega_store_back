@@ -6,6 +6,7 @@ import com.tpi_pais.mega_store.products.dto.TalleDTO;
 import com.tpi_pais.mega_store.products.mapper.TalleMapper;
 import com.tpi_pais.mega_store.products.model.Talle;
 import com.tpi_pais.mega_store.products.service.ITalleService;
+import com.tpi_pais.mega_store.utils.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class GetTalleController {
     @Autowired
     private ResponseService responseService;
     @GetMapping({"/talles"})
-    public ResponseEntity<?> getAll() {
+    public ResponseEntity<ApiResponse<Object>>  getAll() {
         List<TalleDTO> talles = modelService.listar();
         if (talles.isEmpty()) {
             throw new BadRequestException("No hay talles creados");
@@ -29,7 +30,7 @@ public class GetTalleController {
     }
 
     @GetMapping("/talle/{id}")
-    public ResponseEntity<?> getPorId(@PathVariable Integer id){
+    public ResponseEntity<ApiResponse<Object>>  getPorId(@PathVariable Integer id){
         Talle model = modelService.buscarPorId(id);
         TalleDTO modelDTO = TalleMapper.toDTO(model);
         return responseService.successResponse(modelDTO, "OK");
