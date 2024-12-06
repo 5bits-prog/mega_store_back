@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 @Service
 public class ExpresionesRegulares {
 
+    private ExpresionesRegulares() {}
+
     private static final Pattern PATRON_NUMEROS = Pattern.compile("^\\d+$");
     private static final Pattern PATRON_TEXTO = Pattern.compile("^[A-Za-z]+$");
     private static final Pattern PATRON_TEXTO_ALFANUMERICO = Pattern.compile("^[A-Za-z0-9]+$");

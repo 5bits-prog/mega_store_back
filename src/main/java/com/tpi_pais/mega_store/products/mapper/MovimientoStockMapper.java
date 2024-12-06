@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MovimientoStockMapper {
     private final ProductoService productoService;
-    
+
     public MovimientoStockMapper(ProductoService productoService) {
         this.productoService = productoService;
     }
@@ -28,7 +28,7 @@ public class MovimientoStockMapper {
     public MovimientoStock toEntity(MovimientoStockDTO dto){
         MovimientoStock model = new MovimientoStock();
         model.setCantidad(dto.getCantidad());
-        model.esIngreso(dto.getEsEgreso());
+        model.esIngreso();
         model.setFechaCreacion(dto.getFechaCreacion());
         model.setId(dto.getId());
         model.setProducto(this.productoService.buscarPorId(dto.getIdProducto()));

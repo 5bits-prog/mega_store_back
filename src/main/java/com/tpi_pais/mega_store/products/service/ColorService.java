@@ -21,8 +21,11 @@ public class ColorService implements IColorService{
 
     private final ColorRepository modelRepository;
 
-    public ColorService(ColorRepository modelRepository) {
+    private final ExpresionesRegulares expresionesRegulares;
+
+    public ColorService(ColorRepository modelRepository, ExpresionesRegulares expresionesRegulares) {
         this.modelRepository = modelRepository;
+        this.expresionesRegulares = expresionesRegulares;
     }
 
     @Override
@@ -80,14 +83,14 @@ public class ColorService implements IColorService{
     @Override
     public ColorDTO verificarAtributos (ColorDTO colorDTO) {
         if (colorDTO.noTieneNombre()) {
-            throw new BadRequestException(MessagesException.CAMPO_NO_ENVIADO+);
+            throw new BadRequestException(MessagesException.CAMPO_NO_ENVIADO+"nombre");
         }
-        ExpresionesRegulares expReg = new ExpresionesRegulares();
-        if (!expReg.verificarCaracteres(colorDTO.getNombre())){
+
+        if (!expresionesRegulares.verificarCaracteres(colorDTO.getNombre())){
             throw new BadRequestException("El nombre enviado contiene caracteres no permitidos.");
         }
-        if (!expReg.verificarTextoConEspacios(colorDTO.getNombre())){
-            colorDTO.setNombre(expReg.corregirCadena(colorDTO.getNombre()));
+        if (!expresionesRegulares.verificarTextoConEspacios(colorDTO.getNombre())){
+            colorDTO.setNombre(expresionesRegulares.corregirCadena(colorDTO.getNombre()));
             if (Objects.equals(colorDTO.getNombre(), "")){
                 throw new BadRequestException("El nombre tiene un formato incorrecto");
             }
