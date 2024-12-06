@@ -4,6 +4,8 @@ import com.tpi_pais.mega_store.auth.dto.RolDTO;
 import com.tpi_pais.mega_store.auth.model.Rol;
 
 public class RolMapper {
+    private RolMapper() {}
+
     public static RolDTO toDTO(Rol model) {
         RolDTO dto = new RolDTO();
         dto.setId(model.getId());

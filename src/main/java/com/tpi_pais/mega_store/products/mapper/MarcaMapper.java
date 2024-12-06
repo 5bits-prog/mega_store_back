@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MarcaMapper {
+    private MarcaMapper() {}
+
     public static MarcaDTO toDTO(Marca model) {
         MarcaDTO dto = new MarcaDTO();
         dto.setId(model.getId());

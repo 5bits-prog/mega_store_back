@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SucursalMapper {
+    private SucursalMapper() {}
+
     public static SucursalDTO toDTO(Sucursal model) {
         SucursalDTO dto = new SucursalDTO();
         dto.setId(model.getId());

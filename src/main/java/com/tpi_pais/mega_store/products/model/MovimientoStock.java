@@ -26,7 +26,7 @@ public class MovimientoStock {
     @Column(name = "fecha_creacion", nullable = false)
     private LocalDateTime fechaCreacion = LocalDateTime.now();
 
-    public Boolean esIngreso (Boolean esEgreso){
+    public Boolean esIngreso (){
         return  (!this.esEgreso);
     }
     @PrePersist

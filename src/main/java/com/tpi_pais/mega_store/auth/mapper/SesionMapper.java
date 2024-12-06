@@ -5,7 +5,8 @@ import com.tpi_pais.mega_store.auth.model.Rol;
 import com.tpi_pais.mega_store.auth.model.Sesion;
 
 public class SesionMapper {
-
+    private SesionMapper() {}
+    
     public static SesionDTO toDTO(Sesion model) {
 
         SesionDTO dto = new SesionDTO();

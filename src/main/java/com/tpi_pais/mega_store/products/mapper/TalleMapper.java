@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TalleMapper {
+    private TalleMapper() {}
+
     public static TalleDTO toDTO(Talle model) {
         TalleDTO dto = new TalleDTO();
         dto.setId(model.getId());

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class StringUtils {
+
     public String capitalizeWords(String input) {
         if (input == null || input.isEmpty()) {
             return input;

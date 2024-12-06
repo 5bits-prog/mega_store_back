@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ColorMapper {
+    private ColorMapper() {}
+
     public static ColorDTO toDTO(Color model) {
         ColorDTO dto = new ColorDTO();
         dto.setId(model.getId());

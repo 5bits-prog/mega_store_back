@@ -82,7 +82,7 @@ public class PostProductoController {
         );
     }
     @PostMapping("/imagen")
-    public ResponseEntity<ApiResponse<Object>>  guardarImagen(@RequestPart("foto") MultipartFile foto) throws Exception {
+    public ResponseEntity<ApiResponse<Object>>  guardarImagen(@RequestPart("foto") MultipartFile foto) throws BadRequestException {
         try {
             String imageUrl = imgBBService.subirImagen(foto);
             return responseService.successResponse(imageUrl,"Imagen subida exitosamente");

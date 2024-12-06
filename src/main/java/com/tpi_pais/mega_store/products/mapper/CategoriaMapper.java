@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CategoriaMapper {
+    private CategoriaMapper() {}
+
     public static CategoriaDTO toDTO(Categoria model) {
         CategoriaDTO dto = new CategoriaDTO();
         dto.setId(model.getId());

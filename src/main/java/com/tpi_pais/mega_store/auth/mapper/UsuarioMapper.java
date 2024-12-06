@@ -5,6 +5,8 @@ import com.tpi_pais.mega_store.auth.model.Usuario;
 import com.tpi_pais.mega_store.auth.model.Rol;
 
 public class UsuarioMapper {
+    private UsuarioMapper() {}
+
     public static UsuarioDTO toDTO(Usuario model) {
         UsuarioDTO dto = new UsuarioDTO();
         dto.setId(model.getId());

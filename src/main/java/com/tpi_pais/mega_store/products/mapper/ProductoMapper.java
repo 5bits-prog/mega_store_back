@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ProductoMapper {
+    private ProductoMapper() {}
+
     public static ProductoDTO toDTO(Producto model) {
         ProductoDTO dto = new ProductoDTO();
         dto.setId(model.getId());

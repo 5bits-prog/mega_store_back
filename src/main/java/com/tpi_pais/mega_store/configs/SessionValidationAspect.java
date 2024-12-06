@@ -2,6 +2,7 @@ package com.tpi_pais.mega_store.configs;
 
 import com.tpi_pais.mega_store.auth.model.Sesion;
 import com.tpi_pais.mega_store.auth.service.SesionService;
+import com.tpi_pais.mega_store.exception.BadRequestException;
 import com.tpi_pais.mega_store.exception.UnauthorizedException;
 import com.tpi_pais.mega_store.utils.StringUtils;
 import org.aspectj.lang.JoinPoint;
@@ -26,7 +27,7 @@ public class SessionValidationAspect {
     }
 
     @Before("@annotation(SessionRequired)")
-    public void validateSession(JoinPoint joinPoint) throws Exception {
+    public void validateSession(JoinPoint joinPoint) throws BadRequestException {
         // Verificar si la sesión es válida usando tu clase de sesión y el token
         String token = request.getHeader("Authorization"); // Supongamos que el token viene en el encabezado Authorization
 

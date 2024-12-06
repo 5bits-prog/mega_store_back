@@ -20,54 +20,60 @@ public class ImageBBService {
     private static final String API_KEY = "c01631214212f30966500c874875dcc8";
 
     public String subirImagen(MultipartFile archivo) {
+        validarArchivo(archivo);
+
+        String base64Imagen = convertirImagenABase64(archivo);
+        String urlConClave = construirUrlConClave();
+
+        return enviarImagenAImgBB(base64Imagen, urlConClave);
+    }
+
+    private void validarArchivo(MultipartFile archivo) {
+        if (archivo == null || archivo.isEmpty()) {
+            throw new BadRequestException("El archivo está vacío o es nulo.");
+        }
+    }
+
+    private String convertirImagenABase64(MultipartFile archivo) {
         try {
-            RestTemplate restTemplate = new RestTemplate();
-
-            // Verificar si el archivo es válido
-            if (archivo == null || archivo.isEmpty()) {
-                throw new BadRequestException("El archivo está vacío o es nulo.");
-            }
-            String base64Imagen = "";
-            try {
-                base64Imagen = java.util.Base64.getEncoder().encodeToString(archivo.getBytes());
-                System.out.println("Base64 Imagen: " + base64Imagen.substring(0, 100) + "...");
-            } catch (Exception e) {
-                throw new BadRequestException("Error al convertir la imagen a Base64: " + e.getMessage());
-            }
-
-            // Crear la URL con la clave como parámetro de consulta
-            String urlConClave = API_URL + "?key=" + API_KEY;
-
-            // Crear el cuerpo de la solicitud
-            MultiValueMap<String, String> cuerpoSolicitud = new LinkedMultiValueMap<>();
-            cuerpoSolicitud.add("image", base64Imagen);
-
-            // Configurar los encabezados
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-            // Crear la entidad HTTP
-            HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(cuerpoSolicitud, headers);
-
-            // Enviar la solicitud a ImgBB
-            try {
-                ResponseEntity<Map> response = restTemplate.exchange(
-                        urlConClave,           // URL con clave incluida
-                        HttpMethod.POST,       // Método HTTP POST
-                        requestEntity,         // Cuerpo de la solicitud
-                        Map.class              // Tipo esperado de la respuesta
-                );
-
-                // Extraer la URL de la imagen desde la respuesta
-                Map<String, Object> data = (Map<String, Object>) response.getBody().get("data");
-                return data.get("display_url").toString();
-            } catch (Exception e) {
-                System.err.println("Error en la solicitud: " + e.getMessage());
-                throw new BadRequestException("Error al subir la imagen a ImgBB: " + e.getMessage());
-            }
+            return java.util.Base64.getEncoder().encodeToString(archivo.getBytes());
         } catch (Exception e) {
-            System.err.println("Error en la solicitud: " + e.getMessage());
+            throw new BadRequestException("Error al convertir la imagen a Base64: " + e.getMessage());
+        }
+    }
+
+    private String construirUrlConClave() {
+        return API_URL + "?key=" + API_KEY;
+    }
+
+    private String enviarImagenAImgBB(String base64Imagen, String urlConClave) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        // Crear el cuerpo de la solicitud
+        MultiValueMap<String, String> cuerpoSolicitud = new LinkedMultiValueMap<>();
+        cuerpoSolicitud.add("image", base64Imagen);
+
+        // Configurar los encabezados
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        // Crear la entidad HTTP
+        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(cuerpoSolicitud, headers);
+
+        try {
+            ResponseEntity<Map> response = restTemplate.exchange(
+                    urlConClave,
+                    HttpMethod.POST,
+                    requestEntity,
+                    Map.class
+            );
+
+            // Extraer la URL de la imagen desde la respuesta
+            Map<String, Object> data = (Map<String, Object>) response.getBody().get("data");
+            return data.get("display_url").toString();
+        } catch (Exception e) {
             throw new BadRequestException("Error al subir la imagen a ImgBB: " + e.getMessage());
         }
     }
 }
+

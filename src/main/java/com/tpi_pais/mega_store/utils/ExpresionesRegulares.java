@@ -9,13 +9,15 @@ import java.util.regex.Pattern;
 @Service
 public class ExpresionesRegulares {
 
+    private ExpresionesRegulares() {}
+
     private static final Pattern PATRON_NUMEROS = Pattern.compile("^\\d+$");
     private static final Pattern PATRON_TEXTO = Pattern.compile("^[A-Za-z]+$");
     private static final Pattern PATRON_TEXTO_ALFANUMERICO = Pattern.compile("^[A-Za-z0-9]+$");
-    private static final Pattern PATRON_TEXTO_CON_ESPACIOS = Pattern.compile("^[A-Za-z0-9áéíóúÁÉÍÓÚÁÉÍÓÚ]+([\\s\\-_.A-Za-z0-9áéíóúÁÉÍÓÚÁÉÍÓÚ]+)*$");
+    private static final Pattern PATRON_TEXTO_CON_ESPACIOS = Pattern.compile("^[A-Za-z0-9áéíóúÁÉÍÓÚ]+(?:[\\s][A-Za-z0-9áéíóúÁÉÍÓÚ]+)*$");
     private static final Pattern PATRON_CARACTERES_PERMITIDOS = Pattern.compile("^[A-Za-z0-9áéíóúÁÉÍÓÚÁÉÍÓÚ\\s]+$");
-    private static final Pattern PATRON_EMAIL = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
-    private static final Pattern PATRON_VALIDACION_PASSWORD = Pattern.compile("^(?=.*[A-Z])(?=.*[a-z])(?=.*[A-Z][a-z]).{8,}$");
+    private static final Pattern PATRON_EMAIL = Pattern.compile("^(?!\\.)(?!.*\\.@)[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");;
+    private static final Pattern PATRON_VALIDACION_PASSWORD = Pattern.compile("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&]).{8,}$");
 
     public boolean verificarEmail(String email) {
         return PATRON_EMAIL.matcher(email).matches();

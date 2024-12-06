@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MovimientoStockMapper {
     private final ProductoService productoService;
-
+    
     public MovimientoStockMapper(ProductoService productoService) {
         this.productoService = productoService;
     }

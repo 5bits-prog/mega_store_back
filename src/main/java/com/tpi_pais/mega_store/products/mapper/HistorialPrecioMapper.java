@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class HistorialPrecioMapper {
+    private HistorialPrecioMapper() {}
+
     public static HistorialPrecioDTO toDTO(HistorialPrecio model) {
         HistorialPrecioDTO dto = new HistorialPrecioDTO();
         dto.setId(model.getId());

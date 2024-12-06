@@ -333,8 +333,6 @@ public class UsuarioService implements IUsuarioService{
         }
         """, email, escapedEmailContent);
 
-        System.out.println(requestBody);
-
         // Token de autorización (reemplaza "your-token" por el token real)
         String token = "48cd4db4cf2acbb1a532528b71fadb202efe8af8";
 
@@ -347,15 +345,10 @@ public class UsuarioService implements IUsuarioService{
                 .retrieve()
                 .toEntity(String.class)
                 .doOnTerminate(() -> {
-                    System.out.println("Correo enviado correctamente.");
                 })
                 .doOnError(error -> {
-                    System.out.println("Error al enviar el correo: " + error.getMessage());
                 })
                 .block());  // Espera la respuesta sin bloquear el hilo principal
-
-
-        System.out.println(response);
     }
 
 
