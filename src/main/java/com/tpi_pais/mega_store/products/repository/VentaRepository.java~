@@ -1,0 +1,22 @@
+package com.tpi_pais.mega_store.products.repository;
+
+import com.tpi_pais.mega_store.products.model.Venta;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface VentaRepository  extends JpaRepository<Venta, Integer> {
+
+    Optional<Venta> findByIdAndFechaEliminacionIsNull(Integer id);
+
+    Optional<Venta> findByIdAndFechaEliminacionIsNotNull(Integer id);
+
+    List<Venta> findByFechaEliminacionIsNullOrderByIdAsc();
+
+    List<Venta> findByFechaEliminacionIsNotNullOrderByIdAsc();
+
+    List<Venta> findByFechaEliminacionIsNullAndUsuarioId(Integer id);
+
+    Optional<Venta> findByNumeroVentaAndFechaEliminacionIsNull(Integer numeroVenta);
+}
