@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:5173") // Permite solicitudes desde un dominio específico (localhost:5173)
 @RestController
@@ -32,14 +33,14 @@ public class PostProductoController {
     // Endpoint para crear un nuevo producto
     @PostMapping("/producto")
     public ResponseEntity<ApiResponse<Object>> guardar(
-            @RequestParam("nombre") String nombre, // Parámetros de la solicitud
+            @RequestParam("nombre") String nombre,
             @RequestParam("descripcion") String descripcion,
             @RequestParam("precio") String precio,
             @RequestParam("peso") String peso,
             @RequestParam("stockMedio") String stockMedio,
             @RequestParam("stockMinimo") String stockMinimo,
             @RequestParam("categoriaId") String categoriaId,
-            @RequestParam("sucursalId") String sucursalId,
+            @RequestParam("sucursales") Integer[] sucursales,
             @RequestParam("marcaId") String marcaId,
             @RequestParam("talleId") String talleId,
             @RequestParam("colorId") String colorId,
@@ -51,7 +52,6 @@ public class PostProductoController {
         productoDTO.setNombre(nombre);
         productoDTO.setDescripcion(descripcion);
         productoDTO.setImagen(imagen);
-
         // Subir la imagen a ImageBB
 
 
@@ -65,14 +65,12 @@ public class PostProductoController {
         } catch (NumberFormatException e) {
             throw new BadRequestException("El precio, peso, stockMedio y stockMinimo deben ser numéricos.");
         }
-
         // Parsear los IDs de las relaciones foráneas (categoría, sucursal, etc.)
         productoDTO.setCategoriaId(Integer.parseInt(categoriaId));
-        productoDTO.setSucursalId(Integer.parseInt(sucursalId));
+        productoDTO.setSucursales(sucursales);
         productoDTO.setMarcaId(Integer.parseInt(marcaId));
         productoDTO.setTalleId(Integer.parseInt(talleId));
         productoDTO.setColorId(Integer.parseInt(colorId));
-
         // Llamar al servicio para crear el producto y devolver la respuesta
         return responseService.successResponse(
                 productoService.crear(productoDTO), // Crear el producto utilizando el servicio

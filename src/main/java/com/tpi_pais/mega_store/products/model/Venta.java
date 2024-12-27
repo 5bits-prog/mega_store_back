@@ -39,12 +39,6 @@ public class Venta {
     private Usuario usuario;
 
     /**
-     * Número único asociado a la venta.
-     */
-    @Column(name = "numero_venta")
-    private Integer numeroVenta;
-
-    /**
      * Total monetario de la venta.
      */
     @Column(name = "total_venta")

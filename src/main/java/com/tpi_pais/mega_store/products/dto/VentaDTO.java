@@ -10,7 +10,6 @@ public class VentaDTO {
     private LocalDateTime fechaVenta;
     private Integer usuarioId;
     private String  usuario;
-    private Integer numeroVenta;
     private Double totalVenta;
     private ArrayList<DetalleVentaDTO> detalles;
 }

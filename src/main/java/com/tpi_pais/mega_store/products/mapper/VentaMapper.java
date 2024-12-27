@@ -15,7 +15,6 @@ public class VentaMapper {
         dto.setFechaVenta(model.getFechaCreacion());
         dto.setUsuarioId(model.getUsuario().getId());
         dto.setUsuario(model.getUsuario().getNombre());
-        dto.setNumeroVenta(model.getNumeroVenta());
         dto.setTotalVenta(model.getTotalVenta());
         return dto;
     }
@@ -25,7 +24,6 @@ public class VentaMapper {
         entity.setId(dto.getId());
         entity.setFechaCreacion(dto.getFechaVenta());
         entity.setUsuario(null);
-        entity.setNumeroVenta(dto.getNumeroVenta());
         entity.setTotalVenta(dto.getTotalVenta());
         return entity;
     }

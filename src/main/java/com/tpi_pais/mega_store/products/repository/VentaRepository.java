@@ -59,11 +59,4 @@ public interface VentaRepository extends JpaRepository<Venta, Integer> {
      */
     List<Venta> findByFechaEliminacionIsNullAndUsuarioId(Integer id);
 
-    /**
-     * Busca una venta activa (no eliminada) por su número de venta.
-     *
-     * @param numeroVenta Número único de la venta a buscar.
-     * @return Un Optional que contiene la venta si se encuentra y no ha sido eliminada.
-     */
-    Optional<Venta> findByNumeroVentaAndFechaEliminacionIsNull(Integer numeroVenta);
 }
