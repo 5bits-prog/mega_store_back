@@ -34,6 +34,7 @@ public class ProductoService implements IProductoService {
     private final MarcaRepository marcaRepository;
     private final MovimientoStockService movimientoStockService;
     private final ImageBBService imgBBService;
+    private final HistorialPrecioService historialPrecioService;
 
     private static final long MAX_FILE_SIZE = 5 * 1024 * 1024;
     private static final List<String> ALLOWED_EXTENSIONS = Arrays.asList("jpg", "jpeg", "png");
@@ -47,7 +48,8 @@ public class ProductoService implements IProductoService {
             TalleRepository talleRepository,
             MarcaRepository marcaRepository,
             @Lazy MovimientoStockService movimientoStockService,
-            ImageBBService imgBBService) {
+            ImageBBService imgBBService,
+            @Lazy HistorialPrecioService historialPrecioService) {
         this.productoRepository = productoRepository;
         this.categoriaRepository = categoriaRepository;
         this.sucursalRepository = sucursalRepository;
@@ -56,11 +58,8 @@ public class ProductoService implements IProductoService {
         this.marcaRepository = marcaRepository;
         this.movimientoStockService = movimientoStockService;
         this.imgBBService = imgBBService;
+        this.historialPrecioService = historialPrecioService;
     }
-
-
-
-
 
     @Override
     public List<ProductoDTO> listar() {
@@ -86,7 +85,7 @@ public class ProductoService implements IProductoService {
     }
 
     @Override
-    public ProductoDTO crear(ProductoDTO modelDTO) {
+    public ProductoDTO crear(ProductoDTO modelDTO, String token) {
         modelDTO = this.verificarAtributos(modelDTO);
         modelDTO.setFoto(subirImagen(modelDTO.getImagen()));
         if (productoExistente(modelDTO.getNombre())) {
@@ -99,7 +98,7 @@ public class ProductoService implements IProductoService {
                 throw new BadRequestException(MessagesException.OBJETO_DUPLICADO);
             }
         }else {
-            return guardar(modelDTO);
+            return guardar(modelDTO, token);
         }
     }
 
@@ -116,8 +115,10 @@ public class ProductoService implements IProductoService {
     }
 
     @Override
-    public ProductoDTO guardar(ProductoDTO modelDTO) {
+    public ProductoDTO guardar(ProductoDTO modelDTO, String token) {
+
         Producto model = new Producto();
+
         model.setNombre(modelDTO.getNombre());
         model.setDescripcion(modelDTO.getDescripcion());
         model.setPrecio(modelDTO.getPrecio());
@@ -130,12 +131,14 @@ public class ProductoService implements IProductoService {
         model.setMarca(marcaRepository.findById(modelDTO.getMarcaId()).orElse(null));
         model.setTalle(talleRepository.findById(modelDTO.getTalleId()).orElse(null));
         model.setColor(colorRepository.findById(modelDTO.getColorId()).orElse(null));
+
         ProductoDTO productoDTO = ProductoMapper.toDTO(productoRepository.save(model));
         movimientoStockService.guardar(model, modelDTO.getSucursales());
+
+        historialPrecioService.crear(model.getPrecio(), model, token);
+
         return productoDTO;
     }
-
-
 
     @Override
     public Producto guardar(Producto producto) {
@@ -321,5 +324,4 @@ public class ProductoService implements IProductoService {
             throw new BadRequestException("Formato de archivo no permitido. Solo se permiten imágenes PNG y JPG.");
         }
     }
-
 }

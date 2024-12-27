@@ -7,6 +7,7 @@ import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.products.dto.ProductoDTO; // Asegúrate de tener este DTO
 import com.tpi_pais.mega_store.products.service.IProductoService; // Servicio de Producto
 import com.tpi_pais.mega_store.utils.ApiResponse;
+import com.tpi_pais.mega_store.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +25,15 @@ public class PostProductoController {
 
     private final IProductoService productoService; // Servicio para manejar productos
     private final ResponseService responseService; // Servicio para manejar respuestas
+    private final StringUtils stringUtils;
 
-    public PostProductoController(IProductoService productoService, ResponseService responseService) {
+    public PostProductoController(
+            IProductoService productoService,
+            ResponseService responseService,
+            StringUtils stringUtils) {
         this.productoService = productoService;
         this.responseService = responseService;
+        this.stringUtils = stringUtils;
     }
 
     // Endpoint para crear un nuevo producto
@@ -44,7 +50,8 @@ public class PostProductoController {
             @RequestParam("marcaId") String marcaId,
             @RequestParam("talleId") String talleId,
             @RequestParam("colorId") String colorId,
-            @RequestPart("imagen") MultipartFile imagen // Para subir una imagen
+            @RequestPart("imagen") MultipartFile imagen,
+            @RequestHeader("Authorization") String token
     ) {
 
         // Crear un objeto ProductoDTO y establecer sus valores
@@ -71,9 +78,13 @@ public class PostProductoController {
         productoDTO.setMarcaId(Integer.parseInt(marcaId));
         productoDTO.setTalleId(Integer.parseInt(talleId));
         productoDTO.setColorId(Integer.parseInt(colorId));
+
+
+        String token_limpio = stringUtils.limpiarToken(token);
+
         // Llamar al servicio para crear el producto y devolver la respuesta
         return responseService.successResponse(
-                productoService.crear(productoDTO), // Crear el producto utilizando el servicio
+                productoService.crear(productoDTO, token_limpio), // Crear el producto utilizando el servicio
                 "Producto creado exitosamente" // Mensaje de éxito
         );
     }

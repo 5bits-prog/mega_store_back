@@ -11,6 +11,8 @@ import com.tpi_pais.mega_store.utils.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 @RestController
 @RequestMapping("/products") // Define la ruta base para los endpoints de productos
 public class PutProductoController {
@@ -78,7 +80,7 @@ public class PutProductoController {
             productoService.verificarPrecio(productoDTO.getPrecio()); // Verifica el precio
             productoModificar.setPrecio(productoDTO.getPrecio());
             // Crear un historial de precios
-            this.historialPrecioService.crear(productoDTO.getPrecio().doubleValue(), productoModificar, token);
+            this.historialPrecioService.crear(BigDecimal.valueOf(productoDTO.getPrecio().doubleValue()), productoModificar, token);
         }
 
         // Actualizar peso si se proporciona
