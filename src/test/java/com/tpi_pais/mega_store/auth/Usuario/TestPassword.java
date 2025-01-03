@@ -22,7 +22,7 @@ class TestPassword {
     public void setup() {
         expReg = new ExpresionesRegulares();
         stringUtils = new StringUtils();
-        usuarioService = new UsuarioService(null,expReg,stringUtils,null,null,null);
+        usuarioService = new UsuarioService(null,expReg,stringUtils,null,null, null);
         MockitoAnnotations.openMocks(this);
     }
 

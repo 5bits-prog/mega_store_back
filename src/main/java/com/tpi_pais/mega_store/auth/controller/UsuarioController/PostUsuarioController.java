@@ -50,4 +50,11 @@ public class PostUsuarioController {
         return responseService.successResponse(null,"Se ha verificado el usuario");
     }
 
+    @PostMapping("/usuario/reenviar-codigo")
+    public ResponseEntity<ApiResponse<Object>>  reenviarCodigo(@RequestBody UsuarioDTO modelDTO){
+        modelService.reenviarCodigo(modelDTO.getEmail());
+        return responseService.successResponse(null,"Se ha verificado el usuario");
+    }
+
+
 }

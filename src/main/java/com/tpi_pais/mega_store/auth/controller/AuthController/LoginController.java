@@ -2,13 +2,10 @@ package com.tpi_pais.mega_store.auth.controller.AuthController;
 
 import com.tpi_pais.mega_store.auth.dto.UsuarioDTO;
 import com.tpi_pais.mega_store.auth.mapper.SesionMapper;
-import com.tpi_pais.mega_store.auth.model.Rol;
 import com.tpi_pais.mega_store.auth.model.Sesion;
 import com.tpi_pais.mega_store.auth.service.IUsuarioService;
-import com.tpi_pais.mega_store.auth.service.SesionService;
 import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.utils.ApiResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +18,9 @@ public class LoginController {
 
     private final ResponseService responseService;
 
-    public LoginController(IUsuarioService modelService, ResponseService responseService) {
+    public LoginController(
+            IUsuarioService modelService,
+            ResponseService responseService) {
         this.modelService = modelService;
         this.responseService = responseService;
     }

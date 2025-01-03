@@ -12,7 +12,6 @@ import com.tpi_pais.mega_store.exception.NotFoundException;
 import com.tpi_pais.mega_store.utils.EmailCodigoValidacion;
 import com.tpi_pais.mega_store.utils.ExpresionesRegulares;
 import com.tpi_pais.mega_store.utils.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -36,7 +35,6 @@ public class UsuarioService implements IUsuarioService{
 
     private final WebClient webClient;
 
-    private final EmailCodigoValidacion emailCodigoValidacion;
 
     public UsuarioService(
             UsuarioRepository modelRepository,
@@ -44,15 +42,13 @@ public class UsuarioService implements IUsuarioService{
             StringUtils stringUtils,
             RolService rolService,
             SesionService sesionService,
-            WebClient webClient,
-            EmailCodigoValidacion emailCodigoValidacion) {
+            WebClient webClient) {
         this.modelRepository = modelRepository;
         this.expReg = expReg;
         this.StringUtils = stringUtils;
         this.rolService = rolService;
         this.sesionService = sesionService;
         this.webClient = webClient;
-        this.emailCodigoValidacion = emailCodigoValidacion;
     }
 
     @Override
@@ -321,44 +317,45 @@ public class UsuarioService implements IUsuarioService{
 
     @Override
     public void enviarCodigoVerificacion(String email, String codigoVerificacion) {
-        //Agregar un try por si ocurre un error: No se pudo enviar el mail
-        // Datos que deseas enviar en el cuerpo de la solicitud
+        try {
+            String emailHtmlTemplate = EmailCodigoValidacion.emailHtmlTemplate;
+            // Reemplaza las variables en la plantilla HTML
+            String emailContent = emailHtmlTemplate
+                    .replace("{LOGO_URL}", EmailCodigoValidacion.logoUrl)
+                    .replace("{CODIGO_VERIFICACION}", codigoVerificacion);
 
+            // Aquí escapamos las comillas dobles dentro del contenido HTML
+            String escapedEmailContent = emailContent.replace("\"", "\\\"");
 
-        String emailHtmlTemplate = emailCodigoValidacion.emailHtmlTemplate;
-        // Reemplaza las variables en la plantilla HTML
-        String emailContent = emailHtmlTemplate
-                .replace("{LOGO_URL}", emailCodigoValidacion.logoUrl)
-                .replace("{CODIGO_VERIFICACION}", codigoVerificacion);
+            // Aquí formateamos el JSON correctamente
+            String requestBody = String.format("""
+            {
+                "destinatario": "%s",
+                "asunto": "Código de verificación",
+                "cuerpo": "%s"
+            }
+            """, email, escapedEmailContent);
 
-        // Aquí escapamos las comillas dobles dentro del contenido HTML
-        String escapedEmailContent = emailContent.replace("\"", "\\\"");
+            // Token de autorización (reemplaza "your-token" por el token real)
+            String token = "48cd4db4cf2acbb1a532528b71fadb202efe8af8";
 
-        // Aquí formateamos el JSON correctamente
-        String requestBody = String.format("""
-        {
-            "destinatario": "%s",
-            "asunto": "Código de verificación",
-            "cuerpo": \"%s\"
+            // Realizar la solicitud POST para enviar el correo
+            String response = String.valueOf(webClient.post()
+                    .uri("/emailSender/enviar/")  // Especifica el endpoint correcto
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", "Token " + token)  // Agrega el token al encabezado
+                    .bodyValue(requestBody)  // Cuerpo de la solicitud con los datos de email y código
+                    .retrieve()
+                    .toEntity(String.class)
+                    .doOnTerminate(() -> {
+                    })
+                    .doOnError(error -> {
+                    })
+                    .block());  // Espera la respuesta sin bloquear el hilo principal
+
+        } catch (Exception e) {
+            throw new BadRequestException("Error al enviar el email: " + e.getMessage());
         }
-        """, email, escapedEmailContent);
-
-        // Token de autorización (reemplaza "your-token" por el token real)
-        String token = "48cd4db4cf2acbb1a532528b71fadb202efe8af8";
-
-        // Realizar la solicitud POST para enviar el correo
-        String response = String.valueOf(webClient.post()
-                .uri("/emailSender/enviar/")  // Especifica el endpoint correcto
-                .header("Content-Type", "application/json")
-                .header("Authorization", "Token " + token)  // Agrega el token al encabezado
-                .bodyValue(requestBody)  // Cuerpo de la solicitud con los datos de email y código
-                .retrieve()
-                .toEntity(String.class)
-                .doOnTerminate(() -> {
-                })
-                .doOnError(error -> {
-                })
-                .block());  // Espera la respuesta sin bloquear el hilo principal
     }
 
 
@@ -386,6 +383,7 @@ public class UsuarioService implements IUsuarioService{
         }
     }
 
+    @Override
     public Sesion login (UsuarioDTO usuarioDto) {
         Optional<Usuario> usuario = Optional.ofNullable(this.buscarPorEmail(usuarioDto.getEmail()));
         if (usuario.isEmpty()) {
@@ -397,4 +395,26 @@ public class UsuarioService implements IUsuarioService{
         return this.sesionService.obtenerSesionActual(usuario.get());
     }
 
+
+    @Override
+    public void reenviarCodigo (String email) {
+        if (email == null || email.isEmpty()) {
+            throw new BadRequestException("El email no puede estar vacio.");
+        }
+        Optional<Usuario> usuario = this.modelRepository.findByEmail(email);
+        if (usuario.isEmpty()) {
+            throw new NotFoundException("El usuario no existe.");
+        }
+        if (usuario.get().esEliminado()) {
+            throw new BadRequestException("El usuario se encuentra eliminado.");
+        }
+        if (!usuario.get().getVerificado()) {
+            usuario.get().setCodigoVerificacion();
+            usuario.get().setFechaCreacion();
+            this.enviarCodigoVerificacion(email, usuario.get().getCodigoVerificacion());
+            modelRepository.save(usuario.get());
+        }else {
+            throw new BadRequestException("No se puede reenviar el codigo, debido a que el usuario se encuentra verificado.");
+        }
+    }
 }

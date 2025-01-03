@@ -56,4 +56,6 @@ public interface IUsuarioService {
 
     public Sesion login (UsuarioDTO usuarioDTO);
 
+    public void reenviarCodigo (String email);
+
 }
