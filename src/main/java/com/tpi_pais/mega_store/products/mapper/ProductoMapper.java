@@ -49,6 +49,7 @@ public class ProductoMapper {
         }
 
         dto.setFechaEliminacion(model.getFechaEliminacion()); // Asigna la fecha de eliminación (si existe).
+        dto.setFechaCreacion(model.getFechaCreacion()); // Asigna la fecha de creación (si existe).
         return dto; // Devuelve el DTO con los datos asignados.
     }
 
@@ -70,7 +71,7 @@ public class ProductoMapper {
         model.setStockActual(dto.getStockActual()); // Asigna el stock actual del DTO al modelo.
         model.setFoto(dto.getFoto()); // Asigna la foto del DTO al modelo.
         model.setFechaEliminacion(dto.getFechaEliminacion()); // Asigna la fecha de eliminación del DTO al modelo.
-
+        model.setFechaCreacion(dto.getFechaCreacion()); // Asigna la fecha de creación del DTO al modelo.
         // Asume que existe un método de servicio para obtener las entidades relacionadas por ID.
         if (dto.getCategoriaId() != null) {
             Categoria categoria = new Categoria();

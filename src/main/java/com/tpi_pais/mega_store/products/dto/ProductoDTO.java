@@ -19,6 +19,7 @@ public class ProductoDTO {
     private Integer id; // Identificador único del producto.
     private String nombre; // Nombre del producto.
     private LocalDateTime fechaEliminacion; // Fecha de eliminación lógica del producto (si aplica).
+    private LocalDateTime fechaCreacion; // Fecha de creación del producto.
     private BigDecimal precio; // Precio del producto.
     private BigDecimal peso; // Peso del producto, generalmente utilizado para el cálculo de envío.
     private Integer stockMedio; // Stock promedio del producto.

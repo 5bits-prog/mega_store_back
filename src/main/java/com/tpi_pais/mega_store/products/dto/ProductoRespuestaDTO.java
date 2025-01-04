@@ -17,6 +17,7 @@ public class ProductoRespuestaDTO {
         this.id = productoDTO.getId();
         this.nombre = productoDTO.getNombre();
         this.fechaEliminacion = productoDTO.getFechaEliminacion();
+        this.fechaCreacion = productoDTO.getFechaCreacion();
         this.precio = productoDTO.getPrecio();
         this.peso = productoDTO.getPeso();
         this.stockMedio = productoDTO.getStockMedio();
@@ -36,6 +37,7 @@ public class ProductoRespuestaDTO {
     private Integer id;
     private String nombre;
     private LocalDateTime fechaEliminacion;
+    private LocalDateTime fechaCreacion;
     private BigDecimal precio;
     private BigDecimal peso;
     private Integer stockMedio;
