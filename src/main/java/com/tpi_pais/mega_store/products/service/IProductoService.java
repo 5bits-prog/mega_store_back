@@ -1,10 +1,14 @@
 package com.tpi_pais.mega_store.products.service;
 
+import com.tpi_pais.mega_store.products.dto.StockSucursalDTO;
+import com.tpi_pais.mega_store.products.dto.SucursalDTO;
 import com.tpi_pais.mega_store.products.model.Producto;
 import com.tpi_pais.mega_store.products.dto.ProductoDTO;
+import com.tpi_pais.mega_store.products.repository.SucursalRepository;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -59,4 +63,6 @@ public interface IProductoService {
     void verificarImagen(MultipartFile imagen);
 
     void actualizarPrecio(Producto producto, BigDecimal precio, String token);
+
+    ArrayList<StockSucursalDTO> obtenerSucursales (Integer idProducto);
 }

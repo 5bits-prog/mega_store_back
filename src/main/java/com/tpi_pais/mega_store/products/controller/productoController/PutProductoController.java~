@@ -3,17 +3,17 @@ package com.tpi_pais.mega_store.products.controller.productoController;
 import com.tpi_pais.mega_store.exception.BadRequestException;
 import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.products.dto.ProductoDTO;
-import com.tpi_pais.mega_store.products.dto.ProductoRespuestaDTO;
 import com.tpi_pais.mega_store.products.dto.StockSucursalDTO;
-import com.tpi_pais.mega_store.products.mapper.ProductoMapper;
 import com.tpi_pais.mega_store.products.model.*;
 import com.tpi_pais.mega_store.products.repository.*;
+import com.tpi_pais.mega_store.products.service.HistorialPrecioService;
 import com.tpi_pais.mega_store.products.service.IProductoService;
 import com.tpi_pais.mega_store.utils.ApiResponse;
 import com.tpi_pais.mega_store.utils.StringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 @RestController
@@ -23,28 +23,33 @@ public class PutProductoController {
     // Inyección de dependencias a través del constructor
     private final IProductoService productoService;
     private final CategoriaRepository categoriaRepository;
+    private final SucursalRepository sucursalRepository;
     private final ColorRepository colorRepository;
     private final TalleRepository talleRepository;
     private final MarcaRepository marcaRepository;
     private final ResponseService responseService;
+    private final HistorialPrecioService historialPrecioService;
     private final StringUtils stringUtils;
-
 
     // Constructor para la inyección de dependencias
     public PutProductoController(
             IProductoService productoService,
             CategoriaRepository categoriaRepository,
+            SucursalRepository sucursalRepository,
             ColorRepository colorRepository,
             TalleRepository talleRepository,
             MarcaRepository marcaRepository,
             ResponseService responseService,
+            HistorialPrecioService historialPrecioService,
             StringUtils stringUtils) {
         this.productoService = productoService;
         this.categoriaRepository = categoriaRepository;
+        this.sucursalRepository = sucursalRepository;
         this.colorRepository = colorRepository;
         this.talleRepository = talleRepository;
         this.marcaRepository = marcaRepository;
         this.responseService = responseService;
+        this.historialPrecioService = historialPrecioService;
         this.stringUtils = stringUtils;
     }
 
@@ -78,7 +83,7 @@ public class PutProductoController {
         }
 
         // Actualizar precio si se proporciona
-        if (productoDTO.getPrecio() != null && !productoDTO.getPrecio().equals(productoModificar.getPrecio())) {
+        if (productoDTO.getPrecio() != null && productoDTO.getPrecio() != productoModificar.getPrecio()) {
             productoService.actualizarPrecio(productoModificar, productoDTO.getPrecio(), token);
             productoModificar.setPrecio(productoDTO.getPrecio());
         }
@@ -135,13 +140,11 @@ public class PutProductoController {
 
         // Guardar y retornar el producto actualizado
         Producto productoGuardado = productoService.actualizar(productoModificar);
-        ArrayList<StockSucursalDTO> sucursalesDTO = productoService.obtenerSucursales(productoGuardado.getId());
-
-        ProductoRespuestaDTO productoRespuestaDTO = new ProductoRespuestaDTO(ProductoMapper.toDTO(productoGuardado), sucursalesDTO);
-
+        ArrayList<StockSucursalDTO> sucursalesDTO = productoService.obtenerSucursales(productoGuardado.);
+        
 
         // Retornar la respuesta de éxito
-        return responseService.successResponse(productoRespuestaDTO, "Producto actualizado");
+        return responseService.successResponse(productoGuardado, "Producto actualizado");
     }
 
     // Endpoint PUT para recuperar un producto eliminado

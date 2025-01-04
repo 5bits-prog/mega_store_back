@@ -3,10 +3,13 @@ package com.tpi_pais.mega_store.products.service;
 import com.tpi_pais.mega_store.configs.ImageBBService;
 import com.tpi_pais.mega_store.exception.MessagesException;
 import com.tpi_pais.mega_store.products.dto.MovimientoStockDTO;
+import com.tpi_pais.mega_store.products.dto.StockSucursalDTO;
+import com.tpi_pais.mega_store.products.dto.SucursalDTO;
 import com.tpi_pais.mega_store.products.mapper.MarcaMapper;
 import com.tpi_pais.mega_store.products.model.Marca;
 import com.tpi_pais.mega_store.products.model.Producto;
 import com.tpi_pais.mega_store.products.dto.ProductoDTO;
+import com.tpi_pais.mega_store.products.model.StockSucursal;
 import com.tpi_pais.mega_store.products.repository.*;
 import com.tpi_pais.mega_store.exception.NotFoundException;
 import com.tpi_pais.mega_store.exception.BadRequestException;
@@ -35,6 +38,7 @@ public class ProductoService implements IProductoService {
     private final MovimientoStockService movimientoStockService;
     private final ImageBBService imgBBService;
     private final HistorialPrecioService historialPrecioService;
+    private final StockSucursalRepository stockSucursalRepository;
 
     private static final long MAX_FILE_SIZE = 5 * 1024 * 1024;
     private static final List<String> ALLOWED_EXTENSIONS = Arrays.asList("jpg", "jpeg", "png");
@@ -49,7 +53,8 @@ public class ProductoService implements IProductoService {
             MarcaRepository marcaRepository,
             @Lazy MovimientoStockService movimientoStockService,
             ImageBBService imgBBService,
-            @Lazy HistorialPrecioService historialPrecioService) {
+            @Lazy HistorialPrecioService historialPrecioService,
+            StockSucursalRepository stockSucursalRepository) {
         this.productoRepository = productoRepository;
         this.categoriaRepository = categoriaRepository;
         this.sucursalRepository = sucursalRepository;
@@ -59,6 +64,7 @@ public class ProductoService implements IProductoService {
         this.movimientoStockService = movimientoStockService;
         this.imgBBService = imgBBService;
         this.historialPrecioService = historialPrecioService;
+        this.stockSucursalRepository = stockSucursalRepository;
     }
 
     @Override
@@ -337,6 +343,23 @@ public class ProductoService implements IProductoService {
             throw new BadRequestException("El precio no ha cambiado.");
         }
         historialPrecioService.crear(precio, producto, token);
+    }
+
+    @Override
+    public ArrayList<StockSucursalDTO> obtenerSucursales (Integer idProducto){
+        Producto producto = this.buscarPorId(idProducto);
+        ArrayList<StockSucursal> stockSucursal = stockSucursalRepository.findByProductoIdOrderByStockDesc(producto.getId());
+        ArrayList<StockSucursalDTO> stockSucursalDTO = new ArrayList<> ();
+        for (StockSucursal stock : stockSucursal) {
+            StockSucursalDTO stockSucursalDTO1 = new StockSucursalDTO();
+            stockSucursalDTO1.setId(stock.getId());
+            stockSucursalDTO1.setIdSucursal(stock.getSucursal().getId());
+            stockSucursalDTO1.setNombreSucursal(stock.getSucursal().getNombre());
+            stockSucursalDTO1.setIdProducto(stock.getProducto().getId());
+            stockSucursalDTO1.setCantidad(stock.getStock());
+            stockSucursalDTO.add(stockSucursalDTO1);
+        }
+        return stockSucursalDTO;
     }
 
 }
