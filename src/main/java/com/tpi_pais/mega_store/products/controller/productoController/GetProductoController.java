@@ -3,6 +3,8 @@ package com.tpi_pais.mega_store.products.controller.productoController;
 import com.tpi_pais.mega_store.exception.BadRequestException;
 import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.products.dto.ProductoDTO; // DTO de Producto
+import com.tpi_pais.mega_store.products.dto.ProductoRespuestaDTO;
+import com.tpi_pais.mega_store.products.dto.StockSucursalDTO;
 import com.tpi_pais.mega_store.products.mapper.ProductoMapper; // Mapper para convertir a DTO
 import com.tpi_pais.mega_store.products.model.Producto; // Modelo Producto
 import com.tpi_pais.mega_store.products.service.IProductoService; // Servicio de Producto
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -36,8 +39,13 @@ public class GetProductoController {
         if (productos.isEmpty()) {
             throw new BadRequestException("No hay productos creados");
         }
+        ArrayList<ProductoRespuestaDTO> productosRespuesta = new ArrayList<>();
+        for (ProductoDTO productoDTO : productos) {
+            ArrayList<StockSucursalDTO> sucursalesDTO = productoService.obtenerSucursales(productoDTO.getId());
+            productosRespuesta.add(new ProductoRespuestaDTO(productoDTO, sucursalesDTO));
+        }
         // Retornar respuesta con los productos en formato DTO y mensaje "OK"
-        return responseService.successResponse(productos, "OK");
+        return responseService.successResponse(productosRespuesta, "OK");
     }
 
     // Endpoint para obtener un producto por su ID
@@ -51,7 +59,10 @@ public class GetProductoController {
         }
         // Convertir el modelo Producto a DTO utilizando el mapper
         ProductoDTO productoDTO = ProductoMapper.toDTO(producto);
+        ArrayList<StockSucursalDTO> sucursalesDTO = productoService.obtenerSucursales(productoDTO.getId());
+
+        ProductoRespuestaDTO productoRespuestaDTO = new ProductoRespuestaDTO(productoDTO, sucursalesDTO);
         // Retornar respuesta con el producto en formato DTO y mensaje "OK"
-        return responseService.successResponse(productoDTO, "OK");
+        return responseService.successResponse(productoRespuestaDTO, "OK");
     }
 }
