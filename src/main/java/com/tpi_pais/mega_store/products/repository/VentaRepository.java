@@ -2,6 +2,7 @@ package com.tpi_pais.mega_store.products.repository;
 
 import com.tpi_pais.mega_store.products.model.Venta;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,7 @@ import java.util.Optional;
  * estado lógico de eliminaciones (soft delete) y consultas específicas por
  * usuario y número de venta.
  */
+@Repository
 public interface VentaRepository extends JpaRepository<Venta, Integer> {
 
     /**

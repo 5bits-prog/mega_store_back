@@ -10,6 +10,7 @@ import com.tpi_pais.mega_store.products.repository.ColorRepository;
 import com.tpi_pais.mega_store.utils.ExpresionesRegulares;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -59,22 +60,26 @@ public class ColorService implements IColorService{
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ColorDTO guardar(ColorDTO modelDTO) {
         Color model = ColorMapper.toEntity(modelDTO);
         return ColorMapper.toDTO(modelRepository.save(model));
     }
     @Override
+    @Transactional (rollbackFor = Exception.class)
     public Color guardar(Color model) {
         return modelRepository.save(model);
     }
 
     @Override
+    @Transactional (rollbackFor = Exception.class)
     public void eliminar(Color model) {
 
         model.eliminar();
         modelRepository.save(model);
     }
     @Override
+    @Transactional (rollbackFor = Exception.class)
     public void recuperar(Color model) {
         model.recuperar();
         modelRepository.save(model);

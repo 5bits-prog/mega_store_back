@@ -1,6 +1,7 @@
 package com.tpi_pais.mega_store.products.controller.talleController;
 
 // Importación de dependencias necesarias.
+import com.tpi_pais.mega_store.configs.SessionRequired;
 import com.tpi_pais.mega_store.exception.BadRequestException;
 import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.products.dto.TalleDTO;
@@ -26,6 +27,7 @@ public class PostTalleController {
     }
 
     // Endpoint para guardar un nuevo talle.
+    @SessionRequired
     @PostMapping("/talle")
     public ResponseEntity<ApiResponse<Object>> guardar(@RequestBody TalleDTO model) {
         // Validar atributos del talle recibido.

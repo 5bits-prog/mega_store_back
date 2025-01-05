@@ -25,7 +25,6 @@ public class GetRolController {
         this.responseService = responseService;
     }
 
-    @SessionRequired
     @GetMapping({"/roles"})
     public ResponseEntity<ApiResponse<Object>>  getAll() {
         List<RolDTO> roles = modelService.listar();

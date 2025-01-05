@@ -1,5 +1,6 @@
 package com.tpi_pais.mega_store.products.controller.movimientoStockController;
 
+import com.tpi_pais.mega_store.configs.SessionRequired;
 import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.products.dto.MovimientoStockDTO;
 import com.tpi_pais.mega_store.products.dto.MovimientosDTO;
@@ -25,6 +26,7 @@ public class PostMovimientoStockController {
         this.responseService = responseService;
     }
 
+    @SessionRequired
     @PostMapping("/movimiento-stock")
     public ResponseEntity<ApiResponse<Object>>  guardar(@RequestBody MovimientosDTO modelDTO) {
         return responseService.successResponse(movimientoStockService.guardar(modelDTO), "Movimiento de stock guardado");

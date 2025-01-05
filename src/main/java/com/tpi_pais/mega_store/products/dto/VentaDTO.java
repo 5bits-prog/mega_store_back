@@ -1,6 +1,8 @@
 package com.tpi_pais.mega_store.products.dto;
 
 import lombok.Data;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -10,6 +12,6 @@ public class VentaDTO {
     private LocalDateTime fechaVenta;
     private Integer usuarioId;
     private String  usuario;
-    private Double totalVenta;
+    private BigDecimal totalVenta;
     private ArrayList<DetalleVentaDTO> detalles;
 }

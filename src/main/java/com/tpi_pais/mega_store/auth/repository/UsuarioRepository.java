@@ -2,6 +2,7 @@ package com.tpi_pais.mega_store.auth.repository;
 
 import com.tpi_pais.mega_store.auth.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +11,7 @@ import java.util.Optional;
  * Repositorio de {@link Usuario} para realizar operaciones CRUD sobre los usuarios.
  * Proporciona métodos para consultar usuarios por diversos criterios como nombre, email, estado de verificación, etc.
  */
+@Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     /**

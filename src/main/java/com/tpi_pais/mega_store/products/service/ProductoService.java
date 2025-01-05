@@ -19,6 +19,7 @@ import com.tpi_pais.mega_store.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
@@ -76,7 +77,7 @@ public class ProductoService implements IProductoService {
     @Override
     public Producto buscarPorId(Integer id) {
         return productoRepository.findByIdAndFechaEliminacionIsNull(id)
-                .orElseThrow(() -> new NotFoundException(MessagesException.OBJECTO_NO_ENCONTRADO));
+                .orElseThrow(() -> new NotFoundException(MessagesException.OBJECTO_NO_ENCONTRADO+" con id: "+id));
     }
 
     @Override
@@ -91,6 +92,7 @@ public class ProductoService implements IProductoService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ProductoDTO crear(ProductoDTO modelDTO, String token) {
         modelDTO = this.verificarAtributos(modelDTO);
         modelDTO.setFoto(subirImagen(modelDTO.getImagen()));
@@ -108,6 +110,7 @@ public class ProductoService implements IProductoService {
         }
     }
 
+    @Transactional (rollbackFor = Exception.class)
     public String subirImagen (MultipartFile imagen) {
         try {
             String imageUrl = imgBBService.subirImagen(imagen); // Usamos el servicio para subir la imagen
@@ -121,6 +124,7 @@ public class ProductoService implements IProductoService {
     }
 
     @Override
+    @Transactional (rollbackFor = Exception.class)
     public ProductoDTO guardar(ProductoDTO modelDTO, String token) {
 
         Producto model = new Producto();
@@ -147,6 +151,7 @@ public class ProductoService implements IProductoService {
     }
 
     @Override
+    @Transactional (rollbackFor = Exception.class)
     public Producto guardar(Producto producto) {
         Producto productoGuardado = productoRepository.save(producto);
         MovimientoStockDTO movimientoStockDTO = movimientoStockService.guardar(productoGuardado.getId(), productoGuardado.getStockActual(), false);
@@ -154,17 +159,20 @@ public class ProductoService implements IProductoService {
     }
 
     @Override
+    @Transactional (rollbackFor = Exception.class)
     public Producto actualizar(Producto producto) {
         return productoRepository.save(producto);
     }
 
     @Override
+    @Transactional (rollbackFor = Exception.class)
     public void eliminar(Producto producto, String usuario) {
         producto.eliminar(usuario);
         productoRepository.save(producto);
     }
 
     @Override
+    @Transactional (rollbackFor = Exception.class)
     public void recuperar(Producto producto) {
         producto.recuperar();
         productoRepository.save(producto);
@@ -304,6 +312,7 @@ public class ProductoService implements IProductoService {
     }
 
     @Override
+    @Transactional (rollbackFor = Exception.class)
     public void actualizarStock(Producto producto, int cantidad, boolean esEntrada) {
         if (esEntrada) {
             producto.setStockActual(producto.getStockActual() + cantidad);
@@ -337,6 +346,7 @@ public class ProductoService implements IProductoService {
     }
 
     @Override
+    @Transactional (rollbackFor = Exception.class)
     public void actualizarPrecio(Producto producto, BigDecimal precio, String token) {
         this.verificarPrecio(precio);
         if (producto.getPrecio().compareTo(precio) == 0) {

@@ -2,6 +2,7 @@ package com.tpi_pais.mega_store.products.repository;
 
 import com.tpi_pais.mega_store.products.model.Talle;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +12,7 @@ import java.util.Optional;
  * Esta interfaz proporciona métodos adicionales para trabajar con la entidad Talle
  * según condiciones específicas, como la búsqueda de talles no eliminados o por nombre.
  */
+@Repository
 public interface TalleRepository extends JpaRepository<Talle, Integer> {
 
     /**

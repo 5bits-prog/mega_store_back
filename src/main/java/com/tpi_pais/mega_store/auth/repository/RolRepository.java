@@ -2,6 +2,7 @@ package com.tpi_pais.mega_store.auth.repository;
 
 import com.tpi_pais.mega_store.auth.model.Rol;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +11,7 @@ import java.util.Optional;
  * Repositorio de {@link Rol} para realizar operaciones CRUD sobre los roles de usuario.
  * Proporciona métodos para recuperar roles activos o eliminados.
  */
+@Repository
 public interface RolRepository extends JpaRepository<Rol, Integer> {
 
     /**

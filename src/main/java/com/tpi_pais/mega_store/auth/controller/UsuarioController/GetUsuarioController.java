@@ -4,6 +4,7 @@ import com.tpi_pais.mega_store.auth.dto.UsuarioDTO;
 import com.tpi_pais.mega_store.auth.mapper.UsuarioMapper;
 import com.tpi_pais.mega_store.auth.model.Usuario;
 import com.tpi_pais.mega_store.auth.service.IUsuarioService;
+import com.tpi_pais.mega_store.configs.SessionRequired;
 import com.tpi_pais.mega_store.exception.BadRequestException;
 import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.utils.ApiResponse;
@@ -29,6 +30,7 @@ public class GetUsuarioController {
         this.responseService = responseService;
     }
 
+    @SessionRequired
     @GetMapping({"/usuarios"})
     public ResponseEntity<ApiResponse<Object>>  getAll() {
         List<UsuarioDTO> usuarios = modelService.listar();
@@ -38,6 +40,7 @@ public class GetUsuarioController {
         return responseService.successResponse(usuarios, "OK");
     }
 
+    @SessionRequired
     @GetMapping("/usuario/id/{id}")
     public ResponseEntity<ApiResponse<Object>>  getPorId(@PathVariable Integer id){
         /*
@@ -57,6 +60,7 @@ public class GetUsuarioController {
 
     }
 
+    @SessionRequired
     @GetMapping("/usuario/email/{email}")
     public ResponseEntity<ApiResponse<Object>>  getPorEmail(@PathVariable String email){
         /*

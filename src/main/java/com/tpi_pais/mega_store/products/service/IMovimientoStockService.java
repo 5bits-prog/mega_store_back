@@ -2,6 +2,7 @@ package com.tpi_pais.mega_store.products.service;
 
 import com.tpi_pais.mega_store.products.dto.MovimientoStockDTO;
 import com.tpi_pais.mega_store.products.dto.MovimientosDTO;
+import com.tpi_pais.mega_store.products.model.DetalleVenta;
 import com.tpi_pais.mega_store.products.model.MovimientoStock;
 import com.tpi_pais.mega_store.products.model.Producto;
 import com.tpi_pais.mega_store.products.model.Sucursal;
@@ -30,4 +31,7 @@ public interface IMovimientoStockService {
     public ArrayList<MovimientoStockDTO> egreso (Producto producto, Integer cantidad);
 
     public ArrayList<MovimientoStockDTO> ingreso (Producto producto, Integer cantidad, Sucursal sucursal);
+
+    public void egresar (DetalleVenta detalleVenta);
+
 }

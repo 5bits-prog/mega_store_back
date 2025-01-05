@@ -2,6 +2,7 @@ package com.tpi_pais.mega_store.products.repository;
 
 import com.tpi_pais.mega_store.products.model.Marca;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +11,7 @@ import java.util.Optional;
  * Interfaz para realizar operaciones CRUD sobre el repositorio de {@link Marca}.
  * Proporciona métodos para recuperar registros de marcas, incluyendo aquellas que están activas o eliminadas.
  */
+@Repository
 public interface MarcaRepository extends JpaRepository<Marca, Integer> {
 
     /**

@@ -11,6 +11,7 @@ import com.tpi_pais.mega_store.products.repository.MarcaRepository;
 import com.tpi_pais.mega_store.utils.ExpresionesRegulares;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -56,22 +57,26 @@ public class MarcaService implements IMarcaService {
     
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public MarcaDTO guardar(MarcaDTO modelDTO) {
         Marca model = MarcaMapper.toEntity(modelDTO);
         return MarcaMapper.toDTO(modelRepository.save(model));
     }
     @Override
+    @Transactional (rollbackFor = Exception.class)
     public Marca guardar(Marca model) {
         return modelRepository.save(model);
     }
 
     @Override
+    @Transactional (rollbackFor = Exception.class)
     public void eliminar(Marca model) {
 
         model.eliminar();
         modelRepository.save(model);
     }
     @Override
+    @Transactional (rollbackFor = Exception.class)
     public void recuperar(Marca model) {
         model.recuperar();
         modelRepository.save(model);

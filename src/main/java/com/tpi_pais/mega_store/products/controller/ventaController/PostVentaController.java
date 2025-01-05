@@ -3,10 +3,12 @@ package com.tpi_pais.mega_store.products.controller.ventaController;
 import com.tpi_pais.mega_store.configs.SessionRequired;
 import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.products.dto.DetalleVentaDTO;
+import com.tpi_pais.mega_store.products.dto.DetallesVentaRecibidos;
 import com.tpi_pais.mega_store.products.dto.VentaDTO;
 import com.tpi_pais.mega_store.products.service.IVentaService;
 import com.tpi_pais.mega_store.utils.ApiResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -26,8 +28,8 @@ public class PostVentaController {
     @PostMapping("/venta")
     public ResponseEntity<ApiResponse<Object>> guardar(
             @RequestHeader("Authorization") String token,
-            @RequestBody ArrayList<DetalleVentaDTO> detalles) {
+            @RequestBody DetallesVentaRecibidos detalles) {
 
-        return responseService.successResponse(modelService.guardar(token, detalles), "Venta guardada");
+        return responseService.successResponse(modelService.guardar(token, detalles.getDetalles()), "Venta guardada");
     }
 }

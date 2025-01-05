@@ -1,6 +1,5 @@
 package com.tpi_pais.mega_store.products.controller.marcaController;
 
-import com.tpi_pais.mega_store.configs.SessionRequired;
 import com.tpi_pais.mega_store.exception.BadRequestException;
 import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.products.dto.MarcaDTO;
@@ -24,7 +23,6 @@ public class PostMarcaController {
         this.responseService = responseService;
     }
 
-    @SessionRequired
     @PostMapping("/marca")
     public ResponseEntity<ApiResponse<Object>>  guardar(@RequestBody MarcaDTO model){
         model = modelService.verificarAtributos(model);

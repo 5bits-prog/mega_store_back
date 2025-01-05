@@ -7,15 +7,13 @@ import com.tpi_pais.mega_store.products.dto.MovimientoDTO;
 import com.tpi_pais.mega_store.products.dto.MovimientoStockDTO;
 import com.tpi_pais.mega_store.products.dto.MovimientosDTO;
 import com.tpi_pais.mega_store.products.mapper.MovimientoStockMapper;
-import com.tpi_pais.mega_store.products.model.MovimientoStock;
-import com.tpi_pais.mega_store.products.model.Producto;
-import com.tpi_pais.mega_store.products.model.StockSucursal;
-import com.tpi_pais.mega_store.products.model.Sucursal;
+import com.tpi_pais.mega_store.products.model.*;
 import com.tpi_pais.mega_store.products.repository.MovimientoStockRepository;
 import com.tpi_pais.mega_store.products.repository.ProductoRepository;
 import com.tpi_pais.mega_store.products.repository.StockSucursalRepository;
 import com.tpi_pais.mega_store.products.repository.SucursalRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +53,7 @@ public class MovimientoStockService implements IMovimientoStockService {
     * si es un ingreso se hace un movimiento de stock de ingreso
     * */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ArrayList<MovimientoStockDTO> guardar(MovimientoStockDTO model){
         Producto producto = productoService.buscarPorId(model.getIdProducto());
 
@@ -70,6 +69,7 @@ public class MovimientoStockService implements IMovimientoStockService {
     };
 
     @Override
+    @Transactional (rollbackFor = Exception.class)
     public ArrayList<MovimientoStockDTO> guardar(MovimientosDTO model){
         /*
         * Verificar que el producto exista
@@ -106,6 +106,7 @@ public class MovimientoStockService implements IMovimientoStockService {
     }
 
     @Override
+    @Transactional (rollbackFor = Exception.class)
     public ArrayList<MovimientoStockDTO> ingreso (Producto producto, Integer cantidad, Sucursal sucursal){
         this.verificarCantidad(cantidad, false, producto);
         this.verificarSucursal(sucursal.getId());
@@ -128,6 +129,7 @@ public class MovimientoStockService implements IMovimientoStockService {
     }
 
     @Override
+    @Transactional (rollbackFor = Exception.class)
     public ArrayList<MovimientoStockDTO> egreso (Producto producto, Integer cantidad){
         //Falta la logica de descontar el stock
         this.verificarCantidad(cantidad, false, producto);
@@ -181,6 +183,11 @@ public class MovimientoStockService implements IMovimientoStockService {
         return movimientosDTO;
     }
 
+    @Override
+    @Transactional (rollbackFor = Exception.class)
+    public void egresar (DetalleVenta detalleVenta){
+        ArrayList<MovimientoStockDTO> movimientos = this.egreso(detalleVenta.getProducto(), detalleVenta.getCantidad());
+    }
 
     public void verificarSucursal (Integer sucursalId){
         Optional<Sucursal> sucursal = sucursalRepository.findByIdAndFechaEliminacionIsNull(sucursalId);
@@ -212,6 +219,7 @@ public class MovimientoStockService implements IMovimientoStockService {
     }
 
     @Override
+    @Transactional (rollbackFor = Exception.class)
     public MovimientoStockDTO guardar (Integer productoId, Integer cantidad, Boolean esEgreso){
         Producto producto = productoService.buscarPorId(productoId);
         this.verificarCantidad(cantidad, esEgreso, producto);
@@ -230,6 +238,7 @@ public class MovimientoStockService implements IMovimientoStockService {
     * con un stock inicial de 0.
     * */
     @Override
+    @Transactional (rollbackFor = Exception.class)
     public void guardar (Producto producto, Integer[] sucursales){
         for (Integer sucursalId : sucursales) {
             MovimientoStock movimientoStock = new MovimientoStock();

@@ -2,6 +2,7 @@ package com.tpi_pais.mega_store.products.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.tpi_pais.mega_store.products.model.Color;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +11,7 @@ import java.util.Optional;
  * Interfaz para realizar operaciones CRUD sobre el repositorio de {@link Color}.
  * Proporciona métodos para recuperar colores que no han sido eliminados o aquellos que sí lo han sido.
  */
+@Repository
 public interface ColorRepository extends JpaRepository<Color, Integer> {
 
     /**

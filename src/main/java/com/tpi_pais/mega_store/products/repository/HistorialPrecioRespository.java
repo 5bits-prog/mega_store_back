@@ -2,6 +2,7 @@ package com.tpi_pais.mega_store.products.repository;
 
 import com.tpi_pais.mega_store.products.model.HistorialPrecio;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +11,7 @@ import java.util.Optional;
  * Interfaz para realizar operaciones CRUD sobre el repositorio de {@link HistorialPrecio}.
  * Proporciona métodos para recuperar historiales de precios, tanto por producto como por usuario.
  */
+@Repository
 public interface HistorialPrecioRespository extends JpaRepository<HistorialPrecio, Integer> {
 
     /**

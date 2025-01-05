@@ -14,6 +14,7 @@ import com.tpi_pais.mega_store.utils.StringUtils;
 import jakarta.persistence.Access;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -31,6 +32,7 @@ public class HistorialPrecioService implements IHistorialPrecioService{
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void crear(BigDecimal precio, Producto producto, String token){
         this.verificarPrecio(precio);
         Usuario usuario = this.obtenerUsuario(token);

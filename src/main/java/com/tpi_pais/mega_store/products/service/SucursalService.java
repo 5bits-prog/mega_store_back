@@ -10,6 +10,7 @@ import com.tpi_pais.mega_store.products.repository.SucursalRepository;
 import com.tpi_pais.mega_store.utils.ExpresionesRegulares;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -55,22 +56,26 @@ public class SucursalService implements ISucursalService {
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public SucursalDTO guardar(SucursalDTO modelDTO) {
         Sucursal model = SucursalMapper.toEntity(modelDTO);
         return SucursalMapper.toDTO(modelRepository.save(model));
     }
     @Override
+    @Transactional (rollbackFor = Exception.class)
     public Sucursal guardar(Sucursal model) {
         return modelRepository.save(model);
     }
 
     @Override
+    @Transactional (rollbackFor = Exception.class)
     public void eliminar(Sucursal model) {
 
         model.eliminar();
         modelRepository.save(model);
     }
     @Override
+    @Transactional (rollbackFor = Exception.class)
     public void recuperar(Sucursal model) {
         model.recuperar();
         modelRepository.save(model);

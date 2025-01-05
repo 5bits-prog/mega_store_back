@@ -1,5 +1,6 @@
 package com.tpi_pais.mega_store.products.controller.colorController;
 
+import com.tpi_pais.mega_store.configs.SessionRequired;
 import com.tpi_pais.mega_store.exception.BadRequestException;
 import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.utils.ApiResponse;
@@ -23,6 +24,7 @@ public class PostColorController {
         this.responseService = responseService;
     }
 
+    @SessionRequired
     @PostMapping("/color")
     public ResponseEntity<ApiResponse<Object>>  guardar(@RequestBody ColorDTO model){
         model = modelService.verificarAtributos(model);

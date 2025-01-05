@@ -1,5 +1,6 @@
 package com.tpi_pais.mega_store.products.controller.sucursalController;
 
+import com.tpi_pais.mega_store.configs.SessionRequired;
 import com.tpi_pais.mega_store.exception.NotFoundException;  // Excepción personalizada para el no encontrar el objeto
 import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.products.model.Sucursal;
@@ -32,6 +33,7 @@ public class DeleteSucursalController {
      * @param id El ID de la sucursal a eliminar.
      * @return ResponseEntity con el mensaje de éxito o error.
      */
+    @SessionRequired
     @DeleteMapping("/sucursal/{id}")
     public ResponseEntity<ApiResponse<Object>> eliminar(@PathVariable Integer id) {
         // Buscamos la sucursal por su ID.

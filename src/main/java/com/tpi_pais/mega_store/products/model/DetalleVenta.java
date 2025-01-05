@@ -3,6 +3,7 @@ package com.tpi_pais.mega_store.products.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
@@ -47,13 +48,13 @@ public class DetalleVenta {
      * Precio unitario del producto en la venta.
      */
     @Column(name = "precio_unitario")
-    private Double precioUnitario;
+    private BigDecimal precioUnitario;
 
     /**
      * Subtotal calculado como cantidad * precioUnitario.
      */
     @Column(name = "subtotal")
-    private Double subtotal;
+    private BigDecimal subtotal;
 
     /**
      * Fecha y hora en la que se eliminó lógicamente el detalle de venta.

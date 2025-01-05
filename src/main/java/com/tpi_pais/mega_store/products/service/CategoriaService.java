@@ -11,6 +11,7 @@ import com.tpi_pais.mega_store.products.repository.CategoriaRepository;
 import com.tpi_pais.mega_store.utils.ExpresionesRegulares;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -58,21 +59,25 @@ public class CategoriaService implements ICategoriaService {
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public CategoriaDTO guardar(CategoriaDTO modelDTO) {
         Categoria model = CategoriaMapper.toEntity(modelDTO);
         return CategoriaMapper.toDTO(modelRepository.save(model));
     }
     @Override
+    @Transactional (rollbackFor = Exception.class)
     public Categoria guardar(Categoria model) {
         return modelRepository.save(model);
     }
 
     @Override
+    @Transactional (rollbackFor = Exception.class)
     public void eliminar(Categoria model) {
         model.eliminar();
         modelRepository.save(model);
     }
     @Override
+    @Transactional (rollbackFor = Exception.class)
     public void recuperar(Categoria model) {
         model.recuperar();
         modelRepository.save(model);

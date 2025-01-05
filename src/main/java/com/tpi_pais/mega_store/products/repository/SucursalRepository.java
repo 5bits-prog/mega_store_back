@@ -2,6 +2,7 @@ package com.tpi_pais.mega_store.products.repository;
 
 import com.tpi_pais.mega_store.products.model.Sucursal;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +12,7 @@ import java.util.Optional;
  * Esta interfaz proporciona métodos adicionales para trabajar con la entidad Sucursal
  * según condiciones específicas, como la búsqueda de sucursales no eliminadas o por nombre.
  */
+@Repository
 public interface SucursalRepository extends JpaRepository<Sucursal, Integer> {
 
     /**

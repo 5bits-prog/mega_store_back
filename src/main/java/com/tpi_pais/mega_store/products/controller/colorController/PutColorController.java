@@ -1,5 +1,6 @@
 package com.tpi_pais.mega_store.products.controller.colorController;
 
+import com.tpi_pais.mega_store.configs.SessionRequired;
 import com.tpi_pais.mega_store.exception.BadRequestException;
 import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.products.dto.ColorDTO;
@@ -23,6 +24,7 @@ public class PutColorController {
         this.responseService = responseService;
     }
 
+    @SessionRequired
     @PutMapping("/color")
     public ResponseEntity<ApiResponse<Object>>  actualizar(@RequestBody ColorDTO model){
         Color colorModificar = modelService.buscarPorId(model.getId());
@@ -33,6 +35,7 @@ public class PutColorController {
             return responseService.successResponse(modelService.guardar(model), "Color actualiazado");
         }
     }
+    @SessionRequired
     @PutMapping("/color/recuperar/{id}")
     public ResponseEntity<ApiResponse<Object>>  recuperar(@PathVariable Integer id) {
         Color model = modelService.buscarEliminadoPorId(id);

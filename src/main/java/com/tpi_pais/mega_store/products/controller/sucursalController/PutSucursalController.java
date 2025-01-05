@@ -1,6 +1,7 @@
 package com.tpi_pais.mega_store.products.controller.sucursalController;
 
 // Importación de dependencias necesarias.
+import com.tpi_pais.mega_store.configs.SessionRequired;
 import com.tpi_pais.mega_store.exception.BadRequestException;
 import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.products.dto.SucursalDTO;
@@ -30,6 +31,7 @@ public class PutSucursalController {
      * @param model DTO que contiene los datos de la sucursal a actualizar.
      * @return ResponseEntity con los datos actualizados de la sucursal y un mensaje de éxito.
      */
+    @SessionRequired
     @PutMapping("/sucursal")
     public ResponseEntity<ApiResponse<Object>> actualizar(@RequestBody SucursalDTO model) {
         // Buscar la sucursal por su ID.
@@ -54,6 +56,7 @@ public class PutSucursalController {
      * @param id ID de la sucursal a recuperar.
      * @return ResponseEntity con los datos de la sucursal recuperada y un mensaje de éxito.
      */
+    @SessionRequired
     @PutMapping("/sucursal/recuperar/{id}")
     public ResponseEntity<ApiResponse<Object>> recuperar(@PathVariable Integer id) {
         // Buscar la sucursal eliminada por su ID.

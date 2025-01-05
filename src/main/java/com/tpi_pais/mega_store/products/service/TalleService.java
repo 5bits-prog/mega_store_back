@@ -12,6 +12,7 @@ import com.tpi_pais.mega_store.products.repository.TalleRepository;
 import com.tpi_pais.mega_store.utils.ExpresionesRegulares;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -57,22 +58,26 @@ public class TalleService implements ITalleService {
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public TalleDTO guardar(TalleDTO modelDTO) {
         Talle model = TalleMapper.toEntity(modelDTO);
         return TalleMapper.toDTO(modelRepository.save(model));
     }
     @Override
+    @Transactional (rollbackFor = Exception.class)
     public Talle guardar(Talle model) {
         return modelRepository.save(model);
     }
 
     @Override
+    @Transactional (rollbackFor = Exception.class)
     public void eliminar(Talle model) {
 
         model.eliminar();
         modelRepository.save(model);
     }
     @Override
+    @Transactional (rollbackFor = Exception.class)
     public void recuperar(Talle model) {
         model.recuperar();
         modelRepository.save(model);

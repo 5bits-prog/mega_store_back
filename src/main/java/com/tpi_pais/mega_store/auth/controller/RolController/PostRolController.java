@@ -3,6 +3,7 @@ package com.tpi_pais.mega_store.auth.controller.RolController;
 import com.tpi_pais.mega_store.auth.dto.RolDTO;
 import com.tpi_pais.mega_store.auth.model.Rol;
 import com.tpi_pais.mega_store.auth.service.IRolService;
+import com.tpi_pais.mega_store.configs.SessionRequired;
 import com.tpi_pais.mega_store.exception.BadRequestException;
 import com.tpi_pais.mega_store.exception.MessagesException;
 import com.tpi_pais.mega_store.exception.ResponseService;
@@ -23,6 +24,7 @@ public class PostRolController {
         this.responseService = responseService;
     }
 
+    @SessionRequired
     @PostMapping("/rol")
     public ResponseEntity<ApiResponse<Object>>  guardar(@RequestBody RolDTO model){
         model = modelService.verificarAtributos(model);

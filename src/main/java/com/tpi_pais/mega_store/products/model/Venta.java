@@ -4,6 +4,7 @@ import com.tpi_pais.mega_store.auth.model.Usuario;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
@@ -42,7 +43,7 @@ public class Venta {
      * Total monetario de la venta.
      */
     @Column(name = "total_venta")
-    private Double totalVenta;
+    private BigDecimal totalVenta;
 
     /**
      * Fecha y hora en la que se eliminó lógicamente la venta.

@@ -3,6 +3,7 @@ package com.tpi_pais.mega_store.auth.repository;
 import com.tpi_pais.mega_store.auth.model.Sesion;
 import com.tpi_pais.mega_store.auth.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
@@ -10,6 +11,7 @@ import java.util.Optional;
  * Repositorio de {@link Sesion} para realizar operaciones CRUD sobre las sesiones de usuario.
  * Proporciona métodos para recuperar sesiones activas por token o usuario.
  */
+@Repository
 public interface SesionRepository extends JpaRepository<Sesion, Integer> {
 
     /**

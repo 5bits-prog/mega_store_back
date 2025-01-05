@@ -2,6 +2,7 @@ package com.tpi_pais.mega_store.products.repository;
 
 import com.tpi_pais.mega_store.products.model.DetalleVenta;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * Además, incluye un método personalizado para obtener los detalles de una venta
  * específica según su ID.
  */
+@Repository
 public interface DetalleVentaRepository extends JpaRepository<DetalleVenta, Integer> {
 
     /**

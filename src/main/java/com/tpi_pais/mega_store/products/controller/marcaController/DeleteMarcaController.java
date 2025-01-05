@@ -1,5 +1,6 @@
 package com.tpi_pais.mega_store.products.controller.marcaController;
 
+import com.tpi_pais.mega_store.configs.SessionRequired;
 import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.products.model.Marca;
 import com.tpi_pais.mega_store.products.service.IMarcaService;
@@ -21,6 +22,7 @@ public class DeleteMarcaController {
         this.responseService = responseService;
     }
 
+    @SessionRequired
     @DeleteMapping("/marca/{id}")
     public ResponseEntity<ApiResponse<Object>>  eliminar(@PathVariable Integer id) {
         Marca model = modelService.buscarPorId(id);

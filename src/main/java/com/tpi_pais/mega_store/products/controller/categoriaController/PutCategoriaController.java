@@ -1,5 +1,6 @@
 package com.tpi_pais.mega_store.products.controller.categoriaController;
 
+import com.tpi_pais.mega_store.configs.SessionRequired;
 import com.tpi_pais.mega_store.exception.BadRequestException;
 import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.products.dto.CategoriaDTO;
@@ -22,6 +23,7 @@ public class PutCategoriaController {
         this.modelService = modelService;
         this.responseService = responseService;
     }
+    @SessionRequired
     @PutMapping("/categoria")
     public ResponseEntity<ApiResponse<Object>>  actualizar(@RequestBody CategoriaDTO model){
         Categoria categoriaModificar = modelService.buscarPorId(model.getId());
@@ -33,6 +35,7 @@ public class PutCategoriaController {
             return responseService.successResponse(modelGuardado, "Categoria actualiazado");
         }
     }
+    @SessionRequired
     @PutMapping("/categoria/recuperar/{id}")
     public ResponseEntity<ApiResponse<Object>>  recuperar(@PathVariable Integer id) {
         Categoria model = modelService.buscarEliminadoPorId(id);

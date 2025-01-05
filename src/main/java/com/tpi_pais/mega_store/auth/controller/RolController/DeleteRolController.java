@@ -3,6 +3,7 @@ package com.tpi_pais.mega_store.auth.controller.RolController;
 import com.tpi_pais.mega_store.auth.mapper.RolMapper;
 import com.tpi_pais.mega_store.auth.model.Rol;
 import com.tpi_pais.mega_store.auth.service.IRolService;
+import com.tpi_pais.mega_store.configs.SessionRequired;
 import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.utils.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ public class DeleteRolController {
         this.responseService = responseService;
     }
 
+    @SessionRequired
     @DeleteMapping("/rol/{id}")
     public ResponseEntity<ApiResponse<Object>>  eliminar(@PathVariable Integer id) {
         Rol model = modelService.buscarPorId(id);

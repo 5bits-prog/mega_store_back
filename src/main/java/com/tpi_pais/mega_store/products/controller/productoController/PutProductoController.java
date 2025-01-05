@@ -1,5 +1,6 @@
 package com.tpi_pais.mega_store.products.controller.productoController;
 
+import com.tpi_pais.mega_store.configs.SessionRequired;
 import com.tpi_pais.mega_store.exception.BadRequestException;
 import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.products.dto.ProductoDTO;
@@ -49,6 +50,7 @@ public class PutProductoController {
     }
 
     // Endpoint PUT para actualizar un producto
+    @SessionRequired
     @PutMapping("/producto")
     public ResponseEntity<ApiResponse<Object>>  actualizar(
             @RequestBody ProductoDTO productoDTO,
@@ -145,6 +147,7 @@ public class PutProductoController {
     }
 
     // Endpoint PUT para recuperar un producto eliminado
+    @SessionRequired
     @PutMapping("/producto/recuperar/{id}")
     public ResponseEntity<ApiResponse<Object>>  recuperar(@PathVariable Integer id) {
         // Buscar el producto eliminado por ID

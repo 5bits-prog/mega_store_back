@@ -3,6 +3,7 @@ package com.tpi_pais.mega_store.auth.controller.RolController;
 import com.tpi_pais.mega_store.auth.dto.RolDTO;
 import com.tpi_pais.mega_store.auth.service.IRolService;
 import com.tpi_pais.mega_store.auth.model.Rol;
+import com.tpi_pais.mega_store.configs.SessionRequired;
 import com.tpi_pais.mega_store.exception.BadRequestException;
 import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.utils.ApiResponse;
@@ -22,6 +23,7 @@ public class PutRolController {
         this.responseService = responseService;
     }
 
+    @SessionRequired
     @PutMapping("/rol")
     public ResponseEntity<ApiResponse<Object>>  actualizar(@RequestBody RolDTO model){
         Rol rolModificar = modelService.buscarPorId(model.getId());
@@ -33,6 +35,7 @@ public class PutRolController {
             return responseService.successResponse(modelGuardado, "Rol actualiazado");
         }
     }
+    @SessionRequired
     @PutMapping("/rol/recuperar/{id}")
     public ResponseEntity<ApiResponse<Object>>  recuperar(@PathVariable Integer id) {
         Rol model = modelService.buscarEliminadoPorId(id);

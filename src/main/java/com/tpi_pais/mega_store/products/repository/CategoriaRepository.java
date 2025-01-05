@@ -2,6 +2,7 @@ package com.tpi_pais.mega_store.products.repository;
 
 import com.tpi_pais.mega_store.products.model.Categoria;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +11,7 @@ import java.util.Optional;
  * Interfaz para realizar operaciones CRUD sobre el repositorio de {@link Categoria}.
  * Proporciona métodos para recuperar categorías que no han sido eliminadas o aquellas que sí lo han sido.
  */
+@Repository
 public interface CategoriaRepository extends JpaRepository<Categoria, Integer> {
 
     /**

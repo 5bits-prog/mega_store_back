@@ -40,6 +40,7 @@ public class PostProductoController {
     }
 
     // Endpoint para crear un nuevo producto
+    @SessionRequired
     @PostMapping("/producto")
     public ResponseEntity<ApiResponse<Object>> guardar(
             @RequestParam("nombre") String nombre,

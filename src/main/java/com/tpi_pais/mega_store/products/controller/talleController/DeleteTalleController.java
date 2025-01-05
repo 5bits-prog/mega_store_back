@@ -1,6 +1,7 @@
 package com.tpi_pais.mega_store.products.controller.talleController;
 
 // Importación de dependencias necesarias.
+import com.tpi_pais.mega_store.configs.SessionRequired;
 import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.products.model.Talle;
 import com.tpi_pais.mega_store.products.service.ITalleService;
@@ -28,6 +29,7 @@ public class DeleteTalleController {
      * @param id ID del talle a eliminar.
      * @return ResponseEntity con el talle eliminado y un mensaje de éxito.
      */
+    @SessionRequired
     @DeleteMapping("/talle/{id}")
     public ResponseEntity<ApiResponse<Object>> eliminar(@PathVariable Integer id) {
         // Buscar el talle en la base de datos usando su ID.

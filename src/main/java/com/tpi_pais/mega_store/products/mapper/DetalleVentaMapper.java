@@ -5,6 +5,8 @@ import com.tpi_pais.mega_store.products.dto.DetalleVentaDTO;
 import com.tpi_pais.mega_store.products.model.DetalleVenta;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
 @Component
 public class DetalleVentaMapper {
     private DetalleVentaMapper() {}

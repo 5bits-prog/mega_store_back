@@ -1,5 +1,6 @@
 package com.tpi_pais.mega_store.products.controller.marcaController;
 
+import com.tpi_pais.mega_store.configs.SessionRequired;
 import com.tpi_pais.mega_store.exception.BadRequestException;
 import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.products.dto.MarcaDTO;
@@ -23,6 +24,7 @@ public class PutMarcaController {
         this.responseService = responseService;
     }
 
+    @SessionRequired
     @PutMapping("/marca")
     public ResponseEntity<ApiResponse<Object>>  actualizar(@RequestBody MarcaDTO model){
         Marca marcaModificar = modelService.buscarPorId(model.getId());
@@ -34,6 +36,7 @@ public class PutMarcaController {
             return responseService.successResponse(modelGuardado, "Marca actualiazado");
         }
     }
+    @SessionRequired
     @PutMapping("/marca/recuperar/{id}")
     public ResponseEntity<ApiResponse<Object>>  recuperar(@PathVariable Integer id) {
         Marca model = modelService.buscarEliminadoPorId(id);
