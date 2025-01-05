@@ -1,6 +1,7 @@
 package com.tpi_pais.mega_store.products.controller.talleController;
 
 // Importación de dependencias necesarias.
+import com.tpi_pais.mega_store.configs.SessionRequired;
 import com.tpi_pais.mega_store.exception.BadRequestException;
 import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.products.dto.TalleDTO;
@@ -25,6 +26,7 @@ public class PutTalleController {
     }
 
     // Actualiza un talle existente.
+    @SessionRequired
     @PutMapping("/talle")
     public ResponseEntity<ApiResponse<Object>> actualizar(@RequestBody TalleDTO model) {
         // Validar existencia y atributos del talle.
@@ -42,6 +44,7 @@ public class PutTalleController {
     }
 
     // Recupera un talle eliminado lógicamente.
+    @SessionRequired
     @PutMapping("/talle/recuperar/{id}")
     public ResponseEntity<ApiResponse<Object>> recuperar(@PathVariable Integer id) {
         // Buscar el talle eliminado por su ID y restaurarlo.

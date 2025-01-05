@@ -1,6 +1,5 @@
 package com.tpi_pais.mega_store.products.controller.colorController;
 
-import com.tpi_pais.mega_store.configs.SessionRequired;
 import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.products.model.Color;
 import com.tpi_pais.mega_store.products.service.IColorService;
@@ -22,7 +21,6 @@ public class DeleteColorController {
         this.responseService = responseService;
     }
 
-    @SessionRequired
     @DeleteMapping("/color/{id}")
     public ResponseEntity<ApiResponse<Object>>  eliminar(@PathVariable Integer id) {
         Color model = modelService.buscarPorId(id);

@@ -1,5 +1,6 @@
 package com.tpi_pais.mega_store.products.controller.sucursalController;
 
+import com.tpi_pais.mega_store.configs.SessionRequired;
 import com.tpi_pais.mega_store.exception.BadRequestException;
 import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.utils.ApiResponse;
@@ -34,6 +35,7 @@ public class PostSucursalController {
      * @param model DTO que contiene los datos de la sucursal a guardar.
      * @return ResponseEntity con la respuesta y los datos correspondientes.
      */
+    @SessionRequired
     @PostMapping("/sucursal")
     public ResponseEntity<ApiResponse<Object>> guardar(@RequestBody SucursalDTO model) {
         // Verificación de atributos del modelo antes de proceder con la lógica.

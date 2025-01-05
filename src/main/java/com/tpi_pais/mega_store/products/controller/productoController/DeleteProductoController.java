@@ -1,5 +1,6 @@
 package com.tpi_pais.mega_store.products.controller.productoController;
 
+import com.tpi_pais.mega_store.configs.SessionRequired;
 import com.tpi_pais.mega_store.exception.ResponseService; // Servicio para manejar respuestas
 import com.tpi_pais.mega_store.products.model.Producto; // Modelo Producto
 import com.tpi_pais.mega_store.products.service.IProductoService; // Servicio para manejar productos
@@ -28,6 +29,7 @@ public class DeleteProductoController {
     }
 
     // Endpoint para eliminar un producto por su ID
+    @SessionRequired
     @DeleteMapping("/producto/{id}")
     public ResponseEntity<ApiResponse<Object>> eliminar(@PathVariable Integer id) {
         // Buscar el producto por su ID en el servicio
