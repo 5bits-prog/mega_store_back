@@ -139,7 +139,7 @@ public class PutProductoController {
         Producto productoGuardado = productoService.actualizar(productoModificar);
         ArrayList<StockSucursalDTO> sucursalesDTO = productoService.obtenerSucursales(productoGuardado.getId());
 
-        ProductoRespuestaDTO productoRespuestaDTO = new ProductoRespuestaDTO(ProductoMapper.toDTO(productoGuardado), sucursalesDTO);
+        ProductoRespuestaDTO productoRespuestaDTO = new ProductoRespuestaDTO(ProductoMapper.toDTO(productoGuardado), sucursalesDTO,productoGuardado.getMarca().getNombre(),productoGuardado.getCategoria().getNombre(),productoGuardado.getColor().getNombre(),productoGuardado.getTalle().getNombre());
 
 
         // Retornar la respuesta de éxito

@@ -7,7 +7,7 @@ import com.tpi_pais.mega_store.products.dto.ProductoRespuestaDTO;
 import com.tpi_pais.mega_store.products.dto.StockSucursalDTO;
 import com.tpi_pais.mega_store.products.mapper.ProductoMapper; // Mapper para convertir a DTO
 import com.tpi_pais.mega_store.products.model.Producto; // Modelo Producto
-import com.tpi_pais.mega_store.products.service.IProductoService; // Servicio de Producto
+import com.tpi_pais.mega_store.products.service.*;
 import com.tpi_pais.mega_store.utils.ApiResponse; // Respuesta API común
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +23,25 @@ public class GetProductoController {
     private final IProductoService productoService; // Servicio para manejar productos
 
     private final ResponseService responseService; // Servicio para manejar respuestas
+    private final IMarcaService marcaService;
+    private final ICategoriaService categoriaService;
+    private final IColorService colorService;
+    private final ITalleService talleService;
 
     // Constructor con inyección de dependencias
-    public GetProductoController(IProductoService productoService, ResponseService responseService) {
+    public GetProductoController(
+            IProductoService productoService,
+            ResponseService responseService,
+            IMarcaService marcaService,
+            ICategoriaService categoriaService,
+            IColorService colorService,
+            ITalleService talleService) {
         this.productoService = productoService;
         this.responseService = responseService;
+        this.marcaService = marcaService;
+        this.categoriaService = categoriaService;
+        this.colorService = colorService;
+        this.talleService = talleService;
     }
 
     // Endpoint para obtener todos los productos
@@ -42,7 +56,7 @@ public class GetProductoController {
         ArrayList<ProductoRespuestaDTO> productosRespuesta = new ArrayList<>();
         for (ProductoDTO productoDTO : productos) {
             ArrayList<StockSucursalDTO> sucursalesDTO = productoService.obtenerSucursales(productoDTO.getId());
-            productosRespuesta.add(new ProductoRespuestaDTO(productoDTO, sucursalesDTO));
+            productosRespuesta.add(new ProductoRespuestaDTO(productoDTO, sucursalesDTO,marcaService.buscarPorId(productoDTO.getMarcaId()).getNombre(),categoriaService.buscarPorId(productoDTO.getCategoriaId()).getNombre(),colorService.buscarPorId(productoDTO.getColorId()).getNombre(),talleService.buscarPorId(productoDTO.getTalleId()).getNombre()));
         }
         // Retornar respuesta con los productos en formato DTO y mensaje "OK"
         return responseService.successResponse(productosRespuesta, "OK");
@@ -61,7 +75,7 @@ public class GetProductoController {
         ProductoDTO productoDTO = ProductoMapper.toDTO(producto);
         ArrayList<StockSucursalDTO> sucursalesDTO = productoService.obtenerSucursales(productoDTO.getId());
 
-        ProductoRespuestaDTO productoRespuestaDTO = new ProductoRespuestaDTO(productoDTO, sucursalesDTO);
+        ProductoRespuestaDTO productoRespuestaDTO = new ProductoRespuestaDTO(productoDTO, sucursalesDTO,producto.getMarca().getNombre(),producto.getCategoria().getNombre(),producto.getColor().getNombre(),producto.getTalle().getNombre());
         // Retornar respuesta con el producto en formato DTO y mensaje "OK"
         return responseService.successResponse(productoRespuestaDTO, "OK");
     }

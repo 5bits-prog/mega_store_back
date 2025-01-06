@@ -7,7 +7,9 @@ import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.products.dto.ProductoDTO; // Asegúrate de tener este DTO
 import com.tpi_pais.mega_store.products.dto.ProductoRespuestaDTO;
 import com.tpi_pais.mega_store.products.dto.StockSucursalDTO;
-import com.tpi_pais.mega_store.products.service.IProductoService; // Servicio de Producto
+import com.tpi_pais.mega_store.products.repository.CategoriaRepository;
+import com.tpi_pais.mega_store.products.repository.MarcaRepository;
+import com.tpi_pais.mega_store.products.service.*;
 import com.tpi_pais.mega_store.utils.ApiResponse;
 import com.tpi_pais.mega_store.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +31,27 @@ public class PostProductoController {
     private final IProductoService productoService; // Servicio para manejar productos
     private final ResponseService responseService; // Servicio para manejar respuestas
     private final StringUtils stringUtils;
+    private final IMarcaService marcaService;
+    private final ICategoriaService categoriaService;
+    private final IColorService colorService;
+    private final ITalleService talleService;
+
 
     public PostProductoController(
             IProductoService productoService,
             ResponseService responseService,
-            StringUtils stringUtils) {
+            StringUtils stringUtils,
+            IMarcaService marcaService,
+            ICategoriaService categoriaService,
+            IColorService colorService,
+            ITalleService talleService) {
         this.productoService = productoService;
         this.responseService = responseService;
         this.stringUtils = stringUtils;
+        this.marcaService = marcaService;
+        this.categoriaService = categoriaService;
+        this.colorService = colorService;
+        this.talleService = talleService;
     }
 
     // Endpoint para crear un nuevo producto
@@ -88,7 +103,7 @@ public class PostProductoController {
         ProductoDTO nuevo = productoService.crear(productoDTO, token_limpio);
         ArrayList <StockSucursalDTO> sucursalesDTO = productoService.obtenerSucursales(nuevo.getId());
 
-        ProductoRespuestaDTO productoRespuestaDTO = new ProductoRespuestaDTO(nuevo, sucursalesDTO);
+        ProductoRespuestaDTO productoRespuestaDTO = new ProductoRespuestaDTO(nuevo, sucursalesDTO, marcaService.buscarPorId(nuevo.getMarcaId()).getNombre(), categoriaService.buscarPorId(nuevo.getCategoriaId()).getNombre(), colorService.buscarPorId(nuevo.getColorId()).getNombre(), talleService.buscarPorId(nuevo.getTalleId()).getNombre());
         // Llamar al servicio para crear el producto y devolver la respuesta
         return responseService.successResponse(
                 productoRespuestaDTO, // Crear el producto utilizando el servicio

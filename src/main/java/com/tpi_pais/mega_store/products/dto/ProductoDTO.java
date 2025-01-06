@@ -29,6 +29,7 @@ public class ProductoDTO {
     private String descripcion; // Descripción del producto, incluyendo detalles adicionales.
 
     private Integer categoriaId; // Identificador de la categoría a la que pertenece el producto.
+
     private Integer[] sucursales;
 
     private Integer marcaId; // Identificador de la marca del producto.
