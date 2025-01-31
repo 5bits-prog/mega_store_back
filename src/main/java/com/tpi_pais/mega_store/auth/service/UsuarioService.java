@@ -240,23 +240,27 @@ public class UsuarioService implements IUsuarioService{
 
     @Override
     public void verificarTelefono(String telefono, String metodo) {
-        this.StringUtils.verificarExistencia(telefono, "telefono");
-        if (!this.expReg.verificarNumeros(telefono)){
-            throw new BadRequestException(MessagesException.FORMATO_INVALIDO+"Telefono");
+        if (telefono != null){
+            this.StringUtils.verificarExistencia(telefono, "telefono");
+            if (!this.expReg.verificarNumeros(telefono)){
+                throw new BadRequestException(MessagesException.FORMATO_INVALIDO+"Telefono");
+            }
+            this.StringUtils.verificarLargo(telefono, 1, 15, "telefono");
         }
-        this.StringUtils.verificarLargo(telefono, 1, 15, "telefono");
     }
 
     @Override
     public void verificarDireccion(String direccion, String metodo) {
-        this.StringUtils.verificarExistencia(direccion, "direccion");
-        if (!this.expReg.verificarCaracteres(direccion)){
-            throw new BadRequestException(MessagesException.CARACTERES_INVALIDOS+"Direccion");
+        if (direccion != null || direccion != ""){
+            this.StringUtils.verificarExistencia(direccion, "direccion");
+            if (!this.expReg.verificarCaracteres(direccion)){
+                throw new BadRequestException(MessagesException.CARACTERES_INVALIDOS+"Direccion");
+            }
+            if (Objects.equals(this.expReg.corregirCadena(direccion), "")){
+                throw new BadRequestException(MessagesException.FORMATO_INVALIDO+"Direccion");
+            }
+            this.StringUtils.verificarLargo(direccion, 1, 100, "direccion");
         }
-        if (Objects.equals(this.expReg.corregirCadena(direccion), "")){
-            throw new BadRequestException(MessagesException.FORMATO_INVALIDO+"Direccion");
-        }
-        this.StringUtils.verificarLargo(direccion, 1, 100, "direccion");
     }
 
     @Override

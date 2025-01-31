@@ -21,7 +21,7 @@ public class ExpresionesRegulares {
     private static final Pattern PATRON_TEXTO_CON_ESPACIOS = Pattern.compile("^[A-Za-z0-9áéíóúÁÉÍÓÚ]+(?:[\\s][A-Za-z0-9áéíóúÁÉÍÓÚ]+)*$"); // Texto con espacios
     private static final Pattern PATRON_CARACTERES_PERMITIDOS = Pattern.compile("^[A-Za-z0-9áéíóúÁÉÍÓÚÁÉÍÓÚ\\s]+$"); // Texto y espacios con caracteres válidos
     private static final Pattern PATRON_EMAIL = Pattern.compile("^(?!\\.)(?!.*\\.@)(?!.*\\.\\.)[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"); // Formato de email
-    private static final Pattern PATRON_VALIDACION_PASSWORD = Pattern.compile("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&]).{8,}$"); // Contraseña segura
+    private static final Pattern PATRON_VALIDACION_PASSWORD = Pattern.compile("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).{8,}$");
 
     /**
      * Verifica si el email cumple con el formato establecido.
