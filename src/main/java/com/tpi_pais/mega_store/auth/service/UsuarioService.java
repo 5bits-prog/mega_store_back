@@ -196,9 +196,13 @@ public class UsuarioService implements IUsuarioService{
         // Email
         this.verificarEmail(modelDTO.getEmail());
         // Numero de Telefono
-        this.verificarTelefono(modelDTO.getTelefono(), "POST");
+        if (modelDTO.getTelefono() != null && !Objects.equals(modelDTO.getTelefono(), "")){
+            this.verificarTelefono(modelDTO.getTelefono(), "POST");
+        }
         // Direccion de envio: Verifico y lo corrijo
-        this.verificarDireccion(modelDTO.getDireccionEnvio(), "POST");
+        if (modelDTO.getDireccionEnvio() != null && !Objects.equals(modelDTO.getDireccionEnvio(), "")){
+            this.verificarDireccion(modelDTO.getDireccionEnvio(), "POST");
+        }
         //Rol
         this.verificarRol(modelDTO.getRolId());
         //Password
@@ -302,9 +306,17 @@ public class UsuarioService implements IUsuarioService{
         //Email
         model.setEmail(modelDTO.getEmail());
         //Telefono
-        model.setTelefono(modelDTO.getTelefono());
+        if (modelDTO.getTelefono() != null && !Objects.equals(modelDTO.getTelefono(), "")){
+            model.setTelefono(this.expReg.corregirCadena(modelDTO.getTelefono()));
+        } else {
+            model.setTelefono(null);
+        }
         //Direccion
-        model.setDireccionEnvio(this.expReg.corregirCadena(modelDTO.getDireccionEnvio()));
+        if (modelDTO.getDireccionEnvio() != null && !Objects.equals(modelDTO.getDireccionEnvio(), "")){
+            model.setDireccionEnvio(this.expReg.corregirCadena(modelDTO.getDireccionEnvio()));
+        }else {
+            model.setDireccionEnvio(null);
+        }
         //Rol
         model.setRol(rolService.buscarPorId(modelDTO.getRolId()));
         //Fecha Creacion
@@ -357,14 +369,13 @@ public class UsuarioService implements IUsuarioService{
         String escapedEmailContent = emailContent.replace("\"", "\\\"");
 
         // Aquí formateamos el JSON correctamente
-        String requestBody = String.format("""
+        return String.format("""
         {
             "destinatario": "%s",
             "asunto": "Código de verificación",
             "cuerpo": "%s"
         }
         """, email, escapedEmailContent);
-        return requestBody;
     }
 
 
