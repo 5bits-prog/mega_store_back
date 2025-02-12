@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DetalleVentaService implements IDetalleVentaService {
-    private final ProductoService productoService;
+    private final IProductoService productoService;
 
     public DetalleVentaService(ProductoService productoService) {
         this.productoService = productoService;

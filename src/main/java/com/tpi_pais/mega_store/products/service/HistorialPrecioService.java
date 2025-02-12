@@ -2,6 +2,7 @@ package com.tpi_pais.mega_store.products.service;
 
 import com.tpi_pais.mega_store.auth.model.Sesion;
 import com.tpi_pais.mega_store.auth.model.Usuario;
+import com.tpi_pais.mega_store.auth.service.ISesionService;
 import com.tpi_pais.mega_store.auth.service.SesionService;
 import com.tpi_pais.mega_store.exception.BadRequestException;
 import com.tpi_pais.mega_store.exception.MessagesException;
@@ -10,9 +11,6 @@ import com.tpi_pais.mega_store.products.dto.HistorialPrecioDTO;
 import com.tpi_pais.mega_store.products.model.HistorialPrecio;
 import com.tpi_pais.mega_store.products.model.Producto;
 import com.tpi_pais.mega_store.products.repository.HistorialPrecioRespository;
-import com.tpi_pais.mega_store.utils.StringUtils;
-import jakarta.persistence.Access;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,8 +20,8 @@ import java.util.Optional;
 @Service
 public class HistorialPrecioService implements IHistorialPrecioService{
     private final HistorialPrecioRespository repository;
-    private final ProductoService productoService;
-    private final SesionService sesionService;
+    private final IProductoService productoService;
+    private final ISesionService sesionService;
 
     public HistorialPrecioService(HistorialPrecioRespository repository, ProductoService productoService, SesionService sesionService) {
         this.repository = repository;

@@ -36,9 +36,9 @@ public class ProductoService implements IProductoService {
     private final ColorRepository colorRepository;
     private final TalleRepository talleRepository;
     private final MarcaRepository marcaRepository;
-    private final MovimientoStockService movimientoStockService;
+    private final IMovimientoStockService movimientoStockService;
     private final ImageBBService imgBBService;
-    private final HistorialPrecioService historialPrecioService;
+    private final IHistorialPrecioService historialPrecioService;
     private final StockSucursalRepository stockSucursalRepository;
 
     private static final long MAX_FILE_SIZE = 5 * 1024 * 1024;

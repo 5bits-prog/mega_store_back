@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 public class SesionService  implements ISesionService {
 
-    private SesionRepository sesionRepository;
+    private final SesionRepository sesionRepository;
 
     private final IRolService rolService;
 

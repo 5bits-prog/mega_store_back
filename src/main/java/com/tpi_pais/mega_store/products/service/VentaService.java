@@ -2,6 +2,7 @@ package com.tpi_pais.mega_store.products.service;
 
 import com.tpi_pais.mega_store.auth.model.Sesion;
 import com.tpi_pais.mega_store.auth.model.Usuario;
+import com.tpi_pais.mega_store.auth.service.ISesionService;
 import com.tpi_pais.mega_store.auth.service.SesionService;
 import com.tpi_pais.mega_store.products.dto.DetalleVentaDTO;
 import com.tpi_pais.mega_store.products.dto.VentaDTO;
@@ -23,13 +24,13 @@ import static java.math.BigDecimal.*;
 
 @Service
 public class VentaService implements IVentaService {
-    private final DetalleVentaService detalleVentaService;
-    private final SesionService sesionService;
+    private final IDetalleVentaService detalleVentaService;
+    private final ISesionService sesionService;
     private final StringUtils stringUtils;
     private final VentaRepository ventaRepository;
     private final DetalleVentaRepository detalleVentaRepository;
-    private final MovimientoStockService movimientoStockService;
-    private final ProductoService productoService;
+    private final IMovimientoStockService movimientoStockService;
+    private final IProductoService productoService;
 
     public VentaService(
             DetalleVentaService detalleVentaService,

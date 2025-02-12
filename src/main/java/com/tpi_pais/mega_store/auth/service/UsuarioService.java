@@ -29,9 +29,9 @@ public class UsuarioService implements IUsuarioService{
 
     private final StringUtils StringUtils;
 
-    private final RolService rolService;
+    private final IRolService rolService;
 
-    private final SesionService sesionService;
+    private final ISesionService sesionService;
 
     private final WebClient webClient;
 
