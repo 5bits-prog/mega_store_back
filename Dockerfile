@@ -1,14 +1,14 @@
-# Usa una imagen base compatible con Java 21
-FROM eclipse-temurin:21-jdk-alpine
+# Usa una imagen oficial de Java como base
+FROM eclipse-temurin:17-jdk-alpine
 
 # Establece el directorio de trabajo en el contenedor
 WORKDIR /app
 
-# Copia el JAR de la aplicación al contenedor
-COPY target/tu-aplicacion.jar /app/tu-aplicacion.jar
+# Copia el archivo JAR al contenedor
+COPY target/mi-aplicacion.jar app.jar
 
-# Expone el puerto que tu aplicación va a usar
+# Expone el puerto 8080 para que la aplicación sea accesible
 EXPOSE 8080
 
 # Comando para ejecutar la aplicación
-ENTRYPOINT ["java", "-jar", "/app/tu-aplicacion.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
