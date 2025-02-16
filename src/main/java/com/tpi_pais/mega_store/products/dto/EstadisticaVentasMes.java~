@@ -1,0 +1,4 @@
+package com.tpi_pais.mega_store.products.dto;
+
+public interface EstadisticaVentasMes {
+}

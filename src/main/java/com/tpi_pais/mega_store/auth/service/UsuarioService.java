@@ -307,7 +307,7 @@ public class UsuarioService implements IUsuarioService{
         model.setEmail(modelDTO.getEmail());
         //Telefono
         if (modelDTO.getTelefono() != null && !Objects.equals(modelDTO.getTelefono(), "")){
-            model.setTelefono(this.expReg.corregirCadena(modelDTO.getTelefono()));
+            model.setTelefono(modelDTO.getTelefono());
         } else {
             model.setTelefono(null);
         }
@@ -323,7 +323,6 @@ public class UsuarioService implements IUsuarioService{
         model.setFechaCreacion();
         //Codigo Verificacion
         model.setCodigoVerificacion();
-        //Verificado: Por ahora como falta enviar el codigo lo seteo en True
         model.setVerificado(false);
         //Password
         model.setPassword(modelDTO.getPassword());

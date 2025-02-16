@@ -91,4 +91,9 @@ public class VentaService implements IVentaService {
         }
         return VentaMapper.toDTO(ventaGuardada, detallesGuardados);
     }
+
+    @Override
+    public Venta buscarPorId(Integer id) {
+        return ventaRepository.findById(id).orElse(null);
+    }
 }
