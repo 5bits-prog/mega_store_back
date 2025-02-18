@@ -437,21 +437,4 @@ public class UsuarioService implements IUsuarioService{
         }
     }
 
-    @Override
-    public void enviarCodigoRecuperacion(String email) {
-        if (email == null || email.isEmpty()) {
-            throw new BadRequestException("El email no puede estar vacio.");
-        }
-        Optional<Usuario> usuario = this.modelRepository.findByEmail(email);
-        if (usuario.isEmpty()) {
-            throw new NotFoundException("El usuario no existe.");
-        }
-        if (usuario.get().esEliminado()) {
-            throw new BadRequestException("El usuario se encuentra eliminado.");
-        }
-        if (usuario.get().getVerificado()) {
-            usuario.get().setCodigoRecuperacion();
-            this.enviarCodigoVerificacion(email, usuario.get().getCodigoRecuperacion());
-        }
-    }
 }

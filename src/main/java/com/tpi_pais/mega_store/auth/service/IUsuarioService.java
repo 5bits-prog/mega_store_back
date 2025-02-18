@@ -58,6 +58,5 @@ public interface IUsuarioService {
 
     public void reenviarCodigo (String email);
 
-    public void enviarCodigoRecuperacion (String email);
 
 }
