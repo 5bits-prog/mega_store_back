@@ -16,7 +16,6 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/auth")
 public class GetUsuarioController {

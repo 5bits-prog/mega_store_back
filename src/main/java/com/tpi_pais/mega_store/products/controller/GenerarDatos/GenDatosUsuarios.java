@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 
-@CrossOrigin(origins = "http://localhost:5173") // Permite solicitudes desde un dominio específico (localhost:5173)
 @RestController
 @RequestMapping("/generador_datos")
 public class GenDatosUsuarios {

@@ -32,7 +32,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@CrossOrigin(origins = "http://localhost:5173") // Permite solicitudes desde un dominio específico (localhost:5173)
 @RestController
 @RequestMapping("/generador_datos") // Define la ruta base para los productos
 public class GenDatosVentas {

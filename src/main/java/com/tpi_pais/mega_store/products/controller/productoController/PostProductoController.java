@@ -21,7 +21,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:5173") // Permite solicitudes desde un dominio específico (localhost:5173)
 @RestController
 @RequestMapping("/products") // Define la ruta base para los productos
 public class PostProductoController {

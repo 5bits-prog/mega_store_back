@@ -9,7 +9,6 @@ import com.tpi_pais.mega_store.utils.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/auth")
 public class LoginController {

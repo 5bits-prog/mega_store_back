@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.*;
 
-@CrossOrigin(origins = "http://localhost:5173") // Permite solicitudes desde un dominio específico (localhost:5173)
 @RestController
 @RequestMapping("/generador_datos") // Define la ruta base para los productos
 public class GenDatosProductos {

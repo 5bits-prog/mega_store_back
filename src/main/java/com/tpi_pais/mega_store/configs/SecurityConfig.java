@@ -17,59 +17,51 @@ import java.util.List;
 
 /**
  * Configuración de seguridad de la aplicación.
- * Configura el filtro de seguridad, las políticas CORS y el codificador de contraseñas.
  */
 @Configuration
-@EnableAspectJAutoProxy // Activa el soporte de AspectJ para AOP (Programación Orientada a Aspectos)
+@EnableAspectJAutoProxy
 public class SecurityConfig {
 
     /**
-     * Configura los filtros de seguridad, incluyendo reglas para habilitar o denegar acceso a ciertas rutas.
-     *
-     * @param http Objeto HttpSecurity para configurar reglas de seguridad HTTP.
-     * @return Configuración de seguridad para la aplicación web.
-     * @throws Exception Si ocurre algún error durante la configuración.
+     * Configura el filtro de seguridad, incluyendo reglas de autorización y CORS.
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable) // Desactiva la protección CSRF, útil para pruebas o APIs sin sesiones.
+                .csrf(AbstractHttpConfigurer::disable) // Desactiva CSRF (útil en desarrollo)
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/products/**").permitAll() // Permite el acceso público a las rutas de productos.
-                        .requestMatchers("/auth/**").permitAll() // Permite el acceso público a las rutas de autenticación.
-                        .anyRequest().permitAll() // Permite el acceso público a cualquier otra ruta.
+                        .requestMatchers("/products/**").permitAll() // Acceso público a productos
+                        .requestMatchers("/auth/**").permitAll() // Acceso público a autenticación
+                        .anyRequest().permitAll() // Acceso público a cualquier otra ruta
                 )
-                .cors(Customizer.withDefaults()); // Activa CORS con la configuración por defecto.
+                .cors(Customizer.withDefaults()); // Habilita CORS con la configuración definida
 
-        return http.build(); // Construye y devuelve la configuración de seguridad.
+        return http.build();
     }
 
     /**
-     * Configura la política CORS para permitir solicitudes desde cualquier origen.
-     *
-     * @return La fuente de configuración de CORS.
+     * Configura CORS para permitir solicitudes desde cualquier origen.
      */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("*")); // Permite cualquier origen
-        configuration.setAllowedMethods(List.of("*")); // Permite todos los métodos HTTP (GET, POST, PUT, DELETE, etc.)
-        configuration.setAllowedHeaders(List.of("*")); // Permite cualquier encabezado
-        configuration.setAllowCredentials(true); // Habilita el envío de credenciales (si es necesario)
+        configuration.setAllowedOrigins(List.of("*"));  // Permite cualquier origen
+        configuration.setAllowedMethods(List.of("*"));  // Permite todos los métodos HTTP
+        configuration.setAllowedHeaders(List.of("*"));  // Permite cualquier header
+        configuration.setAllowCredentials(false);        // No se permiten credenciales
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration); // Aplica la configuración a todas las rutas
-        return source; // Devuelve la configuración de CORS.
+        source.registerCorsConfiguration("/**", configuration);  // Aplica la configuración a todas las rutas
+        return source;
     }
 
     /**
-     * Configura el codificador de contraseñas para la aplicación.
-     *
-     * @return El codificador de contraseñas BCrypt.
+     * Configura el codificador de contraseñas.
      */
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();  // Utiliza BCryptPasswordEncoder para la encriptación de contraseñas.
+        return new BCryptPasswordEncoder();
     }
 }
+
 
