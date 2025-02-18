@@ -13,7 +13,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -46,23 +45,20 @@ public class SecurityConfig {
     }
 
     /**
-     * Configura la política CORS para permitir solicitudes desde orígenes específicos.
+     * Configura la política CORS para permitir solicitudes desde cualquier origen.
      *
      * @return La fuente de configuración de CORS.
      */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // Permite el acceso desde las direcciones específicas (en este caso, las direcciones de desarrollo frontend)
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:5173"));
-        // Permite todos los métodos HTTP (GET, POST, PUT, DELETE, etc.)
-        configuration.setAllowedMethods(List.of("*"));
-        // Permite los headers de autorización y content-type.
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        configuration.setAllowedOrigins(List.of("*")); // Permite cualquier origen
+        configuration.setAllowedMethods(List.of("*")); // Permite todos los métodos HTTP (GET, POST, PUT, DELETE, etc.)
+        configuration.setAllowedHeaders(List.of("*")); // Permite cualquier encabezado
+        configuration.setAllowCredentials(true); // Habilita el envío de credenciales (si es necesario)
 
-        // Registra la configuración de CORS para todas las rutas de la aplicación.
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/**", configuration); // Aplica la configuración a todas las rutas
         return source; // Devuelve la configuración de CORS.
     }
 
@@ -76,3 +72,4 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();  // Utiliza BCryptPasswordEncoder para la encriptación de contraseñas.
     }
 }
+

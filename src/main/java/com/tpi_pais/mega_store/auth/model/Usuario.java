@@ -109,6 +109,15 @@ public class Usuario {
     @Column(name = "fecha_eliminacion")
     private LocalDateTime fechaEliminacion;
 
+
+    /**
+     * Código de verificación generado tras el registro.
+     * Debe tener hasta 7 caracteres.
+     */
+    @Size(min = 1, max = 7, message = "El código de recuperacion debe tener menos de 7 caracteres")
+    @Column(name = "codigo_recuperacion")
+    private String codigoRecuperacio;
+
     /**
      * Proveedor de encriptación de contraseñas usando BCrypt.
      *
@@ -183,5 +192,9 @@ public class Usuario {
      */
     public void setCodigoVerificacion() {
         this.codigoVerificacion = UUID.randomUUID().toString().substring(0, 6);
+    }
+
+    public void setCodigoRecuperacion() {
+        this.codigoRecuperacio = UUID.randomUUID().toString().substring(0, 6);
     }
 }
