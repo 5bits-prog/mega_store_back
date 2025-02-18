@@ -1,6 +1,8 @@
 package com.tpi_pais.mega_store.products.repository;
 
 import com.tpi_pais.mega_store.products.model.Producto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -22,7 +24,14 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
      * @return Lista de objetos Producto no eliminados, ordenados por ID ascendente.
      */
     List<Producto> findByFechaEliminacionIsNullOrderByIdAsc();
-
+    /**
+     * Lista todos los productos que no han sido eliminados (fechaEliminacion es null).
+     * Los resultados se ordenan por ID de forma ascendente.
+     *
+     * @param pageable Objeto que define la paginación y ordenación.
+     * @return Página de productos no eliminados, ordenados por ID ascendente.
+     */
+    Page<Producto> findByFechaEliminacionIsNull(Pageable pageable);
     /**
      * Encuentra un producto activo por su ID, es decir, que no ha sido eliminado.
      *

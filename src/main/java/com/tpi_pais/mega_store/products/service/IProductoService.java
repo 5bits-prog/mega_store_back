@@ -5,6 +5,8 @@ import com.tpi_pais.mega_store.products.dto.SucursalDTO;
 import com.tpi_pais.mega_store.products.model.Producto;
 import com.tpi_pais.mega_store.products.dto.ProductoDTO;
 import com.tpi_pais.mega_store.products.repository.SucursalRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
@@ -65,4 +67,6 @@ public interface IProductoService {
     void actualizarPrecio(Producto producto, BigDecimal precio, String token);
 
     ArrayList<StockSucursalDTO> obtenerSucursales (Integer idProducto);
+
+    Page<ProductoDTO> listar(Pageable pageable);
 }

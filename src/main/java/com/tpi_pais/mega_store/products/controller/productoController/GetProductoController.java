@@ -10,6 +10,9 @@ import com.tpi_pais.mega_store.products.model.Producto; // Modelo Producto
 import com.tpi_pais.mega_store.products.service.*;
 import com.tpi_pais.mega_store.utils.ApiResponse; // Respuesta API común
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,7 +48,7 @@ public class GetProductoController {
     }
 
     // Endpoint para obtener todos los productos
-    @GetMapping("/productos")
+    @GetMapping("/productosAll")
     public ResponseEntity<ApiResponse<Object>> getAll() {
         // Llamar al servicio para listar todos los productos
         List<ProductoDTO> productos = productoService.listar();
@@ -59,6 +62,32 @@ public class GetProductoController {
             productosRespuesta.add(new ProductoRespuestaDTO(productoDTO, sucursalesDTO,marcaService.buscarPorId(productoDTO.getMarcaId()).getNombre(),categoriaService.buscarPorId(productoDTO.getCategoriaId()).getNombre(),colorService.buscarPorId(productoDTO.getColorId()).getNombre(),talleService.buscarPorId(productoDTO.getTalleId()).getNombre()));
         }
         // Retornar respuesta con los productos en formato DTO y mensaje "OK"
+        return responseService.successResponse(productosRespuesta, "OK");
+    }
+
+    @GetMapping("/productos")
+    public ResponseEntity<ApiResponse<Object>> getAll(@PageableDefault(size = 10, page = 0, sort = "id") Pageable pageable) {
+        // Llamar al servicio para listar los productos paginados
+        Page<ProductoDTO> productos = productoService.listar(pageable);
+
+        // Si no hay productos, lanzar una excepción con mensaje personalizado
+        if (productos.isEmpty()) {
+            throw new BadRequestException("No hay productos creados");
+        }
+
+        // Convertir los productos a ProductoRespuestaDTO
+        Page<ProductoRespuestaDTO> productosRespuesta = productos.map(productoDTO ->
+                new ProductoRespuestaDTO(
+                        productoDTO,
+                        productoService.obtenerSucursales(productoDTO.getId()),
+                        marcaService.buscarPorId(productoDTO.getMarcaId()).getNombre(),
+                        categoriaService.buscarPorId(productoDTO.getCategoriaId()).getNombre(),
+                        colorService.buscarPorId(productoDTO.getColorId()).getNombre(),
+                        talleService.buscarPorId(productoDTO.getTalleId()).getNombre()
+                )
+        );
+
+        // Retornar respuesta con los productos en formato paginado
         return responseService.successResponse(productosRespuesta, "OK");
     }
 
