@@ -7,12 +7,13 @@ import java.util.Map;
 
 public interface IEstadisticasService {
 
-    public List<EstadisticasProductosMasVendidosDTO> obtenerProductosMasVendidos(String fechaDesde, String fechaHasta, Integer limite);
+    List<EstadisticasProductosMasVendidosDTO> obtenerProductosMasVendidos(String fechaDesde, String fechaHasta, Integer limite);
 
-    public void verificarFechas (String fechaDesde, String fechaHasta);
+    void verificarFechas (String fechaDesde, String fechaHasta);
 
-    public List<EstadisticaVentasDTO> obtenerVentas(String fechaDesde, String fechaHasta, String frecuencia);
+    List<EstadisticaVentasDTO> obtenerVentas(String fechaDesde, String fechaHasta, String frecuencia);
 
-    public Map<String, Integer> obtenerFrecuenciaVentas ();
+    Map<String, Integer> obtenerFrecuenciaVentas ();
 
+    Map<String, Integer> obtenerMontoPromedioVentas();
 }

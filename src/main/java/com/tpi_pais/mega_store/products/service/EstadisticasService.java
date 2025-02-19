@@ -5,11 +5,13 @@ import com.tpi_pais.mega_store.products.dto.*;
 import com.tpi_pais.mega_store.products.mapper.EstadisticasProductosMasVendidosMapper;
 import com.tpi_pais.mega_store.products.mapper.EstadisticasVentasMapper;
 import com.tpi_pais.mega_store.products.model.FrecuenciaVentas;
+import com.tpi_pais.mega_store.products.model.MontoPromedioVenta;
 import com.tpi_pais.mega_store.products.model.ProductoMasVendido;
 import com.tpi_pais.mega_store.products.model.VentasPorPeriodo;
 import com.tpi_pais.mega_store.products.repository.EstProdMasVendidoRepository;
 import com.tpi_pais.mega_store.products.repository.EstVentasRepository;
 import com.tpi_pais.mega_store.products.repository.FrecuenciaVentasRepository;
+import com.tpi_pais.mega_store.products.repository.MontoPromedioVentaRepository;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -25,18 +27,21 @@ public class EstadisticasService implements IEstadisticasService {
     private FrecuenciaVentasRepository frecuenciaVentasRepository;
     private EstadisticasProductosMasVendidosMapper prodMasVendidosM;
     private EstadisticasVentasMapper ventasM;
+    private MontoPromedioVentaRepository mPRepository;
 
     public EstadisticasService(
             EstadisticasProductosMasVendidosMapper prodMasVendidosM,
             EstadisticasVentasMapper ventasM,
             EstVentasRepository prodMasVendidosR,
             EstProdMasVendidoRepository productoRepository,
-            FrecuenciaVentasRepository frecuenciaVentasRepository) {
+            FrecuenciaVentasRepository frecuenciaVentasRepository,
+            MontoPromedioVentaRepository mPRepository) {
         this.prodMasVendidosM = prodMasVendidosM;
         this.ventasM = ventasM;
         this.prodMasVendidosR = prodMasVendidosR;
         this.productoRepository = productoRepository;
         this.frecuenciaVentasRepository = frecuenciaVentasRepository;
+        this.mPRepository = mPRepository;
     }
 
     @Override
@@ -162,6 +167,59 @@ public class EstadisticasService implements IEstadisticasService {
                 }
             }
         }
+        return histograma;
+    }
+
+    @Override
+    public Map<String, Integer> obtenerMontoPromedioVentas() {
+        List<EstadisticaMontoPromedioVentaDTO> montoPromedio = mPRepository.obtenerMontoPromedioPorUsuario();
+
+        // Inicializamos min y max con un valor extremo
+        Double min = Double.MAX_VALUE; // El valor más alto posible para Double
+        Double max = Double.MIN_VALUE; // El valor más bajo posible para Double
+
+        for (EstadisticaMontoPromedioVentaDTO monto : montoPromedio) {
+            if (monto.getMonto() < min) {
+                min = monto.getMonto();
+            }
+            if (monto.getMonto() > max) {
+                max = monto.getMonto();
+            }
+        }
+
+        // Si el min y max no se modificaron (es decir, la lista estaba vacía), puedes manejar este caso
+        if (min.equals(Double.MAX_VALUE) || max.equals(Double.MIN_VALUE)) {
+            // Manejar el caso en el que no se encontraron valores válidos (por ejemplo, lanzar excepción o retornar un mapa vacío)
+            return new LinkedHashMap<>();
+        }
+
+        Integer intervalos = 10;
+        Integer tamIntervalo = (int) ((max - min) / intervalos);
+        if (tamIntervalo == 0) {
+            tamIntervalo = 1;
+        }
+
+        Map<String, Integer> histograma = new LinkedHashMap<>();
+        for (int i = 0; i < intervalos; i++) {
+            int inicio = (int) (min + (i * tamIntervalo));
+            int fin = (i == intervalos - 1) ? Math.toIntExact(max.longValue()) : (inicio + tamIntervalo - 1);
+            String rango = inicio + " - " + fin;
+            histograma.put(rango, 0);
+        }
+
+        for (EstadisticaMontoPromedioVentaDTO monto : montoPromedio) {
+            Double montoVenta = monto.getMonto();
+            for (String rango : histograma.keySet()) {
+                String[] limites = rango.split(" - ");
+                int inicio = Integer.parseInt(limites[0]);
+                int fin = Integer.parseInt(limites[1]);
+                if (montoVenta >= inicio && montoVenta <= fin) {
+                    histograma.put(rango, histograma.get(rango) + 1);
+                    break;  // Evita contar el mismo valor más de una vez
+                }
+            }
+        }
+
         return histograma;
     }
 }

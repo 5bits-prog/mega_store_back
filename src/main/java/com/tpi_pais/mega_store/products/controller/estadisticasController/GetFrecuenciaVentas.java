@@ -27,4 +27,10 @@ public class GetFrecuenciaVentas {
     public ResponseEntity<ApiResponse<Object>> obtenerProductosMasVendidos() {
         return responseService.successResponse(estadisticasService.obtenerFrecuenciaVentas(), "OK");
     }
+
+    @SessionRequired
+    @GetMapping({"/montos-ventas"})
+    public ResponseEntity<ApiResponse<Object>> obtenerMontosPromediosVentas() {
+        return responseService.successResponse(estadisticasService.obtenerMontoPromedioVentas(), "OK");
+    }
 }
