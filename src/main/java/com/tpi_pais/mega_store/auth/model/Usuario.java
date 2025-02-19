@@ -116,7 +116,7 @@ public class Usuario {
      */
     @Size(min = 1, max = 7, message = "El código de recuperacion debe tener menos de 7 caracteres")
     @Column(name = "codigo_recuperacion")
-    private String codigoRecuperacio;
+    private String codigoRecuperacion;
 
     /**
      * Proveedor de encriptación de contraseñas usando BCrypt.
@@ -195,6 +195,6 @@ public class Usuario {
     }
 
     public void setCodigoRecuperacion() {
-        this.codigoRecuperacio = UUID.randomUUID().toString().substring(0, 6);
+        this.codigoRecuperacion = UUID.randomUUID().toString().substring(0, 6);
     }
 }

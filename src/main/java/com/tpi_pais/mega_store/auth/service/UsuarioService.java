@@ -421,6 +421,7 @@ public class UsuarioService implements IUsuarioService{
             throw new BadRequestException("El email no puede estar vacio.");
         }
         Optional<Usuario> usuario = this.modelRepository.findByEmail(email);
+        System.out.println(usuario);
         if (usuario.isEmpty()) {
             throw new NotFoundException("El usuario no existe.");
         }
@@ -437,4 +438,106 @@ public class UsuarioService implements IUsuarioService{
         }
     }
 
+    @Override
+    public void recuperarContrasena(String email) {
+        if (email == null || email.isEmpty()) {
+            throw new BadRequestException("El email no puede estar vacio.");
+        }
+        System.out.println(email);
+        Usuario usuario = this.buscarPorEmail(email);
+        if (usuario.esEliminado()) {
+            throw new BadRequestException("El usuario se encuentra eliminado.");
+        }
+        if (!usuario.getVerificado()) {
+            throw new BadRequestException("El usuario no se encuentra verificado.");
+        }
+        usuario.setCodigoRecuperacion();
+        modelRepository.save(usuario);
+        this.enviarCodigoRecuperacion(email,usuario.getCodigoRecuperacion());
+    }
+
+
+
+    public void enviarCodigoRecuperacion  (String email, String codigoRecuperacion) {
+        try {
+            String requestBody = getStringR(email, codigoRecuperacion);
+
+            // Token de autorización (reemplaza "your-token" por el token real)
+            String token = "48cd4db4cf2acbb1a532528b71fadb202efe8af8";
+
+            // Realizar la solicitud POST para enviar el correo
+            String response = String.valueOf(webClient.post()
+                    .uri("/emailSender/enviar/")  // Especifica el endpoint correcto
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", "Token " + token)  // Agrega el token al encabezado
+                    .bodyValue(requestBody)  // Cuerpo de la solicitud con los datos de email y código
+                    .retrieve()
+                    .toEntity(String.class)
+                    .doOnTerminate(() -> {
+                    })
+                    .doOnError(error -> {
+                    })
+                    .block());  // Espera la respuesta sin bloquear el hilo principal
+
+        } catch (Exception e) {
+            throw new BadRequestException("Error al enviar el email: " + e.getMessage());
+        }
+    }
+    private static String getStringR (String email, String codigoVerificacion) {
+        String emailHtmlTemplate = EmailCodigoValidacion.passwordResetEmailTemplate;
+        // Reemplaza las variables en la plantilla HTML
+        String emailContent = emailHtmlTemplate
+                .replace("{LOGO_URL}", EmailCodigoValidacion.logoUrl)
+                .replace("{CODIGO_RECUPERACION}", codigoVerificacion);
+
+        // Aquí escapamos las comillas dobles dentro del contenido HTML
+        String escapedEmailContent = emailContent.replace("\"", "\\\"");
+
+        // Aquí formateamos el JSON correctamente
+        return String.format("""
+        {
+            "destinatario": "%s",
+            "asunto": "Código de Recuperacion de Contraseña",
+            "cuerpo": "%s"
+        }
+        """, email, escapedEmailContent);
+    }
+
+    @Override
+    public boolean validarCodigoRecuperacion(String email, String codigoRecuperacion) {
+        if (email == null || email.isEmpty()) {
+            throw new BadRequestException("El email no puede estar vacio.");
+        }
+        Usuario usuario = this.buscarPorEmail(email);
+        if (usuario.esEliminado()) {
+            throw new BadRequestException("El usuario se encuentra eliminado.");
+        }
+        if (!usuario.getVerificado()) {
+            throw new BadRequestException("El usuario no se encuentra verificado.");
+        }
+
+        if (!usuario.getCodigoRecuperacion().equals(codigoRecuperacion)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void restablecerContrasena(String email, String password, String codigoRecuperacion) {
+        if (email == null || email.isEmpty()) {
+            throw new BadRequestException("El email no puede estar vacio.");
+        }
+        Usuario usuario = this.buscarPorEmail(email);
+        if (usuario.esEliminado()) {
+            throw new BadRequestException("El usuario se encuentra eliminado.");
+        }
+        if (!usuario.getVerificado()) {
+            throw new BadRequestException("El usuario no se encuentra verificado.");
+        }
+        if (!usuario.getCodigoRecuperacion().equals(codigoRecuperacion)) {
+            throw new BadRequestException("Se necesita el codigo de recuperacion.");
+        }
+        usuario.setPassword(password);
+        modelRepository.save(usuario);
+    }
 }

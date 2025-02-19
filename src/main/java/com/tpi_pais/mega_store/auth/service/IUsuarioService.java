@@ -58,5 +58,9 @@ public interface IUsuarioService {
 
     public void reenviarCodigo (String email);
 
+    public void recuperarContrasena (String email);
 
+    public boolean validarCodigoRecuperacion (String email, String codigoRecuperacion);
+
+    public void restablecerContrasena (String email, String contrasena, String confirmarContrasena);
 }
