@@ -4,10 +4,12 @@ import com.tpi_pais.mega_store.auth.dto.PerfilDTO;
 import com.tpi_pais.mega_store.auth.dto.UsuarioDTO;
 import com.tpi_pais.mega_store.auth.model.Usuario;
 import com.tpi_pais.mega_store.auth.model.Rol;
+import org.springframework.stereotype.Component;
 
 /**
  * Mapper para convertir entre el modelo de datos Usuario y su representación DTO (UsuarioDTO).
  */
+@Component
 public class UsuarioMapper {
 
     // Constructor privado para evitar la instanciación de la clase

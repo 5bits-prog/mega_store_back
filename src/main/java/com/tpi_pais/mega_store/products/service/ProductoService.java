@@ -16,6 +16,7 @@ import com.tpi_pais.mega_store.exception.BadRequestException;
 import com.tpi_pais.mega_store.products.mapper.ProductoMapper;
 import com.tpi_pais.mega_store.utils.ExpresionesRegulares;
 import com.tpi_pais.mega_store.utils.StringUtils;
+import org.hibernate.engine.jdbc.Size;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
@@ -378,6 +379,21 @@ public class ProductoService implements IProductoService {
     public Page<ProductoDTO> listar(Pageable pageable) {
         Page<Producto> productos = productoRepository.findByFechaEliminacionIsNull(pageable);
         return productos.map(ProductoMapper::toDTO); // Convierte cada Producto en ProductoDTO
+    }
+
+    @Override
+    public Boolean tieneProductoAsociado (Integer id, String atributo){
+        if (atributo.equals("categoria")) {
+            return !productoRepository.findByFechaEliminacionIsNullAndCategoria_Id(id).isEmpty();
+        } else if (atributo.equals("color")) {
+            return !productoRepository.findByFechaEliminacionIsNullAndColor_Id(id).isEmpty();
+        } else if (atributo.equals("talle")) {
+            return !productoRepository.findByFechaEliminacionIsNullAndTalle_Id(id).isEmpty();
+        } else if (atributo.equals("marca")) {
+            return !productoRepository.findByFechaEliminacionIsNullAndMarca_Id(id).isEmpty();
+        } else {
+            throw new BadRequestException("Atributo no reconocido.");
+        }
     }
 
 }

@@ -73,6 +73,7 @@ public class CategoriaService implements ICategoriaService {
     @Override
     @Transactional (rollbackFor = Exception.class)
     public void eliminar(Categoria model) {
+
         model.eliminar();
         modelRepository.save(model);
     }
@@ -106,4 +107,6 @@ public class CategoriaService implements ICategoriaService {
     public boolean categoriaExistente(String nombre) {
         return modelRepository.findByNombre(nombre).isPresent();
     }
+
+
 }

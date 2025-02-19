@@ -75,4 +75,10 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
      *         o está vacío si no se encuentra o no está eliminado.
      */
     Optional<Producto> findByNombreAndFechaEliminacionIsNotNull(String nombre);
+
+    List<Producto> findByFechaEliminacionIsNullAndCategoria_Id(Integer idCategoria);
+    List<Producto> findByFechaEliminacionIsNullAndMarca_Id(Integer idMarca);
+    List<Producto> findByFechaEliminacionIsNullAndTalle_Id(Integer idTalle);
+    List<Producto> findByFechaEliminacionIsNullAndColor_Id(Integer idColor);
+
 }

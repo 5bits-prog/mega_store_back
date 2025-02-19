@@ -69,4 +69,6 @@ public interface IProductoService {
     ArrayList<StockSucursalDTO> obtenerSucursales (Integer idProducto);
 
     Page<ProductoDTO> listar(Pageable pageable);
+
+    Boolean tieneProductoAsociado (Integer id, String atributo);
 }
