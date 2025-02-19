@@ -58,6 +58,8 @@ public class UsuarioService implements IUsuarioService{
         this.ventaService = ventaService;
     }
 
+    public UsuarioService(UsuarioRepository usuarioRepository, ExpresionesRegulares expReg, Object stringUtils, RolService rolService, Object sesionService, Object webClient) {
+    }
 
     @Override
     public List<UsuarioDTO> listar() {

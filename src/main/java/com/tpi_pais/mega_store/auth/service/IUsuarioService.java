@@ -1,5 +1,6 @@
 package com.tpi_pais.mega_store.auth.service;
 
+import com.tpi_pais.mega_store.auth.dto.PerfilDTO;
 import com.tpi_pais.mega_store.auth.dto.UsuarioDTO;
 import com.tpi_pais.mega_store.auth.model.Sesion;
 import com.tpi_pais.mega_store.auth.model.Usuario;
@@ -63,4 +64,6 @@ public interface IUsuarioService {
     public boolean validarCodigoRecuperacion (String email, String codigoRecuperacion);
 
     public void restablecerContrasena (String email, String contrasena, String confirmarContrasena);
+
+    public PerfilDTO getPerfil(Integer id);
 }

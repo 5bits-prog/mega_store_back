@@ -6,6 +6,7 @@ import com.tpi_pais.mega_store.auth.service.ISesionService;
 import com.tpi_pais.mega_store.auth.service.SesionService;
 import com.tpi_pais.mega_store.products.dto.DetalleVentaDTO;
 import com.tpi_pais.mega_store.products.dto.VentaDTO;
+import com.tpi_pais.mega_store.products.dto.VentaUsuarioDTO;
 import com.tpi_pais.mega_store.products.mapper.DetalleVentaMapper;
 import com.tpi_pais.mega_store.products.mapper.VentaMapper;
 import com.tpi_pais.mega_store.products.model.DetalleVenta;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 
 import static java.math.BigDecimal.*;
 
@@ -96,4 +98,11 @@ public class VentaService implements IVentaService {
     public Venta buscarPorId(Integer id) {
         return ventaRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public List<VentaUsuarioDTO> listarPorUsuario(Integer id) {
+        List<Venta> ventas = ventaRepository.findByFechaEliminacionIsNullAndUsuarioId(id);
+        return ventas.stream().map(VentaMapper::toDTOUsuario).toList();
+    }
 }
+

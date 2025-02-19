@@ -54,8 +54,8 @@ public class GetUsuarioController {
          *   Si se encuentra la usuario, y la misma esta elimianda se retorna un badrequest.
          * En caso de que pase todas las verificacioens devuelve el recurso encontrado.
          * */
-        Usuario model = modelService.buscarPorId(id);
-        return responseService.successResponse(UsuarioMapper.toDTO(model), "OK");
+
+        return responseService.successResponse(modelService.getPerfil(id), "OK");
 
     }
 

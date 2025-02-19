@@ -1,5 +1,6 @@
 package com.tpi_pais.mega_store.auth.mapper;
 
+import com.tpi_pais.mega_store.auth.dto.PerfilDTO;
 import com.tpi_pais.mega_store.auth.dto.UsuarioDTO;
 import com.tpi_pais.mega_store.auth.model.Usuario;
 import com.tpi_pais.mega_store.auth.model.Rol;
@@ -64,5 +65,25 @@ public class UsuarioMapper {
             model.setRol(rol); // Se asigna el objeto Rol al usuario
         }
         return model; // Retorna el objeto Usuario creado
+    }
+
+    public static PerfilDTO toDTOPerfil(Usuario model) {
+        PerfilDTO dto = new PerfilDTO();
+        dto.setId(model.getId()); // Se copia el ID del usuario
+        dto.setNombre(model.getNombre()); // Se copia el nombre del usuario
+        dto.setEmail(model.getEmail()); // Se copia el email del usuario
+        dto.setTelefono(model.getTelefono()); // Se copia el teléfono del usuario
+        dto.setDireccionEnvio(model.getDireccionEnvio()); // Se copia la dirección de envío del usuario
+        dto.setFechaCreacion(model.getFechaCreacion()); // Se copia la fecha de creación del usuario
+        dto.setCodigoVerificacion(model.getCodigoVerificacion()); // Se copia el código de verificación del usuario
+        dto.setVerificado(model.getVerificado()); // Se copia el estado de verificación del usuario
+        dto.setPassword(""); // Se establece el password vacío, para no exponerlo en el DTO
+        dto.setFechaEliminacion(model.getFechaEliminacion()); // Se copia la fecha de eliminación del usuario
+
+        // Asegurarse de que el rol no sea nulo antes de acceder a su ID
+        if (model.getRol() != null) {
+            dto.setRolId(model.getRol().getId()); // Se copia el ID del rol si el rol no es nulo
+        }
+        return dto; // Retorna el objeto PerfilDTO creado
     }
 }

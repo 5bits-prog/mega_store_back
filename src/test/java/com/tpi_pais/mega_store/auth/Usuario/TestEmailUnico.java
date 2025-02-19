@@ -21,7 +21,7 @@ public class TestEmailUnico {
     @BeforeEach
     void setUp() {
         usuarioRepository = mock(UsuarioRepository.class);
-        usuarioService = new UsuarioService(usuarioRepository, null, null, null, null, null);
+        usuarioService = new UsuarioService(usuarioRepository, null, null, null, null, null, null, null);
     }
 
     @Test

@@ -2,6 +2,7 @@ package com.tpi_pais.mega_store.products.mapper;
 
 import com.tpi_pais.mega_store.products.dto.DetalleVentaDTO;
 import com.tpi_pais.mega_store.products.dto.VentaDTO;
+import com.tpi_pais.mega_store.products.dto.VentaUsuarioDTO;
 import com.tpi_pais.mega_store.products.model.Venta;
 import org.springframework.stereotype.Component;
 
@@ -30,5 +31,13 @@ public class VentaMapper {
         entity.setUsuario(null);
         entity.setTotalVenta(dto.getTotalVenta());
         return entity;
+    }
+
+    public static VentaUsuarioDTO toDTOUsuario(Venta model) {
+        VentaUsuarioDTO dto = new VentaUsuarioDTO();
+        dto.setId(model.getId());
+        dto.setFechaVenta(model.getFechaCreacion());
+        dto.setTotalVenta(model.getTotalVenta());
+        return dto;
     }
 }
