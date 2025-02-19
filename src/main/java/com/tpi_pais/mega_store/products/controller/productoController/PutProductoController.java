@@ -97,6 +97,12 @@ public class PutProductoController {
             productoModificar.setStockMinimo(productoDTO.getStockMinimo());
         }
 
+        // Actualizar stock medio si se proporciona
+        if (productoDTO.getStockMedio() != null) {
+            productoService.verificarStock(productoDTO.getStockMedio(), productoDTO.getStockMinimo()); // Verifica stock
+            productoModificar.setStockMedio(productoDTO.getStockMedio());
+        }
+
         // Actualizar categoría si se proporciona
         if (productoDTO.getCategoriaId() != null) {
             productoService.verificarCategoria(productoDTO.getCategoriaId()); // Verifica la categoría
