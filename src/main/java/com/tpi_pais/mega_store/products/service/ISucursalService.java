@@ -30,4 +30,6 @@ public interface ISucursalService {
 
     public boolean sucursalExistente(String nombre);
 
+    boolean tieneProductosAsociados (Integer id);
+
 }

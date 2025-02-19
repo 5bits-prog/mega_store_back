@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -19,4 +20,5 @@ public interface StockSucursalRepository extends JpaRepository<StockSucursal, In
 
     public Optional<StockSucursal> findByProductoIdAndSucursalId (Integer idProducto, Integer idSucursal);
 
+    public List<StockSucursal> findBySucursalId (Integer idSucursal);
 }

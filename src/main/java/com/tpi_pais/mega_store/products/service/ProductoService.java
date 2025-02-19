@@ -395,5 +395,4 @@ public class ProductoService implements IProductoService {
             throw new BadRequestException("Atributo no reconocido.");
         }
     }
-
 }

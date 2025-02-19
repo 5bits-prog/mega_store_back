@@ -1,6 +1,7 @@
 package com.tpi_pais.mega_store.products.controller.sucursalController;
 
 import com.tpi_pais.mega_store.configs.SessionRequired;
+import com.tpi_pais.mega_store.exception.BadRequestException;
 import com.tpi_pais.mega_store.exception.NotFoundException;  // Excepción personalizada para el no encontrar el objeto
 import com.tpi_pais.mega_store.exception.ResponseService;
 import com.tpi_pais.mega_store.products.model.Sucursal;
@@ -43,7 +44,9 @@ public class DeleteSucursalController {
         if (model == null) {
             throw new NotFoundException("Sucursal con el ID " + id + " no encontrada.");
         }
-
+        if (modelService.tieneProductosAsociados(id)) {
+            throw new BadRequestException("La sucursal con el ID " + id + " tiene productos asociados.");
+        }
         // Eliminamos la sucursal
         modelService.eliminar(model);
 

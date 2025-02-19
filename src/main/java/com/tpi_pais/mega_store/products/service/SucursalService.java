@@ -6,6 +6,7 @@ import com.tpi_pais.mega_store.products.dto.SucursalDTO;
 import com.tpi_pais.mega_store.products.dto.SucursalDTO;
 import com.tpi_pais.mega_store.products.mapper.SucursalMapper;
 import com.tpi_pais.mega_store.products.model.Sucursal;
+import com.tpi_pais.mega_store.products.repository.StockSucursalRepository;
 import com.tpi_pais.mega_store.products.repository.SucursalRepository;
 import com.tpi_pais.mega_store.utils.ExpresionesRegulares;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,11 @@ public class SucursalService implements ISucursalService {
 
     private final SucursalRepository modelRepository;
 
-    public SucursalService(SucursalRepository modelRepository) {
+    private final StockSucursalRepository stockSucursalRepository;
+
+    public SucursalService(SucursalRepository modelRepository, StockSucursalRepository stockSucursalRepository) {
         this.modelRepository = modelRepository;
+        this.stockSucursalRepository = stockSucursalRepository;
     }
 
     @Override
@@ -103,5 +107,10 @@ public class SucursalService implements ISucursalService {
     @Override
     public boolean sucursalExistente(String nombre) {
         return modelRepository.findByNombre(nombre).isPresent();
+    }
+
+    @Override
+    public boolean tieneProductosAsociados (Integer id) {
+        return !stockSucursalRepository.findBySucursalId(id).isEmpty();
     }
 }

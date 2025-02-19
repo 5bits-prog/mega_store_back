@@ -33,7 +33,6 @@ public class DeleteCategoriaController {
     public ResponseEntity<ApiResponse<Object>>  eliminar(@PathVariable Integer id) {
         Categoria model = modelService.buscarPorId(id);
         Boolean valor = productoService.tieneProductoAsociado(model.getId(), "categoria");
-        System.out.println(valor);
         if (valor) {
             throw new BadRequestException("La categoria tiene productos asociados, no se puede eliminar");
         }
