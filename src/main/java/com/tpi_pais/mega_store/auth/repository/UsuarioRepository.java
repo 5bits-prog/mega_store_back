@@ -60,4 +60,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
      * @return Un Optional que contiene el usuario verificado y no eliminado con el ID especificado, o vacío si no existe.
      */
     public Optional<Usuario> findByFechaEliminacionIsNullAndVerificadoTrueAndId(Integer id);
+
+    public List<Usuario> findByRolId(Integer id);
+
 }

@@ -1,5 +1,8 @@
 package com.tpi_pais.mega_store.products.service;
 
+import com.tpi_pais.mega_store.auth.model.Usuario;
+import com.tpi_pais.mega_store.auth.repository.UsuarioRepository;
+import com.tpi_pais.mega_store.auth.service.UsuarioService;
 import com.tpi_pais.mega_store.exception.BadRequestException;
 import com.tpi_pais.mega_store.exception.MessagesException;
 import com.tpi_pais.mega_store.exception.NotFoundException;
@@ -12,8 +15,10 @@ import com.tpi_pais.mega_store.products.repository.MovimientoStockRepository;
 import com.tpi_pais.mega_store.products.repository.ProductoRepository;
 import com.tpi_pais.mega_store.products.repository.StockSucursalRepository;
 import com.tpi_pais.mega_store.products.repository.SucursalRepository;
+import com.tpi_pais.mega_store.utils.EmailCodigoValidacion;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +36,8 @@ public class MovimientoStockService implements IMovimientoStockService {
     private final SucursalRepository sucursalRepository;
     private final StockSucursalRepository stockSucursalRepository;
     private final ProductoRepository productoRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final WebClient webClient;
 
     public MovimientoStockService(
             MovimientoStockRepository repository,
@@ -38,13 +45,15 @@ public class MovimientoStockService implements IMovimientoStockService {
             MovimientoStockMapper movimientoStockMapper,
             SucursalRepository sucursalRepository,
             StockSucursalRepository stockSucursalRepository,
-            ProductoRepository productoRepository) {
+            ProductoRepository productoRepository, UsuarioRepository usuarioRepository, WebClient webClient) {
         this.repository = repository;
         this.productoService = productoService;
         this.movimientoStockMapper = movimientoStockMapper;
         this.sucursalRepository = sucursalRepository;
         this.productoRepository = productoRepository;
         this.stockSucursalRepository = stockSucursalRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.webClient = webClient;
     }
 
     /*
@@ -154,6 +163,14 @@ public class MovimientoStockService implements IMovimientoStockService {
                 stockSucursalRepository.save(stockSucursal);
 
                 producto.setStockActual(producto.getStockActual() - cantidad);
+                System.out.println("Entro a nivel bajo");
+                if (producto.getStockActual() < producto.getStockMinimo()){
+                    System.out.println("Entro a nivel bajo");
+                    this.mandarAlertaEmail("B",producto);
+                } else if (producto.getStockActual() < producto.getStockMedio()){
+                    System.out.println("Entro a nivel medio");
+                    this.mandarAlertaEmail("M",producto);
+                }
                 productoRepository.save(producto);
 
                 movimientosDTO.add(movimientoStockMapper.toDTO(movimientoGuardado));
@@ -172,6 +189,14 @@ public class MovimientoStockService implements IMovimientoStockService {
                 stockSucursalRepository.save(stockSucursal);
 
                 producto.setStockActual(producto.getStockActual() - stockSucursal.getStock());
+                System.out.println("Entro a nivel bajo");
+                if (producto.getStockActual() < producto.getStockMinimo()){
+                    System.out.println("Entro a nivel bajo");
+                    this.mandarAlertaEmail("B",producto);
+                } else if (producto.getStockActual() < producto.getStockMedio()){
+                    System.out.println("Entro a nivel medio");
+                    this.mandarAlertaEmail("M",producto);
+                }
                 productoRepository.save(producto);
 
                 cantidad = cantidad - stockSucursal.getStock();
@@ -312,5 +337,64 @@ public class MovimientoStockService implements IMovimientoStockService {
             throw new BadRequestException("El campo esEgreso es obligatorio.");
         }
     };
+
+    public void mandarAlertaEmail (String alerta, Producto producto){
+        List<Usuario> usuarios = usuarioRepository.findByRolId(5);
+        for (Usuario usuario: usuarios){
+            this.enviarEmailAlerta(usuario.getEmail(),alerta, producto.getNombre(), producto.getStockActual());
+        }
+    }
+
+    public void enviarEmailAlerta  (String email, String alerta, String producto, Integer stock) {
+        try {
+            String requestBody = getStringR(email, alerta , producto, stock);
+
+            // Token de autorización (reemplaza "your-token" por el token real)
+            String token = "48cd4db4cf2acbb1a532528b71fadb202efe8af8";
+
+            // Realizar la solicitud POST para enviar el correo
+            String response = String.valueOf(webClient.post()
+                    .uri("/emailSender/enviar/")  // Especifica el endpoint correcto
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", "Token " + token)  // Agrega el token al encabezado
+                    .bodyValue(requestBody)  // Cuerpo de la solicitud con los datos de email y código
+                    .retrieve()
+                    .toEntity(String.class)
+                    .doOnTerminate(() -> {
+                    })
+                    .doOnError(error -> {
+                    })
+                    .block());  // Espera la respuesta sin bloquear el hilo principal
+
+        } catch (Exception e) {
+            throw new BadRequestException("Error al enviar el email: " + e.getMessage());
+        }
+    }
+    private static String getStringR (String email, String alerta, String producto, Integer stock) {
+        String emailHtmlTemplate = null;
+        if (alerta.equals("B")){
+            emailHtmlTemplate = EmailCodigoValidacion.stockCriticalAlertEmailTemplate;
+        } else {
+            emailHtmlTemplate = EmailCodigoValidacion.stockModerateAlertEmailTemplate;
+        }
+
+        // Reemplaza las variables en la plantilla HTML
+        String emailContent = emailHtmlTemplate
+                .replace("{LOGO_URL}", EmailCodigoValidacion.logoUrl)
+                .replace("{NOMBRE_PRODUCTO}", producto)
+                .replace("STOCK_ACTUAL",String.valueOf(stock));
+
+        // Aquí escapamos las comillas dobles dentro del contenido HTML
+        String escapedEmailContent = emailContent.replace("\"", "\\\"");
+
+        // Aquí formateamos el JSON correctamente
+        return String.format("""
+        {
+            "destinatario": "%s",
+            "asunto": "Alerta de Stock",
+            "cuerpo": "%s"
+        }
+        """, email, escapedEmailContent);
+    }
 }
 
