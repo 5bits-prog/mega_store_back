@@ -97,8 +97,8 @@ public class ProductoService implements IProductoService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ProductoDTO crear(ProductoDTO modelDTO, String token) {
-        //modelDTO = this.verificarAtributos(modelDTO);
-        //modelDTO.setFoto(subirImagen(modelDTO.getImagen()));
+        modelDTO = this.verificarAtributos(modelDTO);
+        modelDTO.setFoto(subirImagen(modelDTO.getImagen()));
         if (productoExistente(modelDTO.getNombre())) {
             Producto aux = buscarPorNombre(modelDTO.getNombre());
             if (aux != null && aux.esEliminado()) {
