@@ -31,7 +31,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
      * @param pageable Objeto que define la paginación y ordenación.
      * @return Página de productos no eliminados, ordenados por ID ascendente.
      */
-    Page<Producto> findByFechaEliminacionIsNull(Pageable pageable);
+    Page<Producto> findByFechaEliminacionIsNullOrderByFechaCreacionDesc(Pageable pageable);
     /**
      * Encuentra un producto activo por su ID, es decir, que no ha sido eliminado.
      *

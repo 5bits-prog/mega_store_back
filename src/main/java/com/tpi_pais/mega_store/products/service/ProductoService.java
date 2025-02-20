@@ -377,7 +377,7 @@ public class ProductoService implements IProductoService {
 
     @Override
     public Page<ProductoDTO> listar(Pageable pageable) {
-        Page<Producto> productos = productoRepository.findByFechaEliminacionIsNull(pageable);
+        Page<Producto> productos = productoRepository.findByFechaEliminacionIsNullOrderByFechaCreacionDesc(pageable);
         return productos.map(ProductoMapper::toDTO); // Convierte cada Producto en ProductoDTO
     }
 
