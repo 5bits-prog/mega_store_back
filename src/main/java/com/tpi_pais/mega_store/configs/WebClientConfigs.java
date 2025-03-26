@@ -18,7 +18,7 @@ public class WebClientConfigs {
     public WebClient webClient() {
         // Configura un cliente WebClient con una URL base específica
         return WebClient.builder()
-                .baseUrl("https://sapapi.cavesoft.com.ar") // URL base para todas las solicitudes
+                .baseUrl("https://sap.dealbera.online") // URL base para todas las solicitudes
                 .build(); // Construye el cliente
     }
 }
