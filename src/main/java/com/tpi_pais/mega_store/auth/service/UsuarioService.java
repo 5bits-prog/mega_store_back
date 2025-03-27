@@ -350,7 +350,6 @@ public class UsuarioService implements IUsuarioService{
             String response = String.valueOf(webClient.post()
                     .uri("/emailSender/enviar/")  // Especifica el endpoint correcto
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Token " + token)  // Agrega el token al encabezado
                     .bodyValue(requestBody)  // Cuerpo de la solicitud con los datos de email y código
                     .retrieve()
                     .toEntity(String.class)
@@ -477,7 +476,6 @@ public class UsuarioService implements IUsuarioService{
             String response = String.valueOf(webClient.post()
                     .uri("/emailSender/enviar/")  // Especifica el endpoint correcto
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Token " + token)  // Agrega el token al encabezado
                     .bodyValue(requestBody)  // Cuerpo de la solicitud con los datos de email y código
                     .retrieve()
                     .toEntity(String.class)
